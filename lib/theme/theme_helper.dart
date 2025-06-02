@@ -48,7 +48,12 @@ class ThemeHelper {
 class ColorSchemes {
   static final lightCodeColorScheme = ColorScheme.light();
 }
+ 
+class AppColors{
+  static const blueColor = const Color.fromARGB(255, 39, 194, 241);
+  static const greyColor = Colors.grey;
 
+}  
 class LightCodeColors {
   // App Colors
   Color get black => Color(0xFF1E1E1E);
@@ -71,4 +76,5 @@ class LightCodeColors {
   // Color Shades - Each shade has its own dedicated constant
   Color get grey200 => Colors.grey.shade200;
   Color get grey100 => Colors.grey.shade100;
+
 }
