@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:eslam_s_application/core/app_export.dart';
 import 'package:eslam_s_application/presentation/reminder/cubit/reminder_cubit.dart';
 import 'package:eslam_s_application/presentation/reminder/cubit/reminder_state.dart';
 import 'package:eslam_s_application/presentation/reminder/model/reminder_model.dart';
 import 'package:eslam_s_application/presentation/reminder/widgets/custom_reminder_card.dart';
 import 'package:eslam_s_application/widgets/default_text_form_field.dart';
+import 'package:eslam_s_application/widgets/text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -63,9 +65,10 @@ class _ReminderPageBodyState extends State<ReminderPageBody> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('REMINDER',
-            style: TextStyle(
-                color: AppColors.blueColor, fontWeight: FontWeight.w500)),
+        title: TitleText.small(
+            text: 'reminder',
+            color: AppColors.blueColor,
+            fontWeight: FontWeight.w500),
         centerTitle: true,
         backgroundColor: Colors.white,
       ),
@@ -80,12 +83,21 @@ class _ReminderPageBodyState extends State<ReminderPageBody> {
                 autovalidateMode: AutovalidateMode.disabled,
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
-                    return "Please enter a reminder";
+                    return "please_enter_reminder".tr();
                   }
                   return null;
                 },
+                onSubmitted: (value) {
+                  if (_formKey.currentState!.validate()) {
+                    context
+                        .read<ReminderCubit>()
+                        .addReminder(text: _controller.text);
+                    _controller.clear();
+                    _focus.unfocus();
+                  }
+                },
                 currentFocusNode: _focus,
-                hint: 'add your reminder',
+                hint: 'add_your_reminder'.tr(),
                 currentController: _controller,
                 borderRadius: 20,
                 contentPadding: const EdgeInsets.all(10),
@@ -106,8 +118,8 @@ class _ReminderPageBodyState extends State<ReminderPageBody> {
                         _focus.unfocus();
                       }
                     },
-                    child: const Text("ADD",
-                        style: TextStyle(color: Colors.white)),
+                    child: const TitleText.verySmall(
+                        text: "add", color: Colors.white),
                     style: ButtonStyle(
                         backgroundColor:
                             WidgetStateProperty.all(AppColors.blueColor)),
@@ -128,7 +140,10 @@ class _ReminderPageBodyState extends State<ReminderPageBody> {
                   final reminder = state.reminder;
                   if (reminder.isEmpty) {
                     return Center(
-                      child: Text("No reminder yet.."),
+                      child: TitleText.verySmall(
+                        text: "no_reminder_yet",
+                        color: AppColors.blueColor,
+                      ),
                     );
                   }
                   return ListView.builder(

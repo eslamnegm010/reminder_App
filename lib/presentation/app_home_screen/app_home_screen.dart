@@ -1,3 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:eslam_s_application/widgets/subtitle_text.dart';
+import 'package:eslam_s_application/widgets/text.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/app_export.dart';
@@ -19,54 +22,66 @@ class AppNavigationScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Container(
-                  padding: EdgeInsets.only(top: 10.h),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text.rich(
-                        TextSpan(
-                            text: 'naw you can make your\n',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                            children: [
-                              TextSpan(
-                                  text: "REMINDER",
-                                  style: TextStyle(
-                                      color: AppColors.blueColor,
-                                      fontWeight: FontWeight.bold))
-                            ]),
-                        style: TextStyle(fontSize: 20.h),
-                      ),SizedBox(height: 10,),
-                      SizedBox(
-                        height: 60.h,
-                        width: double.infinity,
-                        child: Card(
-                          color: AppColors.greyColor,
-                          elevation: 30,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: _buildScreenTitle(
-                            context,
-                            screenTitle: "create naw",
-                            onTapScreenTitle: () => onTapScreenTitle(
-                              context,
-                              AppRoutes.remainderPage,
-                            ),
-                          ),
-                        ),
+                TitleText(
+                  text: 'reminder_create',
+                  subtractedSize: 3,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 60.h,
+                  width: double.infinity,
+                  child: Card(
+                    color: AppColors.greyColor,
+                    elevation: 30,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: _buildScreenTitle(
+                      context,
+                      screenTitle: "create_now",
+                      onTapScreenTitle: () => onTapScreenTitle(
+                        context,
+                        AppRoutes.remainderPage,
                       ),
-                      SizedBox(height: 200,)
-                    ],
+                    ),
                   ),
                 ),
+                SizedBox(
+                  height: 30.h,
+                ),
+                Align(child: _buildChangeLanguageButton(context)),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildChangeLanguageButton(BuildContext context) {
+    final currentLocale = context.locale;
+    final fontFamily = currentLocale.languageCode == 'en' ? 'Cairo' : null;
+    final isArabic = currentLocale == const Locale('ar');
+    return Align(
+      alignment: AlignmentDirectional.center,
+      child: TextButton(
+        style: TextButton.styleFrom(padding: EdgeInsets.zero),
+        child: SubtitleText(
+          text: isArabic ? 'English' : 'عربي',
+          isBold: true,
+          fontFamily: fontFamily,
+          subtractedSize: isArabic ? -1 : -3,
+        ),
+        onPressed: () async {
+          await context
+              .setLocale(isArabic ? const Locale('en') : const Locale('ar'));
+        },
       ),
     );
   }
@@ -84,24 +99,18 @@ class AppNavigationScreen extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.h),
         decoration: BoxDecoration(
-          color: Color(0XFFFFFFFF),
-          borderRadius: BorderRadius.circular(30),
-          border: Border.all(
-            color: AppColors.blueColor,
-            width: .5
-          )
-          ),
+            color: Color(0XFFFFFFFF),
+            borderRadius: BorderRadius.circular(30),
+            border: Border.all(color: AppColors.blueColor, width: .5)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              screenTitle,
+            TitleText.verySmall(
+              text:  screenTitle,
+               color: AppColors.blueColor,
               textAlign: TextAlign.center,
-              style: TextStyleHelper.instance.title20RegularRoboto.copyWith(
-                color: AppColors.blueColor,
-                fontWeight: FontWeight.bold
-              ),
+              fontWeight: FontWeight.bold
             ),
             Icon(Icons.arrow_forward, color: Color(0XFF343330)),
           ],
