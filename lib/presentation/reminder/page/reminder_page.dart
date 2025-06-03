@@ -101,9 +101,11 @@ class _ReminderPageBodyState extends State<ReminderPageBody> {
                 currentController: _controller,
                 borderRadius: 20,
                 contentPadding: const EdgeInsets.all(10),
-                textColor: const Color.fromARGB(255, 60, 59, 59),
-                borderColor: isDarkMode ? AppColors.blueColor :null ,
-                fillColor:  Colors.transparent  ,
+                textColor: isDarkMode
+                    ? AppColors.graylightText
+                    : AppColors.grayDarkText,
+                borderColor: isDarkMode ? AppColors.blueColor : null,
+                fillColor: Colors.transparent,
               ),
             ),
             SizedBox(height: 10.h),

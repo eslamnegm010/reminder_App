@@ -56,13 +56,25 @@ class _AppNavigationScreenState extends State<AppNavigationScreen> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                TitleText(
-                  text: 'reminder_create',
-                  subtractedSize: 3,
+                Image.asset(
+                  AppAssets.appLogoLight,
+                  height: 250,
+                  width: 250,
+                ),
+                SizedBox(
+                  height: 50,
+                ),
+                Row(
+                  children: [
+                    TitleText(
+                      text: 'reminder_create',
+                      subtractedSize: 3,
+                    ),
+                  ],
                 ),
                 SizedBox(
                   height: 10,

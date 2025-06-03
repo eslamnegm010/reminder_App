@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ThemeHelper {
-  static ThemeMode _appTheme = ThemeMode.light;
+  static ThemeMode _appTheme = ThemeMode.dark;
 
   static void changeTheme(ThemeMode newTheme) {
     _appTheme = newTheme;
@@ -29,6 +29,7 @@ ThemeData getDefaultThemeLight(BuildContext? context) {
       iconTheme: IconThemeData(color: AppColors.Dark),
     ),
     colorScheme: ColorScheme.light(),
+    cardColor: AppColors.white,
   );
 }
 
@@ -42,6 +43,7 @@ ThemeData getThemeDark(BuildContext? context) {
       iconTheme: IconThemeData(color: AppColors.white),
     ),
     colorScheme: ColorScheme.dark(),
+    cardColor: AppColors.white,
   );
 }
 
@@ -52,4 +54,6 @@ class AppColors {
   static const scaffoldBackgroundColorDark = Color(0xFF000000);
   static const white = Color(0xFFFFFFFF);
   static const Dark = Color(0xFF000000);
+  static const grayDarkText = const Color.fromARGB(255, 60, 59, 59);
+  static const graylightText = Color.fromARGB(255, 241, 235, 235);
 }
