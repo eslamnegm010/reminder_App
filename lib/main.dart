@@ -8,19 +8,20 @@ import 'core/app_export.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
- await Hive.initFlutter();
+  await Hive.initFlutter();
   Hive.registerAdapter(ReminderModelAdapter());
   await Hive.openBox<ReminderModel>('reminders');
 
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en'), Locale('ar')],
-      path: 'assets/translations', 
+      path: 'assets/translations',
       fallbackLocale: Locale('en'),
       child: MyApp(),
     ),
   );
 }
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,10 @@ class MyApp extends StatelessWidget {
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale: context.locale,
+          theme: getDefaultThemeLight(context),
+          darkTheme: getThemeDark(context), 
+          themeMode: ThemeHelper.currentTheme,
+
           builder: (context, child) {
             return MediaQuery(
               data: MediaQuery.of(

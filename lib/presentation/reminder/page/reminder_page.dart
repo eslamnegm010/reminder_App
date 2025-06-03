@@ -4,8 +4,8 @@ import 'package:eslam_s_application/presentation/reminder/cubit/reminder_cubit.d
 import 'package:eslam_s_application/presentation/reminder/cubit/reminder_state.dart';
 import 'package:eslam_s_application/presentation/reminder/model/reminder_model.dart';
 import 'package:eslam_s_application/presentation/reminder/widgets/custom_reminder_card.dart';
-import 'package:eslam_s_application/widgets/default_text_form_field.dart';
-import 'package:eslam_s_application/widgets/text.dart';
+import 'package:eslam_s_application/sheared_widgets/text_field/default_text_form_field.dart';
+import 'package:eslam_s_application/sheared_widgets/text/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -63,6 +63,8 @@ class _ReminderPageBodyState extends State<ReminderPageBody> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
       appBar: AppBar(
         title: TitleText.small(
@@ -70,9 +72,7 @@ class _ReminderPageBodyState extends State<ReminderPageBody> {
             color: AppColors.blueColor,
             fontWeight: FontWeight.w500),
         centerTitle: true,
-        backgroundColor: Colors.white,
       ),
-      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -102,6 +102,8 @@ class _ReminderPageBodyState extends State<ReminderPageBody> {
                 borderRadius: 20,
                 contentPadding: const EdgeInsets.all(10),
                 textColor: const Color.fromARGB(255, 60, 59, 59),
+                borderColor: isDarkMode ? AppColors.blueColor :null ,
+                fillColor:  Colors.transparent  ,
               ),
             ),
             SizedBox(height: 10.h),

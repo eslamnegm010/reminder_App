@@ -17,6 +17,7 @@ class RadioCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Card(
       elevation: .6,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

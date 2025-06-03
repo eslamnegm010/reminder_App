@@ -1,23 +1,57 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:eslam_s_application/widgets/subtitle_text.dart';
-import 'package:eslam_s_application/widgets/text.dart';
+import 'package:eslam_s_application/core/app_export.dart';
+import 'package:eslam_s_application/core/constans/app_assets.dart';
+import 'package:eslam_s_application/res/theme/theme_helper.dart';
+import 'package:eslam_s_application/sheared_widgets/text/subtitle_text.dart';
+import 'package:eslam_s_application/sheared_widgets/text/title_text.dart';
 import 'package:flutter/material.dart';
+import 'dart:ui' as ui;
 
-import '../../core/app_export.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class AppNavigationScreen extends StatelessWidget {
+class AppNavigationScreen extends StatefulWidget {
   const AppNavigationScreen({Key? key}) : super(key: key);
 
   @override
+  State<AppNavigationScreen> createState() => _AppNavigationScreenState();
+}
+
+class _AppNavigationScreenState extends State<AppNavigationScreen> {
+  @override
   Widget build(BuildContext context) {
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return SafeArea(
       bottom: false,
       top: false,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0XFFFFFFFF),
+          title: Directionality(
+            textDirection: ui.TextDirection.ltr,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                SvgPicture.asset(
+                  isDarkMode
+                      ? AppAssets.themeDarkIcon
+                      : AppAssets.themeLightIcon,
+                  height: 26.h,
+                  width: 26.h,
+                ),
+                Transform.scale(
+                  scale: 0.75,
+                  child: Switch(
+                    activeColor: AppColors.blueColor,
+                    value: false,
+                    onChanged: (value) {
+                      // ThemeHelper().changeTheme(ُ);
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-        backgroundColor: Color(0XFFFFFFFF),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -99,7 +133,7 @@ class AppNavigationScreen extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.h),
         decoration: BoxDecoration(
-            color: Color(0XFFFFFFFF),
+            color: Theme.of(context).scaffoldBackgroundColor,
             borderRadius: BorderRadius.circular(30),
             border: Border.all(color: AppColors.blueColor, width: .5)),
         child: Row(
@@ -107,11 +141,10 @@ class AppNavigationScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TitleText.verySmall(
-              text:  screenTitle,
-               color: AppColors.blueColor,
-              textAlign: TextAlign.center,
-              fontWeight: FontWeight.bold
-            ),
+                text: screenTitle,
+                color: AppColors.blueColor,
+                textAlign: TextAlign.center,
+                fontWeight: FontWeight.bold),
             Icon(Icons.arrow_forward, color: Color(0XFF343330)),
           ],
         ),
