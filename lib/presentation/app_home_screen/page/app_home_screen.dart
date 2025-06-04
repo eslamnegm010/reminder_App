@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:eslam_s_application/core/app_export.dart';
+import 'package:eslam_s_application/core/utils/app_export.dart';
 import 'package:eslam_s_application/core/constans/app_assets.dart';
+import 'package:eslam_s_application/presentation/app_home_screen/cubit/cubit/theme_cubit.dart';
 import 'package:eslam_s_application/res/theme/theme_helper.dart';
 import 'package:eslam_s_application/sheared_widgets/text/subtitle_text.dart';
 import 'package:eslam_s_application/sheared_widgets/text/title_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui' as ui;
 
 import 'package:flutter_svg/flutter_svg.dart';
@@ -42,9 +44,9 @@ class _AppNavigationScreenState extends State<AppNavigationScreen> {
                   scale: 0.75,
                   child: Switch(
                     activeColor: AppColors.blueColor,
-                    value: false,
+                    value: context.watch<ThemeCubit>().state.isDark,
                     onChanged: (value) {
-                      // ThemeHelper().changeTheme(ُ);
+                      context.read<ThemeCubit>().toggleTheme();
                     },
                   ),
                 ),

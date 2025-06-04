@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
-import 'package:eslam_s_application/core/app_export.dart';
+import 'package:eslam_s_application/core/utils/app_export.dart';
 import 'package:flutter/material.dart';
 import 'package:size_helper/size_helper.dart';
 ///Don't use it with items or cards (inside any lists) because it uses SizeHelper inside it so the O(n) and the best solution here is to use SizeHelper from the outside and pass the result to every item/card by parameters so the big O will be O(1).

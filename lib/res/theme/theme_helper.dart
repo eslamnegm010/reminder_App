@@ -1,24 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class ThemeHelper {
-  static ThemeMode _appTheme = ThemeMode.dark;
-
-  static void changeTheme(ThemeMode newTheme) {
-    _appTheme = newTheme;
-  }
-
-  static ThemeMode get currentTheme => _appTheme;
-
-  static ThemeData themeData([BuildContext? context]) {
-    if (_appTheme == ThemeMode.light) {
-      return getDefaultThemeLight(context);
-    } else {
-      return getThemeDark(context);
-    }
-  }
-}
-
 ThemeData getDefaultThemeLight(BuildContext? context) {
   return ThemeData(
     visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -48,7 +30,9 @@ ThemeData getThemeDark(BuildContext? context) {
 }
 
 class AppColors {
-  static const blueColor = Color.fromARGB(255, 39, 194, 241);
+//  static const blueColor = Color.fromARGB(255, 39, 194, 241);
+  static const blueColor = Color.fromARGB(255, 86, 140, 188);
+
   static const greyColor = Colors.grey;
   static const scaffoldBackgroundColorLight = Color(0XFFFFFFFF);
   static const scaffoldBackgroundColorDark = Color(0xFF000000);
@@ -56,4 +40,5 @@ class AppColors {
   static const Dark = Color(0xFF000000);
   static const grayDarkText = const Color.fromARGB(255, 60, 59, 59);
   static const graylightText = Color.fromARGB(255, 241, 235, 235);
+  static final cardGreyColor = Colors.grey[850];
 }

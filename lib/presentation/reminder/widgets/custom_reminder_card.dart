@@ -1,68 +1,64 @@
+import 'package:eslam_s_application/core/utils/app_export.dart';
+import 'package:eslam_s_application/presentation/reminder/model/reminder_model.dart';
+import 'package:eslam_s_application/sheared_widgets/text/title_text.dart';
 import 'package:flutter/material.dart';
-import 'package:eslam_s_application/core/app_export.dart';
-
-class RadioCard extends StatelessWidget {
-  final String title;
-  final bool value;
-  final VoidCallback onChanged;
+class ReminderCard extends StatelessWidget {
+  final ReminderModel reminder;
   final VoidCallback onDelete;
+  final ValueChanged<bool?> onToggleCompletion;
 
-  const RadioCard({
-    super.key,
-    required this.title,
-    required this.value,
-    required this.onChanged,
+  ReminderCard({
+    required this.reminder,
     required this.onDelete,
+    required this.onToggleCompletion,
   });
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final cardColor = isDarkMode ? AppColors.cardGreyColor : Colors.white;
+    final textColor = isDarkMode ? AppColors.white : AppColors.Dark;
+    final iconColor = isDarkMode ? Colors.white70 : Colors.grey[600];
+
     return Card(
-      elevation: .6,
+      margin: EdgeInsets.symmetric(vertical: 5),
+      color: cardColor,
+      elevation: 3.0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(10.0),
         side: BorderSide(
-          color: value
-              ? AppColors.blueColor
-              : isDarkMode
-                  ? AppColors.blueColor
-                  : AppColors.white, // You can customize the border color
-          width: .5, // Adjust border width as needed
+          color: Colors.transparent,
+          width: 1,
         ),
       ),
-      color: value ? const Color.fromARGB(255, 59, 60, 60) : Colors.white,
-      child: ListTile(
-        horizontalTitleGap: 0,
-        contentPadding: EdgeInsets.symmetric(horizontal: 5.h),
-        leading: IconButton(
-          icon: Icon(
-            value ? Icons.radio_button_checked : Icons.radio_button_unchecked,
-            color: value
-                ? AppColors.blueColor
-                : isDarkMode
-                    ? AppColors.white
-                    : Colors.grey,
+      child: Row(
+        children: [
+          Checkbox(
+            shape: RoundedRectangleBorder(
+              side: BorderSide(
+                width: .8,
+              ),
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            value: reminder.isCompleted,
+            onChanged: onToggleCompletion,
+            activeColor: AppColors.blueColor,
+            checkColor: isDarkMode ? Colors.black : Colors.white,
           ),
-          onPressed: onChanged,
-        ),
-        title: Text(
-          title,
-          style: TextStyle(
-              color: value
-                  ? AppColors.blueColor
-                  : isDarkMode
-                      ? AppColors.white
-                      : Colors.black87,
-              fontSize: 15.h),
-        ),
-        onTap: onChanged,
-        trailing: IconButton(
+          Expanded(
+            child: TitleText(
+              padding: EdgeInsets.symmetric(vertical: 8.h),
+              text: reminder.title,
+              subtractedSize: 11,
+              color: reminder.isCompleted ? const Color.fromARGB(255, 104, 167, 222) : textColor,
+              fontWeight: FontWeight.normal,
+            ),
+          ),
+          IconButton(
+            icon: Icon(Icons.delete_rounded, color: iconColor),
             onPressed: onDelete,
-            icon: Icon(
-              Icons.delete,
-              color: const Color.fromARGB(255, 213, 14, 0),
-            )),
+          ),
+        ],
       ),
     );
   }
