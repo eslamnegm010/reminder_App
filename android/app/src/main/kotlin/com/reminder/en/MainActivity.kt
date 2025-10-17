@@ -1,4 +1,4 @@
-package com.eslamsapplication.app
+package com.reminder.en
 
 import io.flutter.embedding.android.FlutterActivity
 
