@@ -1,4 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:eslam_s_application/presentation/reminder/widgets/create_new.dart';
+import 'package:eslam_s_application/presentation/reminder/widgets/reminder_options.dart';
 import 'package:eslam_s_application/sheared_widgets/text/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,7 +36,7 @@ class _AddReminderFieldState extends State<AddReminderField> {
 
   void _submit() {
     if (_formKey.currentState!.validate()) {
-      context.read<ReminderCubit>().addReminder(text: _controller.text.trim());
+      context.read<ReminderCubit>().addReminder(title: _controller.text.trim());
       _controller.clear();
       _focus.unfocus();
     }
@@ -56,18 +58,27 @@ class _AddReminderFieldState extends State<AddReminderField> {
               }
               return null;
             },
-            onSubmitted: (_) => _submit(),
+            //  onSubmitted: (_) => _submit(),
+            onTap: () => showAddReminderBottomSheet(context),
             currentFocusNode: _focus,
             hint: 'add_your_reminder'.tr(),
             currentController: _controller,
             borderRadius: 20,
             contentPadding: const EdgeInsets.all(10),
-            textColor:
-                isDarkMode ? AppColors.graylightText : AppColors.grayDarkText,
+            textColor: isDarkMode ? AppColors.graylightText : AppColors.grayDarkText,
             borderColor: isDarkMode ? AppColors.blueColor : null,
             fillColor: Colors.transparent,
           ),
         ),
+        const SizedBox(height: 10),
+        TitleText(
+          padding: const EdgeInsetsDirectional.only(start: 5),
+          subtractedSize: 12,
+          text: "reminder_info_options",
+          color: AppColors.blueColor,
+        ),
+        const SizedBox(height: 10),
+        buildReminderOptions(context, isDarkMode),
         const SizedBox(height: 10),
         SizedBox(
           width: double.infinity,

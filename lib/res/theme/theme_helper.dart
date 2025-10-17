@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'app_colors.dart';
 
 ThemeData getDefaultThemeLight(BuildContext? context) {
   return ThemeData(
@@ -27,18 +28,4 @@ ThemeData getThemeDark(BuildContext? context) {
     colorScheme: ColorScheme.dark(),
     cardColor: AppColors.white,
   );
-}
-
-class AppColors {
-//  static const blueColor = Color.fromARGB(255, 39, 194, 241);
-  static const blueColor = Color.fromARGB(255, 86, 140, 188);
-
-  static const greyColor = Colors.grey;
-  static const scaffoldBackgroundColorLight = Color(0XFFFFFFFF);
-  static const scaffoldBackgroundColorDark = Color(0xFF000000);
-  static const white = Color(0xFFFFFFFF);
-  static const Dark = Color(0xFF000000);
-  static const grayDarkText = const Color.fromARGB(255, 60, 59, 59);
-  static const graylightText = Color.fromARGB(255, 241, 235, 235);
-  static final cardGreyColor = Colors.grey[850];
 }

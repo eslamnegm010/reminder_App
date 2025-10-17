@@ -1,44 +1,8 @@
-
-// import 'package:bloc/bloc.dart';
-// import 'package:eslam_s_application/presentation/reminder/cubit/reminder_state.dart';
-// import 'package:eslam_s_application/presentation/reminder/model/reminder_model.dart';
-// import 'package:uuid/uuid.dart';
-
-// class ReminderCubit extends Cubit<ReminderState> {
-//   ReminderCubit() : super(ReminderState());
-
-//   void addReminder({required String text}) {
-//      if (text.isNotEmpty){
-//       final model =
-//         ReminderModel(id: Uuid().v1(), title: text, isCompleted: false);
-   
-//       emit(state.copyWith(
-//           status: ReminderStateStatus.loaded,
-//           reminder: [model, ...state.reminder]));
-//      }
-    
-//   }
-
-//   void removeReminder(String id) {
-//     final List<ReminderModel> reminder =
-//         state.reminder.where((item) => item.id != id).toList();
-//     emit(state.copyWith(reminder: reminder));
-//   }
-
-//   void toggleReminder(String id) {
-//     final List<ReminderModel> reminder = state.reminder.map((item) {
-//       return item.id == id
-//           ? item.copyWith(isCompleted: !item.isCompleted)
-//           : item;
-//     }).toList();
-//     emit(state.copyWith(reminder: reminder));
-//   }
-// }
 import 'package:bloc/bloc.dart';
 import 'package:eslam_s_application/presentation/reminder/model/reminder_model.dart';
 import 'package:hive/hive.dart';
-import 'reminder_state.dart';
 import 'package:uuid/uuid.dart';
+import 'reminder_state.dart';
 
 class ReminderCubit extends Cubit<ReminderState> {
   final Box<ReminderModel> _box;
@@ -47,24 +11,43 @@ class ReminderCubit extends Cubit<ReminderState> {
     _loadReminders();
   }
 
+  /// ===== Load All Reminders from Hive =====
   void _loadReminders() {
     final reminders = _box.values.toList();
     emit(state.copyWith(reminder: reminders));
   }
 
-  void addReminder({required String text}) {
-    if (text.isNotEmpty) {
-      final model = ReminderModel(id: Uuid().v1(), title: text, isCompleted: false);
-      _box.put(model.id, model);
-      _loadReminders();
-    }
+  /// ===== Add New Reminder =====
+  void addReminder({
+    required String title,
+    String? description,
+    String? location,
+    String? priority,
+    DateTime? dateTime,
+  }) {
+    if (title.trim().isEmpty) return;
+
+    final reminder = ReminderModel(
+      id: const Uuid().v1(),
+      title: title.trim(),
+      description: description?.trim() ?? '',
+      location: location?.trim(),
+      priority: priority ?? "Medium",
+      dateTime: dateTime,
+      isCompleted: false,
+    );
+
+    _box.put(reminder.id, reminder);
+    _loadReminders();
   }
 
+  /// ===== Remove Reminder by ID =====
   void removeReminder(String id) {
     _box.delete(id);
     _loadReminders();
   }
 
+  /// ===== Toggle Completion =====
   void toggleReminder(String id) {
     final reminder = _box.get(id);
     if (reminder != null) {
@@ -72,5 +55,19 @@ class ReminderCubit extends Cubit<ReminderState> {
       _box.put(id, updated);
       _loadReminders();
     }
+  }
+
+  /// ===== Edit Reminder =====
+  void editReminder(ReminderModel updated) {
+    if (_box.containsKey(updated.id)) {
+      _box.put(updated.id, updated);
+      _loadReminders();
+    }
+  }
+
+  /// ===== Clear All Reminders =====
+  void clearAll() {
+    _box.clear();
+    _loadReminders();
   }
 }

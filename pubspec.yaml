@@ -39,6 +39,7 @@ flutter_native_splash:
 dependencies:
   cached_network_image: ^3.3.0
   connectivity_plus: ^6.1.4
+  loading_animation_widget: ^1.3.0
   easy_localization: ^3.0.7+1
   equatable: ^2.0.7
   flutter:

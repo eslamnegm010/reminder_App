@@ -2,26 +2,26 @@ import 'package:easy_localization/easy_localization.dart' hide TextDirection;
 import 'package:eslam_s_application/core/utils/app_export.dart';
 import 'package:flutter/material.dart';
 import 'package:size_helper/size_helper.dart';
+
 ///Don't use it with items or cards (inside any lists) because it uses SizeHelper inside it so the O(n) and the best solution here is to use SizeHelper from the outside and pass the result to every item/card by parameters so the big O will be O(1).
 class TitleText extends StatelessWidget {
-  const TitleText({
-    super.key,
-    required this.text,
-    this.subtractedSize = 0.0,
-    this.color,
-    this.margin,
-    this.textAlign = TextAlign.start,
-    this.textDirection,
-    this.fontFamily,
-    this.maxLines = 10,
-    this.fontWeight = FontWeight.bold,
-    this.alignment,
-    this.backgroundColor,
-    this.padding,
-    this.height,
-    this.decoration,
-    this.decorationColor
-  });
+  const TitleText(
+      {super.key,
+      required this.text,
+      this.subtractedSize = 0.0,
+      this.color,
+      this.margin,
+      this.textAlign = TextAlign.start,
+      this.textDirection,
+      this.fontFamily,
+      this.maxLines = 10,
+      this.fontWeight = FontWeight.bold,
+      this.alignment,
+      this.backgroundColor,
+      this.padding,
+      this.height,
+      this.decoration,
+      this.decorationColor});
 
   final String text;
   final double subtractedSize;
@@ -202,10 +202,7 @@ class TitleText extends StatelessWidget {
           tabletSmall: Theme.of(context).textTheme.headlineMedium,
           tabletLarge: Theme.of(context).textTheme.headlineMedium,
           tabletExtraLarge: Theme.of(context).textTheme.headlineLarge,
-          desktopSmall: Theme.of(context)
-              .textTheme
-              .headlineLarge!
-              .copyWith(fontSize: 24, height: height),
+          desktopSmall: Theme.of(context).textTheme.headlineLarge!.copyWith(fontSize: 24, height: height),
         )
         .copyWith(
           color: color,
@@ -214,11 +211,11 @@ class TitleText extends StatelessWidget {
         );
 
     final textStyleAfter = textStyleBefore.copyWith(
-      decoration: decoration,
-      decorationColor: decorationColor,
+        decoration: decoration,
+        decorationColor: decorationColor,
         fontSize: ((textStyleBefore.fontSize! - subtractedSize)).h,
         fontWeight: fontWeight);
-        
+
     Widget child = Text(
       text.tr(),
       softWrap: true,

@@ -28,10 +28,7 @@ class ReminderPageBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: TitleText.small(
-            text: 'reminder',
-            color: AppColors.blueColor,
-            fontWeight: FontWeight.w500),
+        title: TitleText.small(text: 'reminder', color: AppColors.blueColor, fontWeight: FontWeight.w500),
         centerTitle: true,
       ),
       body: Padding(
@@ -65,12 +62,8 @@ class ReminderPageBody extends StatelessWidget {
                       final item = reminder[index];
                       return ReminderCard(
                         reminder: item,
-                        onDelete: () => context
-                            .read<ReminderCubit>()
-                            .removeReminder(item.id),
-                        onToggleCompletion: (value) => context
-                            .read<ReminderCubit>()
-                            .toggleReminder(item.id),
+                        onDelete: () => context.read<ReminderCubit>().removeReminder(item.id),
+                        onToggleCompletion: (value) => context.read<ReminderCubit>().toggleReminder(item.id),
                       );
                     },
                   );

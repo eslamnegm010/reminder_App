@@ -1,9 +1,8 @@
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
+import 'package:eslam_s_application/res/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:size_helper/size_helper.dart';
-
-import '../../res/theme/theme_helper.dart';
 
 abstract class MainTextFormField extends StatefulWidget {
   final FocusNode? currentFocusNode;
@@ -110,16 +109,13 @@ class MainTextFormFieldState extends State<MainTextFormField> {
       onTap: () {
         var selection = widget.currentController.selection;
         var length = widget.currentController.text.length;
-        var isLast = selection ==
-            TextSelection.fromPosition(TextPosition(offset: length - 1));
+        var isLast = selection == TextSelection.fromPosition(TextPosition(offset: length - 1));
         if (isLast) {
           selection = TextSelection.fromPosition(TextPosition(offset: length));
         }
         if (widget.onTap != null) widget.onTap!();
       },
-      cursorColor: widget.cursorColor ??
-          widget.textColor ??
-          Theme.of(context).canvasColor,
+      cursorColor: widget.cursorColor ?? widget.textColor ?? Theme.of(context).canvasColor,
       autofillHints: widget.autofillHints,
       textDirection: _currentDir,
       focusNode: widget.currentFocusNode,
@@ -135,32 +131,21 @@ class MainTextFormFieldState extends State<MainTextFormField> {
       style: widget.style ??
           context
               .sizeHelper(
-                mobileLarge: textTheme.bodySmall!
-                    .copyWith(fontSize: arabic ? 12.0 : 10.0),
-                tabletSmall: textTheme.bodyMedium!
-                    .copyWith(fontSize: arabic ? 16.0 : 14.0),
-                tabletNormal: textTheme.bodySmall!
-                    .copyWith(fontSize: arabic ? 20.0 : 18.0),
-                desktopSmall: textTheme.bodySmall!
-                    .copyWith(fontSize: arabic ? 22.0 : 20.0),
-                desktopExtraLarge: textTheme.bodySmall!
-                    .copyWith(fontSize: arabic ? 24.0 : 22.0),
+                mobileLarge: textTheme.bodySmall!.copyWith(fontSize: arabic ? 12.0 : 10.0),
+                tabletSmall: textTheme.bodyMedium!.copyWith(fontSize: arabic ? 16.0 : 14.0),
+                tabletNormal: textTheme.bodySmall!.copyWith(fontSize: arabic ? 20.0 : 18.0),
+                desktopSmall: textTheme.bodySmall!.copyWith(fontSize: arabic ? 22.0 : 20.0),
+                desktopExtraLarge: textTheme.bodySmall!.copyWith(fontSize: arabic ? 24.0 : 22.0),
               )
-              .copyWith(
-                  color: widget.textColor ?? Theme.of(context).canvasColor,
-                  fontWeight: widget.fontWeight),
+              .copyWith(color: widget.textColor ?? Theme.of(context).canvasColor, fontWeight: widget.fontWeight),
       textCapitalization: widget.textCapitalization,
       textAlign: widget.textAlign,
-      textAlignVertical:
-          widget.expanded ? const TextAlignVertical(y: -0.8) : null,
+      textAlignVertical: widget.expanded ? const TextAlignVertical(y: -0.8) : null,
       obscureText: widget.obscureText ?? false,
       decoration: InputDecoration(
-        fillColor: widget.enabled
-            ? widget.fillColor ?? Colors.white
-            : widget.fillColor,
+        fillColor: widget.enabled ? widget.fillColor ?? Colors.white : widget.fillColor,
         filled: true,
-        contentPadding: widget.contentPadding ??
-            const EdgeInsets.fromLTRB(18.0, 0, 18.0, 0),
+        contentPadding: widget.contentPadding ?? const EdgeInsets.fromLTRB(18.0, 0, 18.0, 0),
         hintText: widget.hintText.tr(),
         alignLabelWithHint: true,
         hintStyle: context
@@ -170,76 +155,47 @@ class MainTextFormFieldState extends State<MainTextFormField> {
               // tabletNormal: textTheme.bodySmall!.copyWith(fontSize: 16.0),
               // desktopSmall: textTheme.bodySmall!.copyWith(fontSize: 24.0),
               // desktopExtraLarge: textTheme.bodySmall!.copyWith(fontSize: 26.0),
-              mobileLarge:
-                  textTheme.bodySmall!.copyWith(fontSize: arabic ? 12.0 : 10.0),
-              tabletSmall: textTheme.bodyMedium!
-                  .copyWith(fontSize: arabic ? 16.0 : 14.0),
-              tabletNormal:
-                  textTheme.bodySmall!.copyWith(fontSize: arabic ? 20.0 : 18.0),
-              desktopSmall:
-                  textTheme.bodySmall!.copyWith(fontSize: arabic ? 22.0 : 20.0),
-              desktopExtraLarge:
-                  textTheme.bodySmall!.copyWith(fontSize: arabic ? 24.0 : 22.0),
+              mobileLarge: textTheme.bodySmall!.copyWith(fontSize: arabic ? 12.0 : 10.0),
+              tabletSmall: textTheme.bodyMedium!.copyWith(fontSize: arabic ? 16.0 : 14.0),
+              tabletNormal: textTheme.bodySmall!.copyWith(fontSize: arabic ? 20.0 : 18.0),
+              desktopSmall: textTheme.bodySmall!.copyWith(fontSize: arabic ? 22.0 : 20.0),
+              desktopExtraLarge: textTheme.bodySmall!.copyWith(fontSize: arabic ? 24.0 : 22.0),
             )
             .copyWith(
-                color: widget.hintColor ??
-                    widget.borderColor ??
-                    AppColors.greyColor,
-                fontWeight: FontWeight.bold),
+                color: widget.hintColor ?? widget.borderColor ?? AppColors.greyColor, fontWeight: FontWeight.bold),
         suffixIcon: widget.suffixIcon,
         prefixIcon: widget.prefixIcon,
-        enabledBorder: (widget.isOutlineInputBorder
-                ? OutlineInputBorder.new
-                : UnderlineInputBorder.new)(
-            borderRadius: widget.isOutlineInputBorder
-                ? widget.borderRadius ?? BorderRadius.zero
-                : BorderRadius.zero,
+        enabledBorder: (widget.isOutlineInputBorder ? OutlineInputBorder.new : UnderlineInputBorder.new)(
+            borderRadius: widget.isOutlineInputBorder ? widget.borderRadius ?? BorderRadius.zero : BorderRadius.zero,
             borderSide: BorderSide(
-              color:
-                  widget.borderColor ?? Theme.of(context).secondaryHeaderColor,
+              color: widget.borderColor ?? Theme.of(context).secondaryHeaderColor,
               width: borderWidth,
             )),
-        focusedBorder: (widget.isOutlineInputBorder
-            ? OutlineInputBorder.new
-            : UnderlineInputBorder.new)(
-          borderRadius: widget.isOutlineInputBorder
-              ? widget.borderRadius ?? BorderRadius.zero
-              : BorderRadius.zero,
+        focusedBorder: (widget.isOutlineInputBorder ? OutlineInputBorder.new : UnderlineInputBorder.new)(
+          borderRadius: widget.isOutlineInputBorder ? widget.borderRadius ?? BorderRadius.zero : BorderRadius.zero,
           borderSide: BorderSide(
             color: widget.borderColor ?? Theme.of(context).secondaryHeaderColor,
             width: borderWidth,
           ),
         ),
-        errorBorder: (widget.isOutlineInputBorder
-            ? OutlineInputBorder.new
-            : UnderlineInputBorder.new)(
+        errorBorder: (widget.isOutlineInputBorder ? OutlineInputBorder.new : UnderlineInputBorder.new)(
           borderSide: const BorderSide(
             color: Colors.red,
             width: borderWidth,
           ),
-          borderRadius: widget.isOutlineInputBorder
-              ? widget.borderRadius ?? BorderRadius.zero
-              : BorderRadius.zero,
+          borderRadius: widget.isOutlineInputBorder ? widget.borderRadius ?? BorderRadius.zero : BorderRadius.zero,
         ),
-        focusedErrorBorder: (widget.isOutlineInputBorder
-            ? OutlineInputBorder.new
-            : UnderlineInputBorder.new)(
+        focusedErrorBorder: (widget.isOutlineInputBorder ? OutlineInputBorder.new : UnderlineInputBorder.new)(
           borderSide: const BorderSide(
             color: Colors.red,
             width: borderWidth,
           ),
-          borderRadius: widget.isOutlineInputBorder
-              ? widget.borderRadius ?? BorderRadius.zero
-              : BorderRadius.zero,
+          borderRadius: widget.isOutlineInputBorder ? widget.borderRadius ?? BorderRadius.zero : BorderRadius.zero,
         ),
         counterText: '',
         border: InputBorder.none,
-        disabledBorder: (widget.isOutlineInputBorder
-            ? OutlineInputBorder.new
-            : UnderlineInputBorder.new)(
-          borderRadius: widget.isOutlineInputBorder
-              ? widget.borderRadius ?? BorderRadius.zero
-              : BorderRadius.zero,
+        disabledBorder: (widget.isOutlineInputBorder ? OutlineInputBorder.new : UnderlineInputBorder.new)(
+          borderRadius: widget.isOutlineInputBorder ? widget.borderRadius ?? BorderRadius.zero : BorderRadius.zero,
           borderSide: BorderSide(
             color: widget.borderColor ?? Theme.of(context).secondaryHeaderColor,
             width: borderWidth,
@@ -266,8 +222,7 @@ class MainTextFormFieldState extends State<MainTextFormField> {
       },
     );
 
-    if (widget.showScrollbar)
-      textFieldWidget = Scrollbar(child: textFieldWidget);
+    if (widget.showScrollbar) textFieldWidget = Scrollbar(child: textFieldWidget);
 
     return widget.margin != null
         ? Padding(

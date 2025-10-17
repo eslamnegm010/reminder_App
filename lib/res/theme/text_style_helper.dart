@@ -1,4 +1,3 @@
-
 /// A helper class for managing text styles in the application
 class TextStyleHelper {
   static TextStyleHelper? _instance;
@@ -45,6 +44,4 @@ class TextStyleHelper {
   //   fontWeight: FontWeight.bold,
   //   color: appTheme.blackCustom,
   // );
-
-  
 }
