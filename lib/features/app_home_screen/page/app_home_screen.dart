@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:eslam_s_application/core/utils/app_export.dart';
 import 'package:eslam_s_application/core/constans/app_assets.dart';
-import 'package:eslam_s_application/presentation/app_home_screen/cubit/cubit/theme_cubit.dart';
+import 'package:eslam_s_application/features/app_home_screen/cubit/cubit/theme_cubit.dart';
 import 'package:eslam_s_application/sheared_widgets/text/subtitle_text.dart';
 import 'package:eslam_s_application/sheared_widgets/text/title_text.dart';
 import 'package:flutter/material.dart';

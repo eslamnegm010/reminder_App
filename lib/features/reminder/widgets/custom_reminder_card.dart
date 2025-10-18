@@ -1,5 +1,5 @@
 import 'package:eslam_s_application/core/utils/app_export.dart';
-import 'package:eslam_s_application/presentation/reminder/model/reminder_model.dart';
+import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

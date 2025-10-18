@@ -1,8 +1,8 @@
 // /home/ubuntu/app/eslam_s_application/lib/routes/app_routes.dart
 
-import 'package:eslam_s_application/presentation/reminder/page/reminder_page.dart';
+import 'package:eslam_s_application/features/reminder/page/reminder_page.dart';
 import 'package:flutter/material.dart';
-import '../presentation/app_home_screen/page/app_home_screen.dart';
+import '../features/app_home_screen/page/app_home_screen.dart';
 
 class AppRoutes {
   static const String remainderPage = "/reminder_page.dart";
@@ -10,8 +10,8 @@ class AppRoutes {
   static const String initialRoute = '/initialRoute';
 
   static Map<String, WidgetBuilder> get routes => {
-    appNavigationScreen: (context) => AppNavigationScreen(),
-    initialRoute: (context) => AppNavigationScreen(),
-    remainderPage : (context) => ReminderPage(),
-  };
+        appNavigationScreen: (context) => AppNavigationScreen(),
+        initialRoute: (context) => AppNavigationScreen(),
+        remainderPage: (context) => ReminderPage(),
+      };
 }

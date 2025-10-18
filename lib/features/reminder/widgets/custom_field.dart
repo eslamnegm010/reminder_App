@@ -1,10 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:eslam_s_application/presentation/reminder/widgets/create_new.dart';
-import 'package:eslam_s_application/presentation/reminder/widgets/reminder_options.dart';
+import 'package:eslam_s_application/features/reminder/widgets/create_new.dart';
+import 'package:eslam_s_application/features/reminder/widgets/reminder_options.dart';
 import 'package:eslam_s_application/sheared_widgets/text/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:eslam_s_application/presentation/reminder/cubit/reminder_cubit.dart';
+import 'package:eslam_s_application/features/reminder/cubit/reminder_cubit.dart';
 import 'package:eslam_s_application/core/utils/app_export.dart';
 import 'package:eslam_s_application/sheared_widgets/text_field/default_text_form_field.dart';
 
