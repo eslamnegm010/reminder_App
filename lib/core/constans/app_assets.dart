@@ -1,11 +1,13 @@
 class AppAssets {
-  static const String assetPath = "assets/images/";
+  //  assets path
+  static const String _assetPath = "assets/images/";
 
-  static const String themeLightIcon = "${assetPath}theme.svg";
-  static const String themeDarkIcon = "${assetPath}theme2.svg";
-  static const String appLogoLight = "${assetPath}final_logo.png";
-  static const String appLauncher = "${assetPath}app_launcher.png";
-  static const String locationIcon = "${assetPath}Map_Pin.svg";
-  static const String calendarIcon = "${assetPath}Calendar_Check.svg";
-  static const String alarm = "${assetPath}Alarm.svg";
+  // icons and images
+  static const String appLogoLight = "${_assetPath}final_logo.png";
+  static const String appLauncher = "${_assetPath}app_launcher.png";
+  static const String locationIcon = "${_assetPath}Map_Pin.svg";
+  static const String calendarIcon = "${_assetPath}Calendar_Check.svg";
+  static const String alarm = "${_assetPath}Alarm.svg";
+  static const String moonIcon = "${_assetPath}Moon_alt_fill.svg";
+  static const String sunIcon = "${_assetPath}Sun_fill.svg";
 }

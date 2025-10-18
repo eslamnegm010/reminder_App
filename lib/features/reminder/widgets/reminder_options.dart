@@ -46,10 +46,10 @@ Widget buildReminderOptions(BuildContext context, bool isDarkMode) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      buildOption(AppAssets.locationIcon, 'location', () {
-        // TODO: Add location picker logic here
-      }),
-      const SizedBox(width: 10),
+      // buildOption(AppAssets.locationIcon, 'location', () {
+      //   // TODO: Add location picker logic here
+      // }),
+      // const SizedBox(width: 10),
       buildOption(AppAssets.calendarIcon, 'date', () {
         // TODO: Add date picker logic here
       }),

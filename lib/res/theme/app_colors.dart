@@ -1,3 +1,4 @@
+import 'package:eslam_s_application/features/reminder/enum/reminder_priority.dart';
 import 'package:flutter/material.dart';
 
 class AppColors {
@@ -22,10 +23,11 @@ class AppColors {
   static const white = Color(0xFFFFFFFF);
   static final Color borderwhite = Colors.white.withOpacity(0.15);
   static const Dark = Color(0xFF000000);
-  static const grayDarkText = const Color.fromARGB(255, 60, 59, 59);
+  static const grayDarkText = Color.fromARGB(255, 128, 125, 125);
   static const graylightText = Color.fromARGB(255, 241, 235, 235);
   static final cardGreyColor = Colors.grey[850];
   static final orange = Colors.orangeAccent;
+  static const redColor = Colors.redAccent;
 
   static ThemeData pickerTheme(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
@@ -45,6 +47,19 @@ class AppColors {
       ),
       useMaterial3: false,
     );
+  }
+
+  static Color optionPriorityColors(ReminderPriority priority) {
+    switch (priority) {
+      case ReminderPriority.high:
+        return Colors.redAccent;
+      case ReminderPriority.medium:
+        return Colors.orangeAccent;
+      case ReminderPriority.low:
+        return Colors.green;
+      default:
+        return Colors.grey;
+    }
   }
 
   static const COMPOUND_GRADIENT = LinearGradient(colors: [

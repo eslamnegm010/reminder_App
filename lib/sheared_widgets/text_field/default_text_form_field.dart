@@ -1,4 +1,3 @@
-
 import 'package:eslam_s_application/core/validator.dart';
 import 'package:eslam_s_application/sheared_widgets/text_field/main_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -33,13 +32,12 @@ class DefaultTextFormField extends MainTextFormField {
     super.autofillHints,
     final ValueChanged<String>? onSubmitted,
     super.onTap,
-    super.fontWeight, 
+    super.fontWeight,
     double? borderWidth,
     super.cursorHeight,
     super.autovalidateMode,
   }) : super(
-            validator: validator ??
-                (isRequired ? Validator().validateEmptyField : null),
+            validator: validator ?? (isRequired ? Validator().validateEmptyField : null),
             hintText: hint,
             borderRadius: BorderRadius.circular(borderRadius),
             onTapOutside: currentFocusNode?.unfocus,

@@ -1,33 +1,46 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/foundation.dart';
 import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
+import 'package:eslam_s_application/features/reminder/page/reminder_page.dart';
 
-enum ReminderStateStatus { initial, loaded }
+enum ReminderStateStatus { initial, loading, loaded }
 
 @immutable
 class ReminderState {
   final ReminderStateStatus status;
   final List<ReminderModel> reminder;
+  final FilterType filter;
+  final String search;
 
-  ReminderState({this.status = ReminderStateStatus.initial, reminder}) : reminder = reminder ?? const [];
+  const ReminderState({
+    this.status = ReminderStateStatus.initial,
+    this.reminder = const [],
+    this.filter = FilterType.all,
+    this.search = '',
+  });
 
   ReminderState copyWith({
     ReminderStateStatus? status,
     List<ReminderModel>? reminder,
+    FilterType? filter,
+    String? search,
   }) {
     return ReminderState(
       status: status ?? this.status,
       reminder: reminder ?? this.reminder,
+      filter: filter ?? this.filter,
+      search: search ?? this.search,
     );
   }
 
   @override
   bool operator ==(covariant ReminderState other) {
     if (identical(this, other)) return true;
-
-    return other.status == status && listEquals(other.reminder, reminder);
+    return other.status == status &&
+        listEquals(other.reminder, reminder) &&
+        other.filter == filter &&
+        other.search == search;
   }
 
   @override
-  int get hashCode => status.hashCode ^ reminder.hashCode;
+  int get hashCode => status.hashCode ^ reminder.hashCode ^ filter.hashCode ^ search.hashCode;
 }

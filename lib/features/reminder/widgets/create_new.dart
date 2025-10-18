@@ -4,6 +4,7 @@ import 'package:eslam_s_application/features/reminder/cubit/reminder_cubit.dart'
 import 'package:eslam_s_application/core/utils/app_export.dart';
 import 'package:eslam_s_application/core/validator.dart';
 import 'package:eslam_s_application/sheared_widgets/default_button.dart';
+import 'package:eslam_s_application/sheared_widgets/others/app_divider.dart';
 import 'package:eslam_s_application/sheared_widgets/text_field/default_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +24,6 @@ Future<void> showAddReminderBottomSheet(BuildContext context) async {
   await showModalBottomSheet(
     context: context,
     isScrollControlled: true,
-    // backgroundColor: Theme.of(context).scaffoldBackgroundColor,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
@@ -32,8 +32,8 @@ Future<void> showAddReminderBottomSheet(BuildContext context) async {
         padding: EdgeInsets.only(
           left: 20,
           right: 20,
-          top: 20,
-          bottom: MediaQuery.of(ctx).viewInsets.bottom + 20,
+          top: 12,
+          bottom: MediaQuery.of(ctx).viewInsets.bottom + 12,
         ),
         child: StatefulBuilder(
           builder: (ctx, setState) {
@@ -44,165 +44,184 @@ Future<void> showAddReminderBottomSheet(BuildContext context) async {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    /// ===== Title =====
-                    TitleText.small(
-                      text: "Add Reminder",
+                    Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                        width: 60,
+                        height: 4,
+                        margin: const EdgeInsets.only(bottom: 12),
+                        decoration: BoxDecoration(
+                          color: AppColors.grayDarkText.withOpacity(0.7),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: 20),
 
-                    /// ===== Title Field =====
+                    // Header row
+                    Row(
+                      children: [
+                        TitleText.small(text: "create_new_reminder", color: AppColors.blueColor),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () => Navigator.pop(ctx),
+                          icon: Icon(Icons.close, color: AppColors.greyColor),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: UIConstants.paddingMedium),
+
+                    // Title field
                     reminderTextField(
                       ctx,
                       controller: titleController,
                       focusNode: titleFocus,
-                      hint: "Title".tr(),
                       isRequired: true,
                       isDarkMode: isDarkMode,
                       validator: Validator().validateEmptyField,
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: UIConstants.paddingSmall),
 
-                    /// ===== Description Field =====
+                    // Description
                     reminderTextField(
                       ctx,
                       controller: descController,
                       focusNode: descFocus,
-                      hint: "Description".tr(),
                       isRequired: false,
                       isDarkMode: isDarkMode,
-                      maxLines: 5,
+                      maxLines: 4,
                       validator: (_) => null,
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: UIConstants.paddingMedium),
 
-                    /// ===== Date & Time =====
-                    CustomTitleText(
-                      text: "Date & Time",
-                    ),
+                    // Date & Time
+                    CustomTitleText(text: "date_and_time", context: ctx),
                     const SizedBox(height: 8),
                     Row(
                       children: [
                         Expanded(
                           child: OutlinedButton.icon(
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: AppColors.blueColor.withOpacity(0.12)),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              backgroundColor: Colors.transparent,
+                              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                            ),
                             icon: SvgPicture.asset(
                               AppAssets.calendarIcon,
                               height: 18,
                               width: 18,
-                              colorFilter: ColorFilter.mode(AppColors.orange, BlendMode.srcIn),
+                              colorFilter: ColorFilter.mode(AppColors.blueColor, BlendMode.srcIn),
                             ),
                             label: TitleText(
-                              subtractedSize: 14,
-                              color: AppColors.orange,
+                              subtractedSize: 13,
+                              color: AppColors.blueColor,
                               text: selectedDate == null
-                                  ? "Select Date".tr()
+                                  ? "select_date".tr()
                                   : DateFormat('yyyy-MM-dd').format(selectedDate!),
                             ),
                             onPressed: () async {
                               final pickedDate = await showDatePicker(
-                                builder: (context, child) {
-                                  return Theme(
-                                    data: AppColors.pickerTheme(context),
-                                    child: child!,
-                                  );
-                                },
                                 context: ctx,
-                                initialDate: DateTime.now(),
+                                initialDate: selectedDate ?? DateTime.now(),
                                 firstDate: DateTime(2020),
                                 lastDate: DateTime(2100),
+                                builder: (c, child) => Theme(data: AppColors.pickerTheme(c), child: child!),
                               );
-                              if (pickedDate != null) {
-                                setState(() => selectedDate = pickedDate);
-                              }
+                              if (pickedDate != null) setState(() => selectedDate = pickedDate);
                             },
                           ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
                           child: OutlinedButton.icon(
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: AppColors.blueColor.withOpacity(0.12)),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              backgroundColor: Colors.transparent,
+                              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+                            ),
                             icon: SvgPicture.asset(
                               AppAssets.alarm,
                               height: 18,
                               width: 18,
-                              colorFilter: ColorFilter.mode(AppColors.orange, BlendMode.srcIn),
+                              colorFilter: ColorFilter.mode(AppColors.blueColor, BlendMode.srcIn),
                             ),
                             label: TitleText(
-                              subtractedSize: 14,
-                              color: AppColors.orange,
-                              text: selectedTime == null ? "Select Time".tr() : selectedTime!.format(ctx),
+                              subtractedSize: 13,
+                              color: AppColors.blueColor,
+                              text: selectedTime == null ? "select_time".tr() : selectedTime!.format(ctx),
                             ),
                             onPressed: () async {
                               final pickedTime = await showTimePicker(
                                 context: ctx,
-                                initialTime: TimeOfDay.now(),
+                                initialTime: selectedTime ?? TimeOfDay.now(),
+                                builder: (c, child) => Theme(data: AppColors.pickerTheme(c), child: child!),
                                 barrierColor: Colors.transparent,
-                                builder: (context, child) {
-                                  return Theme(
-                                    data: AppColors.pickerTheme(context),
-                                    child: child!,
-                                  );
-                                },
                               );
-
-                              if (pickedTime != null) {
-                                setState(() => selectedTime = pickedTime);
-                              }
+                              if (pickedTime != null) setState(() => selectedTime = pickedTime);
                             },
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: UIConstants.paddingMedium),
 
-                    /// ===== Priority =====
-                    CustomTitleText(
-                      text: "Priority",
-                    ),
+                    // Priority
+                    CustomTitleText(text: "priority", context: ctx),
                     const SizedBox(height: 8),
                     Wrap(
-                      spacing: 10,
+                      spacing: 8,
+                      runSpacing: 8,
                       children: [
-                        _optionChip("Low", selectedPriority == ReminderPriority.low, () {
-                          setState(() => selectedPriority = ReminderPriority.low);
-                        }, isDarkMode),
-                        _optionChip("Medium", selectedPriority == ReminderPriority.medium, () {
-                          setState(() => selectedPriority = ReminderPriority.medium);
-                        }, isDarkMode),
-                        _optionChip("High", selectedPriority == ReminderPriority.high, () {
-                          setState(() => selectedPriority = ReminderPriority.high);
-                        }, isDarkMode),
+                        _optionPriority(
+                          text: "low",
+                          isSelected: selectedPriority == ReminderPriority.low,
+                          onTap: () => setState(() => selectedPriority = ReminderPriority.low),
+                          priority: ReminderPriority.low,
+                        ),
+                        _optionPriority(
+                          text: "medium",
+                          isSelected: selectedPriority == ReminderPriority.medium,
+                          onTap: () => setState(() => selectedPriority = ReminderPriority.medium),
+                          priority: ReminderPriority.medium,
+                        ),
+                        _optionPriority(
+                          text: "high",
+                          isSelected: selectedPriority == ReminderPriority.high,
+                          onTap: () => setState(() => selectedPriority = ReminderPriority.high),
+                          priority: ReminderPriority.high,
+                        ),
                       ],
                     ),
-                    const SizedBox(height: 25),
+                    const SizedBox(height: UIConstants.paddingMedium),
 
-                    /// ===== Buttons =====
-                    SafeArea(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: reminderButton(
-                              label: "cancel",
-                              backgroundColor: Colors.redAccent,
-                              onPressed: () => Navigator.pop(ctx),
+                    // Buttons
+                    Row(
+                      children: [
+                        Expanded(
+                          child: reminderButton(
+                            label: "cancel",
+                            backgroundColor: Colors.redAccent,
+                            onPressed: () => Navigator.pop(ctx),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: reminderButton(
+                            label: "add",
+                            onPressed: () => handleAddReminder(
+                              context: context,
+                              ctx: ctx,
+                              formKey: formKey,
+                              titleController: titleController,
+                              descController: descController,
+                              selectedPriority: selectedPriority,
+                              selectedDate: selectedDate,
+                              selectedTime: selectedTime,
                             ),
                           ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: reminderButton(
-                              label: "add",
-                              onPressed: () => handleAddReminder(
-                                context: context,
-                                ctx: ctx,
-                                formKey: formKey,
-                                titleController: titleController,
-                                descController: descController,
-                                selectedPriority: selectedPriority,
-                                selectedDate: selectedDate,
-                                selectedTime: selectedTime,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -219,46 +238,52 @@ Widget reminderTextField(
   BuildContext context, {
   required TextEditingController controller,
   required FocusNode focusNode,
-  required String hint,
   required String? Function(String?) validator,
   required bool isDarkMode,
   int maxLines = 1,
   bool isRequired = false,
 }) {
   return DefaultTextFormField(
+    autovalidateMode: AutovalidateMode.onUserInteraction,
     currentController: controller,
     currentFocusNode: focusNode,
-    hint: hint,
+    hint: "type_here..",
     isRequired: isRequired,
     maxLines: maxLines,
     validator: validator,
-    borderRadius: 15,
-    contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-    textColor: isDarkMode ? AppColors.graylightText : AppColors.grayDarkText,
-    borderColor: isDarkMode ? AppColors.blueColor : AppColors.Bordergrey,
+    borderRadius: 12,
+    hintColor: AppColors.grayDarkText,
+    contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+    textColor: AppColors.getTextColor(context),
+    borderColor: AppColors.blueColor.withOpacity(0.16),
     fillColor: Colors.transparent,
   );
 }
 
-Widget _optionChip(String text, bool isSelected, VoidCallback onTap, bool isDarkMode) {
+Widget _optionPriority({
+  required String text,
+  required bool isSelected,
+  required VoidCallback onTap,
+  required ReminderPriority priority,
+}) {
+  final border = isSelected ? BorderSide.none : BorderSide(color: AppColors.Bordergrey);
   return ChoiceChip(
-    elevation: 2,
+    elevation: 0,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-    label: TitleText(text: text, subtractedSize: 14),
+    label: TitleText(text: text, subtractedSize: 14, color: isSelected ? Colors.white : AppColors.greyColor),
     selected: isSelected,
     onSelected: (_) => onTap(),
-    selectedColor: AppColors.blueColor,
+    selectedColor: AppColors.optionPriorityColors(priority),
     backgroundColor: Colors.transparent,
-    side: BorderSide(
-      color: isDarkMode ? AppColors.blueColor : AppColors.Bordergrey,
-    ),
+    side: border,
+    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
   );
 }
 
 Widget reminderButton({
   required String label,
   required VoidCallback onPressed,
-  Color backgroundColor = Colors.blue,
+  Color backgroundColor = AppColors.blueColor,
 }) {
   return DefaultButton.verySmall(
     label: label,
@@ -305,11 +330,19 @@ void handleAddReminder({
   }
 }
 
-TitleText CustomTitleText({
+Row CustomTitleText({
   required String text,
-}) =>
-    TitleText.verySmall(
-      text: text,
-      color: AppColors.white,
-      fontWeight: FontWeight.w600,
-    );
+  required BuildContext context,
+}) {
+  return Row(
+    children: [
+      TitleText(
+        subtractedSize: 12,
+        text: text,
+        fontWeight: FontWeight.w600,
+      ),
+      const SizedBox(width: 10),
+      Expanded(child: AppBarDivider.getAppBarDivider(context))
+    ],
+  );
+}

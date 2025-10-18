@@ -7,3 +7,4 @@ export 'package:eslam_s_application/res/theme/app_colors.dart';
 export 'package:eslam_s_application/sheared_widgets/text/title_text.dart';
 export 'package:eslam_s_application/sheared_widgets/text/subtitle_text.dart';
 export 'package:flutter_svg/flutter_svg.dart';
+export 'package:eslam_s_application/core/constans/ui_constans.dart';

@@ -57,6 +57,7 @@ dependencies:
   size_helper: ^2.1.0
   uuid: ^4.5.1
   web: any
+  page_transition: ^2.2.1
 dev_dependencies:
   build_runner: ^2.3.3
   flutter_test:

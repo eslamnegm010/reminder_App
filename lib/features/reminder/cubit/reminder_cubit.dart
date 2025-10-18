@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
+import 'package:eslam_s_application/features/reminder/page/reminder_page.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 import 'reminder_state.dart';
@@ -7,14 +8,34 @@ import 'reminder_state.dart';
 class ReminderCubit extends Cubit<ReminderState> {
   final Box<ReminderModel> _box;
 
-  ReminderCubit(this._box) : super(ReminderState()) {
+  ReminderCubit(this._box) : super(const ReminderState()) {
     _loadReminders();
+  }
+
+  FilterType get filter => state.filter;
+  String get search => state.search;
+
+  List<ReminderModel> visibleReminders() {
+    final reminders = state.reminder;
+    final currentFilter = state.filter;
+    final q = state.search.trim().toLowerCase();
+
+    return reminders.where((r) {
+      if (currentFilter == FilterType.active && r.isCompleted) return false;
+      if (currentFilter == FilterType.completed && !r.isCompleted) return false;
+      if (q.isNotEmpty) {
+        final title = r.title.toLowerCase();
+        final desc = r.description.toLowerCase();
+        return title.contains(q) || desc.contains(q);
+      }
+      return true;
+    }).toList();
   }
 
   /// ===== Load All Reminders from Hive =====
   void _loadReminders() {
     final reminders = _box.values.toList();
-    emit(state.copyWith(reminder: reminders));
+    emit(state.copyWith(reminder: reminders, status: ReminderStateStatus.loaded));
   }
 
   /// ===== Add New Reminder =====
@@ -41,13 +62,11 @@ class ReminderCubit extends Cubit<ReminderState> {
     _loadReminders();
   }
 
-  /// ===== Remove Reminder by ID =====
   void removeReminder(String id) {
     _box.delete(id);
     _loadReminders();
   }
 
-  /// ===== Toggle Completion =====
   void toggleReminder(String id) {
     final reminder = _box.get(id);
     if (reminder != null) {
@@ -65,9 +84,18 @@ class ReminderCubit extends Cubit<ReminderState> {
     }
   }
 
-  /// ===== Clear All Reminders =====
   void clearAll() {
     _box.clear();
     _loadReminders();
+  }
+
+  void setFilter(FilterType f) {
+    if (state.filter == f) return;
+    emit(state.copyWith(filter: f));
+  }
+
+  void setSearch(String q) {
+    if (state.search == q) return;
+    emit(state.copyWith(search: q));
   }
 }

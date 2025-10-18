@@ -1,5 +1,5 @@
 {
-  "reminder_create": "Now you can make your\nReminder",
+  "reminder_create": "Never miss it ..\nAdd a reminder and stay on top of your day.", 
   "create_now": "Create now",
   "please_enter_reminder": "Please enter a reminder",
   "add_your_reminder": "Add your reminder",
@@ -7,8 +7,31 @@
   "add": "ADD",
   "no_reminder_yet": "No reminder yet..",
   "reminder_info_options":"Make your reminder clearer — add when and where it should notify you.",
-  "location": "الموقع",
-  "date": "التاريخ",
-  "time": "الوقت"
+  "location": "Location",
+  "date": "Date",
+  "time": "Time",
+   "create_new_reminder": "Create new Reminder",
+  "type_here": "Type here...",
+  "date_and_time": "Date & Time",
+  "select_date": "Select Date",
+  "select_time": "Select Time",
+  "priority": "Priority",
+  "low": "Low",
+  "medium": "Medium",
+  "high": "High",
+  "cancel": "Cancel",
+  "all": "All",
+  "active": "Active",
+  "completed": "Completed",
+  "search": "Search",
+  "type_to_search": "Type to search...",
+  "searching_for": "Searching for \"{}\"",
+  "start_adding_reminders": "Start adding reminders",
+  "mark_as_done": "Mark as Done",
+  "delete": "Delete"
+
+
+
+
  
 }

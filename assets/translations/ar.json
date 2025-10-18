@@ -1,5 +1,5 @@
 {
-  "reminder_create": "الآن يمكنك إنشاء التذكير الخاص بك",
+  "reminder_create": "لا تُفوِّتها ..\nأضف تذكيرًا وابقَ متقدّمًا على يومك.",
   "create_now": "أنشئ الآن",
   "please_enter_reminder": "يرجى إدخال التذكير",
   "add_your_reminder": "أضف تذكيرك",
@@ -9,7 +9,30 @@
   "reminder_info_options": "اجعل تذكيرك أوضح — أضف متى وأين يجب أن ينبهك.",
   "location": "الموقع",
   "date": "التاريخ",
-  "time": "الوقت"
+  "time": "الوقت",
+  "create_new_reminder": "إنشاء تذكير جديد",
+  "type_here": "اكتب هنا...",
+  "date_and_time": "التاريخ والوقت",
+  "select_date": "اختر التاريخ",
+  "select_time": "اختر الوقت",
+  "priority": "الأولوية",
+  "low": "منخفضة",
+  "medium": "متوسطة",
+  "high": "عالية",
+  "cancel": "إلغاء",
+  "all": "الكل",
+  "active": "نشط",
+  "completed": "مكتمل",
+  "search": "بحث",
+  "type_to_search": "اكتب للبحث...",
+  "searching_for": "جارٍ البحث عن \"{}\"",
+  "start_adding_reminders": "ابدأ بإضافة التذكيرات",
+  "mark_as_done": "وضع كمنجز",
+  "delete": "حذف"
+  
+
+
+
 
 
 
