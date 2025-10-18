@@ -49,7 +49,7 @@ class ReminderPageBody extends StatelessWidget {
 
   Widget _buildBody(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Column(
         children: [
           PageHeader(),

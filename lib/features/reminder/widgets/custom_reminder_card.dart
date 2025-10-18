@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:eslam_s_application/core/utils/app_export.dart';
 import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
 import 'package:flutter/material.dart';
+import 'done_button.dart';
 
 class ReminderCard extends StatelessWidget {
   final ReminderModel reminder;
@@ -71,41 +72,10 @@ class ReminderCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 12),
-                      GestureDetector(
-                        onTap: () => onToggleCompletion(!reminder.isCompleted),
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 250),
-                          curve: Curves.easeInOut,
-                          width: 44,
-                          height: 44,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            gradient: reminder.isCompleted
-                                ? LinearGradient(
-                                    colors: [priorityColor.withOpacity(0.9), priorityColor],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                  )
-                                : null,
-                            color: reminder.isCompleted ? null : AppColors.getCardBackgroundColor(context),
-                            border: Border.all(
-                              color: reminder.isCompleted ? priorityColor : Colors.grey.withOpacity(0.18),
-                              width: 1.2,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: isDarkMode ? Colors.black26 : Colors.grey.withOpacity(0.06),
-                                blurRadius: 6,
-                                offset: const Offset(0, 3),
-                              ),
-                            ],
-                          ),
-                          child: Center(
-                            child: reminder.isCompleted
-                                ? Icon(Icons.check, size: 20, color: Colors.white)
-                                : Icon(Icons.circle_outlined, size: 18, color: Colors.grey[500]),
-                          ),
-                        ),
+                      DoneButton(
+                        isCompleted: reminder.isCompleted,
+                        color: priorityColor,
+                        onToggle: (value) => onToggleCompletion(value),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
