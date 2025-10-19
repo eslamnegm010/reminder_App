@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:eslam_s_application/core/local_storage/hive.dart';
 import 'package:eslam_s_application/features/app_home_screen/cubit/cubit/theme_cubit.dart';
+import 'package:eslam_s_application/features/user/user_cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,8 +16,15 @@ void main() async {
       supportedLocales: [Locale('en'), Locale('ar')],
       path: 'assets/translations',
       fallbackLocale: Locale('en'),
-      child: BlocProvider(
-        create: (context) => ThemeCubit(),
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => ThemeCubit(),
+          ),
+          BlocProvider(
+            create: (_) => UserCubit(HiveService.userBox),
+          )
+        ],
         child: MyApp(),
       ),
     ),

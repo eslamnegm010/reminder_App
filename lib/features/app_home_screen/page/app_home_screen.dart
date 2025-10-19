@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:eslam_s_application/core/utils/app_export.dart';
 import 'package:eslam_s_application/features/app_home_screen/cubit/cubit/theme_cubit.dart';
 import 'package:eslam_s_application/features/reminder/page/reminder_page.dart';
+import 'package:eslam_s_application/features/user/pages/user_form_page.dart';
+import 'package:eslam_s_application/features/user/user_cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:ui' as ui;
@@ -168,18 +170,21 @@ class AppNavigationScreen extends StatelessWidget {
     );
   }
 
-  /// Common click event
   void onTapScreenTitle(BuildContext context) {
-    Navigator.push(
-      context,
-      PageTransition(
-        type: PageTransitionType.rightToLeft,
-        duration: const Duration(milliseconds: 0),
-        reverseDuration: const Duration(milliseconds: 0),
-        curve: Curves.easeInOutCubic,
-        child: const ReminderPage(),
-      ),
-    );
+    final user = context.read<UserCubit>().state.user;
+    final hasUser = user != null && user.name.trim().isNotEmpty && user.email.trim().isNotEmpty;
+    if (hasUser) {
+      Navigator.pushReplacementNamed(context, AppRoutes.remainderPage);
+    } else {
+      Navigator.push(
+        context,
+        PageTransition(
+          type: PageTransitionType.rightToLeft,
+          duration: const Duration(milliseconds: 350),
+          child: const UserProfilePage(),
+        ),
+      );
+    }
   }
 
   AppBar _buildAppBar(BuildContext context) {

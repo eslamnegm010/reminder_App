@@ -28,7 +28,34 @@
   "searching_for": "Searching for \"{}\"",
   "start_adding_reminders": "Start adding reminders",
   "mark_as_done": "Mark as Done",
-  "delete": "Delete"
+  "delete": "Delete",
+  "theme": "Theme",
+  "clear_all_reminders": "Clear all reminders",
+  "remove_all_saved_reminders": "Remove all saved reminders",
+  "confirm": "Confirm",
+  "are_you_sure_remove_all_reminders": "Are you sure you want to remove all reminders?",
+  "yes": "Yes",
+  "all_reminders_removed": "All reminders removed",
+  "sign_out": "Sign out",
+  "about": "About",
+  "version": "Version \"{}\"",
+  "profile": "Profile",
+"guest_user": "Guest User",
+"full_name": "Full Name",
+"email": "Email",
+"save": "Save",
+"profile_edit_hint": "You can edit your name and email anytime here.",
+"profile_saved_successfully": "Profile saved successfully",
+"edit_profile": "Edit Profile",
+"edit_your_profile": "Edit your profile",
+"you_have_been_signed_out": "You have been signed out",
+"about_app_description": "This app was developed by Eslam Negm — a passionate Flutter developer focused on crafting clean, elegant, and user-friendly mobile applications."
+
+
+
+
+
+
 
 
 

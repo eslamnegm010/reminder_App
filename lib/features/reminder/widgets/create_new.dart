@@ -5,6 +5,7 @@ import 'package:eslam_s_application/core/utils/app_export.dart';
 import 'package:eslam_s_application/core/validator.dart';
 import 'package:eslam_s_application/sheared_widgets/default_button.dart';
 import 'package:eslam_s_application/sheared_widgets/others/app_divider.dart';
+import 'package:eslam_s_application/sheared_widgets/others/swaper.dart';
 import 'package:eslam_s_application/sheared_widgets/text_field/default_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,18 +47,8 @@ Future<void> showAddReminderBottomSheet(BuildContext context) async {
                   children: [
                     Align(
                       alignment: Alignment.center,
-                      child: Container(
-                        width: 60,
-                        height: 4,
-                        margin: const EdgeInsets.only(bottom: 12),
-                        decoration: BoxDecoration(
-                          color: AppColors.grayDarkText.withOpacity(0.7),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
+                      child: swaper(),
                     ),
-
-                    // Header row
                     Row(
                       children: [
                         TitleText.small(text: "create_new_reminder", color: AppColors.blueColor),

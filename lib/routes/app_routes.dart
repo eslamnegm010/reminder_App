@@ -10,8 +10,8 @@ class AppRoutes {
   static const String initialRoute = '/initialRoute';
 
   static Map<String, WidgetBuilder> get routes => {
-        appNavigationScreen: (context) => AppNavigationScreen(),
         initialRoute: (context) => AppNavigationScreen(),
+        appNavigationScreen: (context) => AppNavigationScreen(),
         remainderPage: (context) => ReminderPage(),
       };
 }

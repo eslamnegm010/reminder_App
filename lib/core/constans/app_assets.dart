@@ -1,4 +1,5 @@
 class AppAssets {
+  static const String appName = "Reminder";
   //  assets path
   static const String _assetPath = "assets/images/";
 
@@ -10,4 +11,5 @@ class AppAssets {
   static const String alarm = "${_assetPath}Alarm.svg";
   static const String moonIcon = "${_assetPath}Moon_alt_fill.svg";
   static const String sunIcon = "${_assetPath}Sun_fill.svg";
+  static const String userCircleIcon = "${_assetPath}User_Circle.svg";
 }

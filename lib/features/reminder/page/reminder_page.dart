@@ -2,7 +2,9 @@ import 'package:eslam_s_application/core/utils/app_export.dart';
 import 'package:eslam_s_application/core/local_storage/hive.dart';
 import 'package:eslam_s_application/features/reminder/cubit/reminder_cubit.dart';
 import 'package:eslam_s_application/features/reminder/cubit/reminder_state.dart';
+import 'package:eslam_s_application/features/reminder/enum/filter_type.dart';
 import 'package:eslam_s_application/features/reminder/page/search_page.dart';
+import 'package:eslam_s_application/features/reminder/page/app_settings.dart';
 import 'package:eslam_s_application/features/reminder/widgets/empty_page.dart';
 import 'package:eslam_s_application/features/reminder/widgets/page_header.dart';
 import 'package:eslam_s_application/features/reminder/widgets/custom_reminder_card.dart';
@@ -30,82 +32,69 @@ class ReminderPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: _buildAppBar(
-          context,
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () => showAddReminderBottomSheet(context),
-          child: const Icon(Icons.add),
-          backgroundColor: AppColors.blueColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(100),
-          ),
-        ),
-        body: _buildBody(
-          context,
-        ));
-  }
+    return BlocBuilder<ReminderCubit, ReminderState>(
+      builder: (context, state) {
+        final cubit = context.read<ReminderCubit>();
+        final reminders = cubit.visibleReminders();
 
-  Widget _buildBody(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: Column(
-        children: [
-          PageHeader(),
-          SizedBox(height: 10.h),
-          AppBarDivider.getAppBarDivider(context),
-          const SizedBox(height: 10),
-          BlocBuilder<ReminderCubit, ReminderState>(
-            builder: (context, state) {
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildFilterChip(context, 'all', FilterType.all),
-                    const SizedBox(width: 8),
-                    _buildFilterChip(context, 'active', FilterType.active),
-                    const SizedBox(width: 8),
-                    _buildFilterChip(context, 'completed', FilterType.completed),
-                  ],
-                ),
-              );
-            },
-          ),
-          const SizedBox(height: 10),
-          Expanded(
-            child: BlocBuilder<ReminderCubit, ReminderState>(
-              builder: (context, state) {
-                final cubit = context.read<ReminderCubit>();
-                final reminders = cubit.visibleReminders();
-
-                if (reminders.isEmpty) {
-                  return buildEmptyList();
-                }
-
-                return ListView.separated(
-                  itemCount: reminders.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 0),
-                  itemBuilder: (context, index) {
-                    final item = reminders[index];
-                    return DismissibleWrapper(
-                      id: item.id,
-                      isCompleted: item.isCompleted,
-                      onDelete: () => cubit.removeReminder(item.id),
-                      onComplete: () => cubit.toggleReminder(item.id),
-                      child: ReminderCard(
-                        reminder: item,
-                        onDelete: () => cubit.removeReminder(item.id),
-                        onToggleCompletion: (_) => cubit.toggleReminder(item.id),
-                      ),
-                    );
-                  },
-                );
-              },
+        return Scaffold(
+          appBar: _buildAppBar(context),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () => showAddReminderBottomSheet(context),
+            child: const Icon(Icons.add),
+            backgroundColor: AppColors.blueColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100),
             ),
           ),
-        ],
-      ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: Column(
+              children: [
+                PageHeader(),
+                SizedBox(height: 10.h),
+                AppBarDivider.getAppBarDivider(context),
+                const SizedBox(height: 10),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      _buildFilterChip(context, 'all', FilterType.all),
+                      const SizedBox(width: 8),
+                      _buildFilterChip(context, 'active', FilterType.active),
+                      const SizedBox(width: 8),
+                      _buildFilterChip(context, 'completed', FilterType.completed),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Expanded(
+                  child: reminders.isEmpty
+                      ? buildEmptyList()
+                      : ListView.separated(
+                          itemCount: reminders.length,
+                          separatorBuilder: (_, __) => const SizedBox(height: 0),
+                          itemBuilder: (context, index) {
+                            final item = reminders[index];
+                            return DismissibleWrapper(
+                              id: item.id,
+                              isCompleted: item.isCompleted,
+                              onDelete: () => cubit.removeReminder(item.id),
+                              onComplete: () => cubit.toggleReminder(item.id),
+                              child: ReminderCard(
+                                reminder: item,
+                                onDelete: () => cubit.removeReminder(item.id),
+                                onToggleCompletion: (_) => cubit.toggleReminder(item.id),
+                              ),
+                            );
+                          },
+                        ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -134,13 +123,12 @@ class ReminderPageBody extends StatelessWidget {
   }
 }
 
-enum FilterType { all, active, completed }
-
-AppBar _buildAppBar(
-  BuildContext context,
-) =>
-    AppBar(
-      title: TitleText.small(text: 'reminder', color: AppColors.blueColor, fontWeight: FontWeight.w500),
+AppBar _buildAppBar(BuildContext context) => AppBar(
+      title: TitleText.small(
+        text: 'reminder',
+        color: AppColors.blueColor,
+        fontWeight: FontWeight.w500,
+      ),
       centerTitle: true,
       elevation: 0,
       actions: [
@@ -148,20 +136,23 @@ AppBar _buildAppBar(
           icon: const Icon(Icons.search_rounded),
           onPressed: () => _openSearch(context),
         ),
-        PopupMenuButton<FilterType>(
-          onSelected: (v) => context.read<ReminderCubit>().setFilter(v),
-          itemBuilder: (_) => [
-            PopupMenuItem(value: FilterType.all, child: Text('All')),
-            PopupMenuItem(value: FilterType.active, child: Text('Active')),
-            PopupMenuItem(value: FilterType.completed, child: Text('Completed')),
-          ],
-          icon: const Icon(Icons.filter_list_rounded),
+        IconButton(
+          icon: SvgPicture.asset(
+            AppAssets.userCircleIcon,
+            height: 24,
+            width: 24,
+            colorFilter: ColorFilter.mode(AppColors.getTextColor(context), BlendMode.srcIn),
+          ),
+          onPressed: () => showSettings(context),
         ),
       ],
     );
+
 void _openSearch(BuildContext context) {
   showSearch<String>(
     context: context,
-    delegate: ReminderSearchDelegate(onQueryUpdate: (txt) => context.read<ReminderCubit>().setSearch(txt)),
+    delegate: ReminderSearchDelegate(
+      onQueryUpdate: (txt) => context.read<ReminderCubit>().setSearch(txt),
+    ),
   );
 }

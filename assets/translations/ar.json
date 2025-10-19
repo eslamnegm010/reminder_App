@@ -28,7 +28,34 @@
   "searching_for": "جارٍ البحث عن \"{}\"",
   "start_adding_reminders": "ابدأ بإضافة التذكيرات",
   "mark_as_done": "وضع كمنجز",
-  "delete": "حذف"
+  "delete": "حذف",
+  "theme": "السمة",
+  "clear_all_reminders": "مسح كل التذكيرات",
+  "remove_all_saved_reminders": "إزالة جميع التذكيرات المحفوظة",
+  "confirm": "تأكيد",
+  "are_you_sure_remove_all_reminders": "هل أنت متأكد أنك تريد إزالة جميع التذكيرات؟",
+  "yes": "نعم",
+  "all_reminders_removed": "تمت إزالة جميع التذكيرات",
+  "sign_out": "تسجيل الخروج",
+  "about": "حول",
+  "version": "الإصدار \"{}\"",
+  "profile": "الملف الشخصي",
+"guest_user": "مستخدم ضيف",
+"full_name": "الاسم الكامل",
+"email": "البريد الإلكتروني",
+"save": "حفظ",
+"profile_edit_hint": "يمكنك تعديل الاسم والبريد الإلكتروني في أي وقت من هنا.",
+"profile_saved_successfully": "تم حفظ الملف الشخصي بنجاح",
+"edit_profile": "تعديل الملف الشخصي",
+"edit_your_profile": "قم بتعديل ملفك الشخصي",
+"you_have_been_signed_out": "تم تسجيل خروجك",
+"about_app_description": "تم تطوير هذا التطبيق بواسطة إسلام نجم — مطور Flutter شغوف يركز على إنشاء تطبيقات جوّال نظيفة وأنيقة وسهلة الاستخدام."
+
+
+
+
+ 
+
   
 
 
