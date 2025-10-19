@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:eslam_s_application/core/utils/app_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:eslam_s_application/core/constans/app_constants.dart';
 import 'package:eslam_s_application/core/utils/app_export.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class AppAboutDialog extends StatelessWidget {
   const AppAboutDialog({super.key});
@@ -12,7 +14,6 @@ class AppAboutDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      backgroundColor: Theme.of(context).cardColor,
       contentPadding: const EdgeInsets.all(20),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -33,15 +34,19 @@ class AppAboutDialog extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 4),
-          TitleText(
-            text: 'version ${AppConstants.appVersion}',
-            subtractedSize: 13,
-            color: AppColors.greyColor,
-            textAlign: TextAlign.center,
+          FutureBuilder<PackageInfo>(
+            future: PackageInfo.fromPlatform(),
+            builder: (context, snapshot) {
+              final versionText = snapshot.hasData ? snapshot.data!.version : '...';
+              return TitleText(
+                text: 'version'.tr(args: [versionText]),
+                subtractedSize: 13,
+                color: AppColors.greyColor,
+                textAlign: TextAlign.center,
+              );
+            },
           ),
           const SizedBox(height: 16),
-
-          // Short bio
           TitleText(
             text: 'about_app_description',
             textAlign: TextAlign.center,
@@ -64,7 +69,7 @@ class AppAboutDialog extends StatelessWidget {
                 const SizedBox(width: 6),
                 TitleText(
                     subtractedSize: 11,
-                    text: 'eslammohameddev2@gmail.com',
+                    text: '${AppConstants.myEmail}',
                     color: AppColors.blueColor,
                     fontWeight: FontWeight.w500),
               ],

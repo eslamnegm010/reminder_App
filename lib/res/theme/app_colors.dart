@@ -57,7 +57,18 @@ class AppColors {
         return Colors.orangeAccent;
       case ReminderPriority.low:
         return Colors.green;
-   
+    }
+  }
+
+  static Color priorityColor(String priority) {
+    switch (priority.toLowerCase()) {
+      case 'high':
+        return Colors.redAccent.shade200;
+      case 'medium':
+        return Colors.orangeAccent.shade200;
+      case 'low':
+      default:
+        return Colors.green.shade300;
     }
   }
 

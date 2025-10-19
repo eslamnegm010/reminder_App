@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:eslam_s_application/core/utils/app_export.dart';
 import 'package:eslam_s_application/features/app_home_screen/cubit/cubit/theme_cubit.dart';
-import 'package:eslam_s_application/features/reminder/page/reminder_page.dart';
 import 'package:eslam_s_application/features/user/pages/user_form_page.dart';
 import 'package:eslam_s_application/features/user/user_cubit/user_cubit.dart';
 import 'package:flutter/material.dart';

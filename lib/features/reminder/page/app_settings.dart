@@ -13,6 +13,7 @@ import 'package:eslam_s_application/features/reminder/cubit/reminder_cubit.dart'
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:eslam_s_application/features/app_home_screen/cubit/cubit/theme_cubit.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:page_transition/page_transition.dart';
 
 void showSettings(BuildContext context) {
@@ -43,13 +44,18 @@ void showSettings(BuildContext context) {
                 const SizedBox(height: UIConstants.marginLarge),
                 Expanded(
                     child: _buildSettingsList(
-                        context, ctx, controller, currentLocale)),
+                  context,
+                  ctx,
+                  controller,
+                  currentLocale,
+                )),
                 SafeArea(
-                    top: false,
-                    bottom: true,
-                    left: false,
-                    right: false,
-                    child: _buildFooter()),
+                  top: false,
+                  bottom: true,
+                  left: false,
+                  right: false,
+                  child: _buildFooter(),
+                ),
               ],
             ),
           );
@@ -129,18 +135,13 @@ Widget _buildThemeItem(BuildContext context) {
   );
 }
 
-Widget _buildLanguageItem(
-    BuildContext context, BuildContext sheetContext, Locale currentLocale) {
+Widget _buildLanguageItem(BuildContext context, BuildContext sheetContext, Locale currentLocale) {
   return SettingItem(
     icon: Icons.language,
     title: currentLocale.languageCode == 'ar' ? 'English' : 'عربي',
-    subtitle: currentLocale.languageCode == 'ar'
-        ? 'Switch to English'
-        : 'التبديل إلى العربية',
+    subtitle: currentLocale.languageCode == 'ar' ? 'Switch to English' : 'التبديل إلى العربية',
     onTap: () async {
-      await context.setLocale(currentLocale.languageCode == 'ar'
-          ? const Locale('en')
-          : const Locale('ar'));
+      await context.setLocale(currentLocale.languageCode == 'ar' ? const Locale('en') : const Locale('ar'));
       Navigator.pop(sheetContext);
     },
   );
@@ -165,8 +166,7 @@ Widget _buildEditProfileItem(BuildContext context, BuildContext sheetContext) {
   );
 }
 
-Widget _buildClearRemindersItem(
-    BuildContext context, BuildContext sheetContext) {
+Widget _buildClearRemindersItem(BuildContext context, BuildContext sheetContext) {
   return SettingItem(
     icon: Icons.delete_sweep_outlined,
     title: 'clear_all_reminders',
@@ -191,10 +191,7 @@ Widget _buildClearRemindersItem(
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dCtx, false),
-              child: TitleText(
-                  subtractedSize: 13,
-                  text: 'cancel',
-                  color: AppColors.redColor),
+              child: TitleText(subtractedSize: 13, text: 'cancel', color: AppColors.redColor),
             ),
             TextButton(
               onPressed: () => Navigator.pop(dCtx, true),
@@ -215,20 +212,25 @@ Widget _buildClearRemindersItem(
 }
 
 Widget _buildAboutItem(BuildContext context, BuildContext sheetContext) {
-  return SettingItem(
-    icon: Icons.info_outline,
-    title: 'about',
-    subtitle: 'version'.tr(args: [AppConstants.appVersion]),
-    onTap: () {
-      Navigator.pop(sheetContext);
-      showDialog(
-        context: context,
-        builder: (ctx) => const AppAboutDialog(),
-      );
-    },
-  );
+  return FutureBuilder<PackageInfo>(
+      future: PackageInfo.fromPlatform(),
+      builder: (context, snapshot) {
+        final versionText = snapshot.hasData ? '${snapshot.data!.version}' : '...';
+
+        return SettingItem(
+          icon: Icons.info_outline,
+          title: 'about',
+          subtitle: 'version'.tr(args: [versionText]),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (ctx) => const AppAboutDialog(),
+            );
+          },
+        );
+      });
 }
-  
+
 Widget _buildSignOutItem(BuildContext context, BuildContext sheetContext) {
   return SettingItem(
     icon: Icons.logout,
@@ -240,7 +242,6 @@ Widget _buildSignOutItem(BuildContext context, BuildContext sheetContext) {
     },
   );
 }
-
 
 // FOOTER SECTION
 Widget _buildFooter() {

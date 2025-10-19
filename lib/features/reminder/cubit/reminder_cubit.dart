@@ -45,11 +45,12 @@ class ReminderCubit extends Cubit<ReminderState> {
     String? location,
     String? priority,
     DateTime? dateTime,
+    String? id,
   }) {
     if (title.trim().isEmpty) return;
 
     final reminder = ReminderModel(
-      id: const Uuid().v1(),
+      id: id ?? const Uuid().v1(),
       title: title.trim(),
       description: description?.trim() ?? '',
       location: location?.trim(),
@@ -61,6 +62,32 @@ class ReminderCubit extends Cubit<ReminderState> {
     _box.put(reminder.id, reminder);
     _loadReminders();
   }
+
+// void updateReminder({
+//   required String id,
+//   required String title,
+//   required String description,
+//   required String priority,
+//   DateTime? dateTime,
+// }) {
+//   final updatedList = state.reminder.map((r) {
+//     if (r.id == id) {
+//       return r.copyWith(
+//         title: title,
+//         description: description,
+//         priority: priority,
+//         dateTime: dateTime,
+//         time: dateTime != null
+//             ? TimeOfDay.fromDateTime(dateTime)
+//             : r.time,
+//       );
+//     }
+//     return r;
+//   }).toList();
+
+//   emit(state.copyWith(reminders: updatedList));
+//   saveToHive(updatedList);
+// }
 
   void removeReminder(String id) {
     _box.delete(id);

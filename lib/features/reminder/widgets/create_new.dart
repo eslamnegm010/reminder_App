@@ -1,9 +1,9 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:eslam_s_application/features/reminder/enum/reminder_priority.dart';
 import 'package:eslam_s_application/features/reminder/cubit/reminder_cubit.dart';
 import 'package:eslam_s_application/core/utils/app_export.dart';
 import 'package:eslam_s_application/core/validator.dart';
+import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
 import 'package:eslam_s_application/sheared_widgets/default_button.dart';
 import 'package:eslam_s_application/sheared_widgets/others/app_divider.dart';
 import 'package:eslam_s_application/sheared_widgets/others/swaper.dart';
@@ -11,7 +11,7 @@ import 'package:eslam_s_application/sheared_widgets/text_field/default_text_form
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Future<void> showAddReminderBottomSheet(BuildContext context) async {
+Future<void> showAddReminderBottomSheet(BuildContext context, {ReminderModel? reminder}) async {
   final titleController = TextEditingController();
   final descController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -21,6 +21,21 @@ Future<void> showAddReminderBottomSheet(BuildContext context) async {
   ReminderPriority? selectedPriority;
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
+
+  if (reminder != null) {
+    titleController.text = reminder.title;
+    descController.text = reminder.description;
+    final priorityString = reminder.priority;
+    selectedPriority = ReminderPriority.values.firstWhere(
+      (e) => e.name == priorityString,
+      orElse: () => ReminderPriority.values.firstWhere(
+        (e) => e.toText == priorityString,
+        orElse: () => ReminderPriority.medium,
+      ),
+    );
+    selectedDate = reminder.dateTime;
+    selectedTime = TimeOfDay.fromDateTime(reminder.dateTime!);
+  }
 
   final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -50,7 +65,6 @@ Future<void> showAddReminderBottomSheet(BuildContext context) async {
                   children: [
                     Align(alignment: Alignment.center, child: swaper()),
                     const SizedBox(height: 10),
-
                     Row(
                       children: [
                         TitleText.small(
@@ -65,7 +79,6 @@ Future<void> showAddReminderBottomSheet(BuildContext context) async {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 14),
                     reminderTextField(
                       ctx,
@@ -85,7 +98,6 @@ Future<void> showAddReminderBottomSheet(BuildContext context) async {
                       isDarkMode: isDark,
                       maxLines: 3,
                     ),
-
                     const SizedBox(height: 20),
                     CustomTitleText(text: "date_and_time", context: ctx),
                     const SizedBox(height: 10),
@@ -103,8 +115,7 @@ Future<void> showAddReminderBottomSheet(BuildContext context) async {
                                 initialDate: selectedDate ?? DateTime.now(),
                                 firstDate: DateTime(2020),
                                 lastDate: DateTime(2100),
-                                builder: (c, child) =>
-                                    Theme(data: AppColors.pickerTheme(c), child: child!),
+                                builder: (c, child) => Theme(data: AppColors.pickerTheme(c), child: child!),
                               );
                               if (picked != null) setState(() => selectedDate = picked);
                             },
@@ -114,15 +125,12 @@ Future<void> showAddReminderBottomSheet(BuildContext context) async {
                         Expanded(
                           child: _buildDateTimeButton(
                             icon: AppAssets.alarm,
-                            label: selectedTime == null
-                                ? "select_time".tr()
-                                : selectedTime!.format(ctx),
+                            label: selectedTime == null ? "select_time".tr() : selectedTime!.format(ctx),
                             onTap: () async {
                               final picked = await showTimePicker(
                                 context: ctx,
                                 initialTime: selectedTime ?? TimeOfDay.now(),
-                                builder: (c, child) =>
-                                    Theme(data: AppColors.pickerTheme(c), child: child!),
+                                builder: (c, child) => Theme(data: AppColors.pickerTheme(c), child: child!),
                                 barrierColor: Colors.transparent,
                               );
                               if (picked != null) setState(() => selectedTime = picked);
@@ -131,11 +139,9 @@ Future<void> showAddReminderBottomSheet(BuildContext context) async {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 20),
                     CustomTitleText(text: "priority", context: ctx),
                     const SizedBox(height: 10),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -145,8 +151,7 @@ Future<void> showAddReminderBottomSheet(BuildContext context) async {
                             color: Colors.greenAccent,
                             icon: Icons.arrow_downward_rounded,
                             isSelected: selectedPriority == ReminderPriority.low,
-                            onTap: () =>
-                                setState(() => selectedPriority = ReminderPriority.low),
+                            onTap: () => setState(() => selectedPriority = ReminderPriority.low),
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -156,8 +161,7 @@ Future<void> showAddReminderBottomSheet(BuildContext context) async {
                             color: Colors.orangeAccent,
                             icon: Icons.horizontal_rule_rounded,
                             isSelected: selectedPriority == ReminderPriority.medium,
-                            onTap: () =>
-                                setState(() => selectedPriority = ReminderPriority.medium),
+                            onTap: () => setState(() => selectedPriority = ReminderPriority.medium),
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -167,13 +171,11 @@ Future<void> showAddReminderBottomSheet(BuildContext context) async {
                             color: Colors.redAccent,
                             icon: Icons.arrow_upward_rounded,
                             isSelected: selectedPriority == ReminderPriority.high,
-                            onTap: () =>
-                                setState(() => selectedPriority = ReminderPriority.high),
+                            onTap: () => setState(() => selectedPriority = ReminderPriority.high),
                           ),
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 30),
                     SafeArea(
                       left: false,
@@ -191,20 +193,19 @@ Future<void> showAddReminderBottomSheet(BuildContext context) async {
                           const SizedBox(width: 12),
                           Expanded(
                             child: reminderButton(
-                              label: "create",
+                              label: reminder == null ? "create" : "save",
                               onPressed: () => handleAddReminder(
-                                context: context,
-                                ctx: ctx,
-                                formKey: formKey,
-                                titleController: titleController,
-                                descController: descController,
-                                selectedPriority: selectedPriority,
-                                selectedDate: selectedDate,
-                                selectedTime: selectedTime,
-                              ),
+                                  context: context,
+                                  ctx: ctx,
+                                  formKey: formKey,
+                                  titleController: titleController,
+                                  descController: descController,
+                                  selectedPriority: selectedPriority,
+                                  selectedDate: selectedDate,
+                                  selectedTime: selectedTime,
+                                  reminderId: reminder?.id),
                             ),
                           ),
-                      
                         ],
                       ),
                     ),
@@ -236,9 +237,7 @@ Widget _buildDateTimeButton({
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
     ),
     icon: SvgPicture.asset(icon,
-        height: 20,
-        width: 20,
-        colorFilter: ColorFilter.mode(AppColors.blueColor, BlendMode.srcIn)),
+        height: 20, width: 20, colorFilter: ColorFilter.mode(AppColors.blueColor, BlendMode.srcIn)),
     label: TitleText(subtractedSize: 12, text: label, color: AppColors.blueColor),
   );
 }
@@ -275,8 +274,7 @@ Widget _priorityCard({
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
         child: Column(
           children: [
-            Icon(icon,
-                color: isSelected ? Colors.white : color.withOpacity(.8), size: 22),
+            Icon(icon, color: isSelected ? Colors.white : color.withOpacity(.8), size: 22),
             const SizedBox(height: 4),
             TitleText(
               text: title,
@@ -339,6 +337,7 @@ void handleAddReminder({
   required ReminderPriority? selectedPriority,
   required DateTime? selectedDate,
   required TimeOfDay? selectedTime,
+  required String? reminderId,
 }) {
   if (formKey.currentState!.validate()) {
     final reminderCubit = context.read<ReminderCubit>();
@@ -361,6 +360,7 @@ void handleAddReminder({
       description: descController.text,
       priority: selectedPriority?.toText ?? ReminderPriority.medium.toText,
       dateTime: finalDateTime,
+      id: reminderId,
     );
 
     Navigator.pop(ctx);
