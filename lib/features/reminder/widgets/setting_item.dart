@@ -1,4 +1,3 @@
-import 'package:eslam_s_application/res/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/app_export.dart';
@@ -10,6 +9,7 @@ class SettingItem extends StatelessWidget {
   final String? subtitle;
   final VoidCallback? onTap;
   final Color? color;
+  final String? image;
   final Widget? trailing;
 
   const SettingItem({
@@ -20,6 +20,7 @@ class SettingItem extends StatelessWidget {
     this.onTap,
     this.color,
     this.trailing,
+    this.image,
   }) : super(key: key);
 
   @override

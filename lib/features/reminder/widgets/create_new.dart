@@ -1,3 +1,4 @@
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:eslam_s_application/features/reminder/enum/reminder_priority.dart';
 import 'package:eslam_s_application/features/reminder/cubit/reminder_cubit.dart';
@@ -13,20 +14,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 Future<void> showAddReminderBottomSheet(BuildContext context) async {
   final titleController = TextEditingController();
   final descController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
   final titleFocus = FocusNode();
   final descFocus = FocusNode();
-  final formKey = GlobalKey<FormState>();
-  final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
   ReminderPriority? selectedPriority;
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
 
+  final isDark = Theme.of(context).brightness == Brightness.dark;
+
   await showModalBottomSheet(
     context: context,
     isScrollControlled: true,
+    backgroundColor: isDark ? const Color(0xFF1C1C1E) : Colors.white,
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
     builder: (ctx) {
       return Padding(
@@ -34,185 +37,176 @@ Future<void> showAddReminderBottomSheet(BuildContext context) async {
           left: 20,
           right: 20,
           top: 12,
-          bottom: MediaQuery.of(ctx).viewInsets.bottom + 12,
+          bottom: 0,
         ),
         child: StatefulBuilder(
           builder: (ctx, setState) {
-            return Form(
-              key: formKey,
-              child: SingleChildScrollView(
+            return SingleChildScrollView(
+              child: Form(
+                key: formKey,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Align(
-                      alignment: Alignment.center,
-                      child: swaper(),
-                    ),
+                    Align(alignment: Alignment.center, child: swaper()),
+                    const SizedBox(height: 10),
+
                     Row(
                       children: [
-                        TitleText.small(text: "create_new_reminder", color: AppColors.blueColor),
+                        TitleText.small(
+                          text: "create_new_reminder",
+                          color: AppColors.blueColor,
+                        ),
                         const Spacer(),
                         IconButton(
                           onPressed: () => Navigator.pop(ctx),
-                          icon: Icon(Icons.close, color: AppColors.greyColor),
+                          icon: const Icon(Icons.close),
+                          color: AppColors.greyColor,
                         ),
                       ],
                     ),
-                    const SizedBox(height: UIConstants.paddingMedium),
 
-                    // Title field
+                    const SizedBox(height: 14),
                     reminderTextField(
                       ctx,
                       controller: titleController,
                       focusNode: titleFocus,
-                      isRequired: true,
-                      isDarkMode: isDarkMode,
                       validator: Validator().validateEmptyField,
+                      isRequired: true,
+                      isDarkMode: isDark,
                     ),
-                    const SizedBox(height: UIConstants.paddingSmall),
-
-                    // Description
+                    const SizedBox(height: 10),
                     reminderTextField(
                       ctx,
                       controller: descController,
                       focusNode: descFocus,
-                      isRequired: false,
-                      isDarkMode: isDarkMode,
-                      maxLines: 4,
                       validator: (_) => null,
+                      isRequired: false,
+                      isDarkMode: isDark,
+                      maxLines: 3,
                     ),
-                    const SizedBox(height: UIConstants.paddingMedium),
 
-                    // Date & Time
+                    const SizedBox(height: 20),
                     CustomTitleText(text: "date_and_time", context: ctx),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 10),
                     Row(
                       children: [
                         Expanded(
-                          child: OutlinedButton.icon(
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: AppColors.blueColor.withOpacity(0.12)),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                              backgroundColor: Colors.transparent,
-                              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                            ),
-                            icon: SvgPicture.asset(
-                              AppAssets.calendarIcon,
-                              height: 18,
-                              width: 18,
-                              colorFilter: ColorFilter.mode(AppColors.blueColor, BlendMode.srcIn),
-                            ),
-                            label: TitleText(
-                              subtractedSize: 13,
-                              color: AppColors.blueColor,
-                              text: selectedDate == null
-                                  ? "select_date".tr()
-                                  : DateFormat('yyyy-MM-dd').format(selectedDate!),
-                            ),
-                            onPressed: () async {
-                              final pickedDate = await showDatePicker(
+                          child: _buildDateTimeButton(
+                            icon: AppAssets.calendarIcon,
+                            label: selectedDate == null
+                                ? "select_date".tr()
+                                : DateFormat('yyyy-MM-dd').format(selectedDate!),
+                            onTap: () async {
+                              final picked = await showDatePicker(
                                 context: ctx,
                                 initialDate: selectedDate ?? DateTime.now(),
                                 firstDate: DateTime(2020),
                                 lastDate: DateTime(2100),
-                                builder: (c, child) => Theme(data: AppColors.pickerTheme(c), child: child!),
+                                builder: (c, child) =>
+                                    Theme(data: AppColors.pickerTheme(c), child: child!),
                               );
-                              if (pickedDate != null) setState(() => selectedDate = pickedDate);
+                              if (picked != null) setState(() => selectedDate = picked);
                             },
                           ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
-                          child: OutlinedButton.icon(
-                            style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: AppColors.blueColor.withOpacity(0.12)),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                              backgroundColor: Colors.transparent,
-                              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                            ),
-                            icon: SvgPicture.asset(
-                              AppAssets.alarm,
-                              height: 18,
-                              width: 18,
-                              colorFilter: ColorFilter.mode(AppColors.blueColor, BlendMode.srcIn),
-                            ),
-                            label: TitleText(
-                              subtractedSize: 13,
-                              color: AppColors.blueColor,
-                              text: selectedTime == null ? "select_time".tr() : selectedTime!.format(ctx),
-                            ),
-                            onPressed: () async {
-                              final pickedTime = await showTimePicker(
+                          child: _buildDateTimeButton(
+                            icon: AppAssets.alarm,
+                            label: selectedTime == null
+                                ? "select_time".tr()
+                                : selectedTime!.format(ctx),
+                            onTap: () async {
+                              final picked = await showTimePicker(
                                 context: ctx,
                                 initialTime: selectedTime ?? TimeOfDay.now(),
-                                builder: (c, child) => Theme(data: AppColors.pickerTheme(c), child: child!),
+                                builder: (c, child) =>
+                                    Theme(data: AppColors.pickerTheme(c), child: child!),
                                 barrierColor: Colors.transparent,
                               );
-                              if (pickedTime != null) setState(() => selectedTime = pickedTime);
+                              if (picked != null) setState(() => selectedTime = picked);
                             },
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: UIConstants.paddingMedium),
 
-                    // Priority
+                    const SizedBox(height: 20),
                     CustomTitleText(text: "priority", context: ctx),
-                    const SizedBox(height: 8),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        _optionPriority(
-                          text: "low",
-                          isSelected: selectedPriority == ReminderPriority.low,
-                          onTap: () => setState(() => selectedPriority = ReminderPriority.low),
-                          priority: ReminderPriority.low,
-                        ),
-                        _optionPriority(
-                          text: "medium",
-                          isSelected: selectedPriority == ReminderPriority.medium,
-                          onTap: () => setState(() => selectedPriority = ReminderPriority.medium),
-                          priority: ReminderPriority.medium,
-                        ),
-                        _optionPriority(
-                          text: "high",
-                          isSelected: selectedPriority == ReminderPriority.high,
-                          onTap: () => setState(() => selectedPriority = ReminderPriority.high),
-                          priority: ReminderPriority.high,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: UIConstants.paddingMedium),
+                    const SizedBox(height: 10),
 
-                    // Buttons
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: reminderButton(
-                            label: "cancel",
-                            backgroundColor: Colors.redAccent,
-                            onPressed: () => Navigator.pop(ctx),
+                          child: _priorityCard(
+                            title: "Low",
+                            color: Colors.greenAccent,
+                            icon: Icons.arrow_downward_rounded,
+                            isSelected: selectedPriority == ReminderPriority.low,
+                            onTap: () =>
+                                setState(() => selectedPriority = ReminderPriority.low),
                           ),
                         ),
                         const SizedBox(width: 10),
                         Expanded(
-                          child: reminderButton(
-                            label: "add",
-                            onPressed: () => handleAddReminder(
-                              context: context,
-                              ctx: ctx,
-                              formKey: formKey,
-                              titleController: titleController,
-                              descController: descController,
-                              selectedPriority: selectedPriority,
-                              selectedDate: selectedDate,
-                              selectedTime: selectedTime,
-                            ),
+                          child: _priorityCard(
+                            title: "Medium",
+                            color: Colors.orangeAccent,
+                            icon: Icons.horizontal_rule_rounded,
+                            isSelected: selectedPriority == ReminderPriority.medium,
+                            onTap: () =>
+                                setState(() => selectedPriority = ReminderPriority.medium),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: _priorityCard(
+                            title: "High",
+                            color: Colors.redAccent,
+                            icon: Icons.arrow_upward_rounded,
+                            isSelected: selectedPriority == ReminderPriority.high,
+                            onTap: () =>
+                                setState(() => selectedPriority = ReminderPriority.high),
                           ),
                         ),
                       ],
+                    ),
+
+                    const SizedBox(height: 30),
+                    SafeArea(
+                      left: false,
+                      right: false,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: reminderButton(
+                              label: "cancel",
+                              backgroundColor: Colors.grey.withOpacity(.3),
+                              labelColor: AppColors.getTextColor(ctx),
+                              onPressed: () => Navigator.pop(ctx),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: reminderButton(
+                              label: "create",
+                              onPressed: () => handleAddReminder(
+                                context: context,
+                                ctx: ctx,
+                                formKey: formKey,
+                                titleController: titleController,
+                                descController: descController,
+                                selectedPriority: selectedPriority,
+                                selectedDate: selectedDate,
+                                selectedTime: selectedTime,
+                              ),
+                            ),
+                          ),
+                      
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -222,6 +216,77 @@ Future<void> showAddReminderBottomSheet(BuildContext context) async {
         ),
       );
     },
+  );
+}
+
+// Date / Time button
+Widget _buildDateTimeButton({
+  required String icon,
+  required String label,
+  required VoidCallback onTap,
+}) {
+  return OutlinedButton.icon(
+    onPressed: onTap,
+    style: OutlinedButton.styleFrom(
+      // ignore: deprecated_member_use
+      side: BorderSide(color: AppColors.blueColor.withOpacity(0.1)),
+      // ignore: deprecated_member_use
+      backgroundColor: AppColors.blueColor.withOpacity(0.05),
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+    ),
+    icon: SvgPicture.asset(icon,
+        height: 20,
+        width: 20,
+        colorFilter: ColorFilter.mode(AppColors.blueColor, BlendMode.srcIn)),
+    label: TitleText(subtractedSize: 12, text: label, color: AppColors.blueColor),
+  );
+}
+
+// Priority card style
+Widget _priorityCard({
+  required String title,
+  required IconData icon,
+  required Color color,
+  required bool isSelected,
+  required VoidCallback onTap,
+}) {
+  return AnimatedContainer(
+    duration: const Duration(milliseconds: 250),
+    curve: Curves.easeInOut,
+    decoration: BoxDecoration(
+      // ignore: deprecated_member_use
+      color: isSelected ? color.withOpacity(.85) : color.withOpacity(.15),
+      borderRadius: BorderRadius.circular(16),
+      boxShadow: isSelected
+          ? [
+              BoxShadow(
+                color: color.withOpacity(.4),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              )
+            ]
+          : [],
+    ),
+    child: InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+        child: Column(
+          children: [
+            Icon(icon,
+                color: isSelected ? Colors.white : color.withOpacity(.8), size: 22),
+            const SizedBox(height: 4),
+            TitleText(
+              text: title,
+              subtractedSize: 12,
+              color: isSelected ? Colors.white : AppColors.greyColor,
+            ),
+          ],
+        ),
+      ),
+    ),
   );
 }
 
@@ -242,32 +307,12 @@ Widget reminderTextField(
     isRequired: isRequired,
     maxLines: maxLines,
     validator: validator,
-    borderRadius: 12,
+    borderRadius: 14,
     hintColor: AppColors.grayDarkText,
-    contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+    contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 14),
     textColor: AppColors.getTextColor(context),
     borderColor: AppColors.blueColor.withOpacity(0.16),
     fillColor: Colors.transparent,
-  );
-}
-
-Widget _optionPriority({
-  required String text,
-  required bool isSelected,
-  required VoidCallback onTap,
-  required ReminderPriority priority,
-}) {
-  final border = isSelected ? BorderSide.none : BorderSide(color: AppColors.Bordergrey);
-  return ChoiceChip(
-    elevation: 0,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-    label: TitleText(text: text, subtractedSize: 14, color: isSelected ? Colors.white : AppColors.greyColor),
-    selected: isSelected,
-    onSelected: (_) => onTap(),
-    selectedColor: AppColors.optionPriorityColors(priority),
-    backgroundColor: Colors.transparent,
-    side: border,
-    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
   );
 }
 
@@ -275,10 +320,11 @@ Widget reminderButton({
   required String label,
   required VoidCallback onPressed,
   Color backgroundColor = AppColors.blueColor,
+  Color labelColor = Colors.white,
 }) {
   return DefaultButton.verySmall(
     label: label,
-    labelColor: Colors.white,
+    labelColor: labelColor,
     backgroundColor: backgroundColor,
     onPressed: onPressed,
   );
@@ -327,11 +373,7 @@ Row CustomTitleText({
 }) {
   return Row(
     children: [
-      TitleText(
-        subtractedSize: 12,
-        text: text,
-        fontWeight: FontWeight.w600,
-      ),
+      TitleText(subtractedSize: 12, text: text, fontWeight: FontWeight.w600),
       const SizedBox(width: 10),
       Expanded(child: AppBarDivider.getAppBarDivider(context))
     ],

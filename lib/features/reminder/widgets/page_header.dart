@@ -22,7 +22,7 @@ class PageHeader extends StatelessWidget {
                 width: double.infinity,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: AppColors.getCardBackgroundColor(context),
+                  color: isDarkMode  ?  AppColors.blueColor : AppColors.white ,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: AppColors.blueColor.withOpacity(0.12)),
                   boxShadow: [
@@ -36,25 +36,27 @@ class PageHeader extends StatelessWidget {
                 child: Row(
                   children: [
                     Container(
-                      width: 6,
+                      width: 10,
                       height: double.infinity,
                       decoration: BoxDecoration(
-                        color: AppColors.blueColor.withOpacity(0.95),
+                        color: isDarkMode ? Colors.white : AppColors.blueColor
                       ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: TitleText(
                         text: 'add_your_reminder',
-                        color: AppColors.blueColor,
+                        color: isDarkMode ? Colors.white :  AppColors.blueColor,
                         subtractedSize: 10,
                       ),
                     ),
                     const SizedBox(width: 12),
                     Padding(
-                      padding: const EdgeInsets.only(right: 12.0),
-                      child: Icon(Icons.add, color: AppColors.blueColor),
-                    )
+                     padding: const EdgeInsets.only(right: 14.0),
+                     child: Icon(Icons.add_circle_rounded,
+                      color:
+                     isDarkMode ? Colors.white : AppColors.blueColor , size: 28),
+                   ),
                   ],
                 ),
               ),

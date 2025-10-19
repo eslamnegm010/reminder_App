@@ -57,8 +57,7 @@ class AppColors {
         return Colors.orangeAccent;
       case ReminderPriority.low:
         return Colors.green;
-      default:
-        return Colors.grey;
+   
     }
   }
 
@@ -67,3 +66,13 @@ class AppColors {
     Color(0xFF2E55A3),
   ]);
 }
+// decoration: BoxDecoration(
+        //   gradient: LinearGradient(
+        //     colors: [
+        //       AppColors.blueColor.withOpacity(0.08),
+        //       Theme.of(context).scaffoldBackgroundColor,
+        //     ],
+        //     begin: Alignment.topCenter,
+        //     end: Alignment.bottomCenter,
+        //   ),
+        // ),
