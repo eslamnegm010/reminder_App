@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class AppColors {
 //  static const blueColor = Color.fromARGB(255, 39, 194, 241);
   static const blueColor = Color.fromARGB(255, 86, 140, 188);
+  static const bluedark = Color.fromARGB(255, 38, 67, 91);
 
   static const greyColor = Colors.grey;
 
@@ -15,6 +16,11 @@ class AppColors {
   static Color getTextColor(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return isDarkMode ? AppColors.white : AppColors.Dark;
+  }
+
+  static Color getGrayTextColor(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return isDarkMode ? AppColors.graylightText : AppColors.grayDarkText;
   }
 
   static final Color Bordergrey = Colors.grey.shade300;

@@ -1,4 +1,5 @@
 import 'package:eslam_s_application/core/constans/app_constants.dart';
+import 'package:eslam_s_application/features/reminder/cubit/reminder_state.dart';
 import 'package:eslam_s_application/features/reminder/widgets/setting_item.dart';
 import 'package:eslam_s_application/features/user/pages/user_form_page.dart';
 import 'package:eslam_s_application/features/user/user_cubit/user_cubit.dart';
@@ -108,6 +109,8 @@ Widget _buildSettingsList(
       _buildAboutItem(context, sheetContext),
       const SizedBox(height: 8),
       _buildClearRemindersItem(context, sheetContext),
+      const SizedBox(height: 8),
+      _buildNotificationToggleItem(context),
       const SizedBox(height: 8),
       _buildSignOutItem(context, sheetContext),
       const SizedBox(height: 16),
@@ -253,5 +256,26 @@ Widget _buildFooter() {
         style: TextStyle(color: AppColors.greyColor, fontSize: 12),
       ),
     ],
+  );
+}
+
+Widget _buildNotificationToggleItem(BuildContext context) {
+  return BlocSelector<ReminderCubit, ReminderState, bool>(
+    selector: (state) => state.notificationsEnabled,
+    builder: (context, enabled) {
+      return SettingItem(
+        icon: Icons.notifications_active_outlined,
+        title: 'notifications',
+        subtitle: enabled ? 'tap_to_disable_notifications' : 'tap_to_enable_notifications',
+        trailing: Transform.scale(
+          scale: 0.8,
+          child: Switch.adaptive(
+            activeColor: AppColors.blueColor,
+            value: enabled,
+            onChanged: (value) => context.read<ReminderCubit>().toggleNotifications(value),
+          ),
+        ),
+      );
+    },
   );
 }

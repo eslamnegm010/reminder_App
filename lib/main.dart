@@ -1,22 +1,13 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:eslam_s_application/core/init/app_providers.dart';
 import 'package:eslam_s_application/core/init/init_app.dart';
-import 'package:eslam_s_application/core/notifications/notification_service.dart';
 import 'package:eslam_s_application/features/app_home_screen/cubit/cubit/theme_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/utils/app_export.dart';
 
 void main() async {
- 
-
-    await AppInitializer.init();
-    
-
-
-
+  await AppInitializer.init();
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en'), Locale('ar')],
@@ -27,7 +18,6 @@ void main() async {
         child: MyApp(),
       ),
     ),
-    
   );
 }
 

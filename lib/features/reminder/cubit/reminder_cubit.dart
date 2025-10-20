@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:eslam_s_application/core/local_storage/hive.dart';
 import 'package:eslam_s_application/core/notifications/notification_service.dart';
 import 'package:eslam_s_application/features/reminder/enum/filter_type.dart';
 import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
@@ -13,10 +14,11 @@ class ReminderCubit extends Cubit<ReminderState> {
 
   ReminderCubit(this._box) : super(const ReminderState()) {
     _loadReminders();
+    _loadSettings();
   }
 
   // late final NotificationService notificationService;
-  final  notificationService = NotificationService.instance;
+  final notificationService = NotificationService.instance;
 
   FilterType get filter => state.filter;
   String get search => state.search;
@@ -41,8 +43,7 @@ class ReminderCubit extends Cubit<ReminderState> {
   /// ===== Load All Reminders from Hive =====
   void _loadReminders() {
     final reminders = _box.values.toList();
-    emit(state.copyWith(
-        reminder: reminders, status: ReminderStateStatus.loaded));
+    emit(state.copyWith(reminder: reminders, status: ReminderStateStatus.loaded));
   }
 
   /// ===== Add New Reminder =====
@@ -53,6 +54,7 @@ class ReminderCubit extends Cubit<ReminderState> {
     String? priority,
     DateTime? dateTime,
     String? id,
+    bool? notificationsEnabled,
   }) async {
     if (title.trim().isEmpty) return;
 
@@ -63,24 +65,22 @@ class ReminderCubit extends Cubit<ReminderState> {
       location: location?.trim(),
       priority: priority ?? "Medium",
       dateTime: dateTime,
+      notificationsEnabled: notificationsEnabled ?? true,
       isCompleted: false,
     );
     log(' added reminder id=${reminder.id} title=${reminder.title} description=${reminder.description}  dateTime=${reminder.dateTime}');
 
     _box.put(reminder.id, reminder);
-    if (reminder.dateTime != null) {
-      await notificationService.scheduleReminder(
-        reminder
-      );
+    if (reminder.dateTime != null && state.notificationsEnabled && reminder.notificationsEnabled) {
+      await notificationService.scheduleReminder(reminder);
     }
     _loadReminders();
   }
 
-
-  void removeReminder(String id) async{
+  void removeReminder(String id) async {
     final reminder = _box.get(id);
     if (reminder != null && reminder.dateTime != null) {
-  await notificationService.cancelReminder(id);
+      await notificationService.cancelReminder(id);
     }
     _box.delete(id);
 
@@ -101,9 +101,9 @@ class ReminderCubit extends Cubit<ReminderState> {
     if (_box.containsKey(updated.id)) {
       _box.put(updated.id, updated);
 
-     // NotificationService.instance.cancelReminder(updated.id);
+      NotificationService.instance.cancelReminder(updated.id);
       if (updated.dateTime != null) {
-      //  NotificationService.instance.scheduleReminder(updated);
+        NotificationService.instance.scheduleReminder(updated);
       }
 
       _loadReminders();
@@ -123,5 +123,35 @@ class ReminderCubit extends Cubit<ReminderState> {
   void setSearch(String q) {
     if (state.search == q) return;
     emit(state.copyWith(search: q));
+  }
+  // reminder_cubit.dart
+
+  void toggleNotifications(bool value) async {
+    final settings = HiveService.settingsBox;
+
+    try {
+      await settings.put('notificationsEnabled', value);
+
+      if (!value) {
+        await notificationService.cancelAll();
+      } else {
+        log(' Notifications re-enabled');
+      }
+      emit(state.copyWith(notificationsEnabled: value));
+    } catch (e, s) {
+      log(' Error toggling notifications: $e', stackTrace: s);
+    }
+  }
+
+  void NotificationsEnabledForReminder(bool value) async {
+    emit(state.copyWith(
+      notificationsEnabled: value,
+    ));
+  }
+
+  void _loadSettings() {
+    final settings = HiveService.settingsBox;
+    final enabled = settings.get('notificationsEnabled', defaultValue: true);
+    emit(state.copyWith(notificationsEnabled: enabled));
   }
 }

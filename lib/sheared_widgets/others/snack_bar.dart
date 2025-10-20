@@ -7,7 +7,7 @@ void showSnackbar(BuildContext context, {required String message}) {
     SnackBar(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       backgroundColor: AppColors.white,
-      content: TitleText.verySmall(text: message, color: AppColors.blueColor, fontWeight: FontWeight.w600),
+      content: TitleText.verySmall(text: message, color: AppColors.bluedark, fontWeight: FontWeight.w600, maxLines: 2),
       behavior: SnackBarBehavior.floating,
     ),
   );

@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:eslam_s_application/core/utils/app_export.dart';
 import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'done_button.dart';
 
 class ReminderCard extends StatelessWidget {
@@ -10,6 +11,7 @@ class ReminderCard extends StatelessWidget {
   final VoidCallback onDelete;
   final ValueChanged<bool?> onToggleCompletion;
   final VoidCallback onEdit;
+  final VoidCallback onNotifiTapped;
 
   const ReminderCard({
     Key? key,
@@ -17,6 +19,7 @@ class ReminderCard extends StatelessWidget {
     required this.onDelete,
     required this.onEdit,
     required this.onToggleCompletion,
+    required this.onNotifiTapped,
   }) : super(key: key);
 
   @override
@@ -24,6 +27,7 @@ class ReminderCard extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textColor = AppColors.getTextColor(context);
     final priorityColor = AppColors.priorityColor(reminder.priority);
+    final notEnabled = reminder.notificationsEnabled;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
@@ -132,6 +136,12 @@ class ReminderCard extends StatelessWidget {
                         color: AppColors.redColor,
                         onTap: onDelete,
                       ),
+                      const SizedBox(height: 10),
+                      _notificationButton(
+                        icon: notEnabled ? Icons.notifications_off_sharp : Icons.notifications_on_sharp,
+                        color: notEnabled ? Colors.grey : Colors.tealAccent.shade700,
+                        onTap: onNotifiTapped,
+                      ),
                     ],
                   ),
                 ],
@@ -211,4 +221,37 @@ class ReminderCard extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _notificationButton({
+  required IconData icon,
+  required Color color,
+  required VoidCallback onTap,
+}) {
+  return InkWell(
+    onTap: onTap,
+    borderRadius: BorderRadius.circular(50),
+    child: Container(
+      padding: const EdgeInsets.all(7),
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: LinearGradient(
+          colors: [
+            color.withOpacity(0.25),
+            color.withOpacity(0.12),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: color.withOpacity(0.25),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Icon(icon, color: color, size: 20),
+    ),
+  );
 }

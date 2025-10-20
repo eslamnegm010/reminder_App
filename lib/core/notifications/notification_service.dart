@@ -1,15 +1,12 @@
-
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io' show Platform;
 import 'dart:typed_data';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-// import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:timezone/data/latest.dart' as tzdata;
 import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
+import 'package:eslam_s_application/core/notifications/timezone_util.dart';
 
 class NotificationService {
   NotificationService._();
@@ -19,16 +16,14 @@ class NotificationService {
   bool _inited = false;
   bool _tzInited = false;
 
-
   Future<void> init() async {
     if (_inited) return;
-    
-    log('NotificationService.init: starting initialization');
-    _ensureTimeZoneInitialized();
+    // Ensure timezone initialized (uses TimezoneUtil)
+    await _ensureTimeZoneInitialized();
+
     await _checkAndRequestExactAlarmPermission();
 
     if (Platform.isAndroid) {
-      log('NotificationService.init: Pre-creating Android notification channel');
       const channel = AndroidNotificationChannel(
         'reminder_channel',
         'Reminders',
@@ -42,8 +37,6 @@ class NotificationService {
       await _plugin
           .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
           ?.createNotificationChannel(channel);
-
-      log('NotificationService.init: Channel created successfully');
     }
 
     const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -56,54 +49,38 @@ class NotificationService {
 
     final settings = InitializationSettings(android: androidInit, iOS: iosInit);
 
-    log('NotificationService.init: calling _plugin.initialize');
     await _plugin.initialize(
       settings,
-      onDidReceiveNotificationResponse: (NotificationResponse resp) {
-        log('Notification tapped: ${resp.payload}');
-      },
+      onDidReceiveNotificationResponse: (NotificationResponse resp) {},
       onDidReceiveBackgroundNotificationResponse: notificationTapBackground,
     );
 
     if (Platform.isAndroid) {
-      log('NotificationService.init: requesting Android notification permission');
       await _requestAndroidNotificationPermission();
     }
 
     _inited = true;
-    log('NotificationService.init: completed');
   }
 
-  // void _ensureTimeZoneInitialized() {
-  //   if (_tzInited) return;
-  //   tzdata.initializeTimeZones();
-  //   _tzInited = true;
-  //   log('NotificationService: Timezone database initialized. Local TZ: ${tz.local}');
-  // }
+  Future<void> _ensureTimeZoneInitialized() async {
+    if (_tzInited) return;
 
-Future<void> _ensureTimeZoneInitialized() async {
-  if (_tzInited) return;
-  tzdata.initializeTimeZones();
+    try {
+      await TimezoneUtil.configureLocalTimeZone();
+    } catch (e) {
+      log('NotificationService: _ensureTimeZoneInitialized failed: $e');
+      try {
+        tz.setLocalLocation(tz.getLocation('UTC'));
+      } catch (_) {}
+    }
 
-  try {
-   // final localTimeZone = await FlutterNativeTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
-    // log('NotificationService: Timezone database initialized. Local TZ: $localTimeZone');
-  } catch (e) {
-    tz.setLocalLocation(tz.getLocation('UTC'));
-    log('NotificationService: ⚠️ Failed to get local timezone, fallback to UTC. Error: $e');
+    _tzInited = true;
   }
-
-  _tzInited = true;
-}
-
 
   Future<void> _requestAndroidNotificationPermission() async {
     try {
       final status = await Permission.notification.status;
-      log('NotificationService._requestAndroidNotificationPermission: current status=$status');
       if (!status.isGranted) {
-        log('NotificationService._requestAndroidNotificationPermission: requesting permission...');
         final result = await Permission.notification.request();
         log('NotificationService._requestAndroidNotificationPermission: request result=$result');
       }
@@ -118,9 +95,7 @@ Future<void> _ensureTimeZoneInitialized() async {
       final androidPlugin = _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
       if (androidPlugin != null) {
         final canScheduleExactAlarms = await androidPlugin.canScheduleExactNotifications();
-        log('NotificationService: Can schedule exact alarms: $canScheduleExactAlarms');
         if (canScheduleExactAlarms == false) {
-          log('NotificationService: Requesting exact alarm permission');
           await androidPlugin.requestExactAlarmsPermission();
         }
       }
@@ -130,7 +105,6 @@ Future<void> _ensureTimeZoneInitialized() async {
   }
 
   int _stableId(String s) {
-    // 32-bit FNV-1a for stable hashing across runs/platforms
     const int fnvPrime = 0x01000193;
     const int offset = 0x811C9DC5;
     int hash = offset;
@@ -139,14 +113,11 @@ Future<void> _ensureTimeZoneInitialized() async {
       hash ^= b;
       hash = (hash * fnvPrime) & 0xFFFFFFFF;
     }
-    // Make it positive 31-bit int for Android
     final intId = hash & 0x7FFFFFFF;
-    log('NotificationService._stableId: "$s" -> $intId');
     return intId;
   }
 
   NotificationDetails _platformDetails() {
-    log('NotificationService._platformDetails: creating details');
     const android = AndroidNotificationDetails(
       'reminder_channel',
       'Reminders',
@@ -169,15 +140,12 @@ Future<void> _ensureTimeZoneInitialized() async {
   }
 
   Future<void> scheduleReminder(ReminderModel rem) async {
-    log('NotificationService.scheduleReminder: scheduling reminder id=${rem.id}, time=${rem.dateTime}');
-
     if (rem.dateTime == null) {
       log('NotificationService.scheduleReminder: no dateTime provided');
       return;
     }
 
     await init();
-
     try {
       await _ensureTimeZoneInitialized();
 
@@ -189,59 +157,46 @@ Future<void> _ensureTimeZoneInitialized() async {
       if (!scheduled.isAfter(now)) {
         scheduled = now.add(const Duration(seconds: 1));
       }
-
-      log('NotificationService.scheduleReminder: original time=$reminderDateTime');
-      log('NotificationService.scheduleReminder: scheduled=$scheduled (${scheduled.timeZoneName})');
-      log('NotificationService.scheduleReminder: now=$now (${now.timeZoneName})');
-
       final id = _stableId(rem.id);
 
       try {
         await _plugin.zonedSchedule(
           id,
-          (rem.title.isNotEmpty ) ? rem.title : 'Reminder',
-          (rem.description.isNotEmpty ) ? rem.description : null,
+          (rem.title.isNotEmpty) ? rem.title : 'Reminder',
+          (rem.description.isNotEmpty) ? rem.description : null,
           scheduled,
           _platformDetails(),
           androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
-          // uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
           payload: jsonEncode({'id': rem.id}),
         );
-        log('NotificationService.scheduleReminder: ✅ SUCCESS - Exact scheduling for id=$id at $scheduled');
       } catch (exactError) {
-        log('NotificationService.scheduleReminder: ⚠️ Exact scheduling failed: $exactError');
+        log('NotificationService.scheduleReminder:-- Exact scheduling failed: $exactError');
         await _plugin.zonedSchedule(
           id,
-          (rem.title.isNotEmpty ) ? rem.title : 'Reminder',
-          (rem.description.isNotEmpty ) ? rem.description : null,
+          (rem.title.isNotEmpty) ? rem.title : 'Reminder',
+          (rem.description.isNotEmpty) ? rem.description : null,
           scheduled,
           _platformDetails(),
           androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
-          // uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime,
           payload: jsonEncode({'id': rem.id}),
         );
-        log('NotificationService.scheduleReminder: ✅ SUCCESS - Inexact scheduling for id=$id');
       }
 
       final pending = await _plugin.pendingNotificationRequests();
       final scheduledIds = pending.map((p) => p.id).toList();
-      log('NotificationService.scheduleReminder: Total pending notifications: ${pending.length}');
-      log('NotificationService.scheduleReminder: Pending IDs: $scheduledIds');
 
       if (!scheduledIds.contains(id)) {
-        log('NotificationService.scheduleReminder: ❌ WARNING - Notification ID $id NOT found in pending list!');
+        log('NotificationService.scheduleReminder:  WARNING - Notification ID $id NOT found in pending list!');
       }
     } catch (e, stack) {
-      log('NotificationService.scheduleReminder: ❌ CRITICAL ERROR - $e');
+      log('NotificationService.scheduleReminder:  CRITICAL ERROR - $e');
       log('NotificationService.scheduleReminder: Stack trace - $stack');
     }
   }
 
   Future<void> cancelReminder(String reminderId) async {
-    log('NotificationService.cancelReminder: canceling reminderId=$reminderId');
     await init();
     await _plugin.cancel(_stableId(reminderId));
-    log('NotificationService.cancelReminder: canceled');
   }
 
   Future<void> cancelAll() async {
@@ -258,58 +213,9 @@ Future<void> _ensureTimeZoneInitialized() async {
   }
 
   Future<List<int>?> pendingNotificationIds() async {
-    log('NotificationService.pendingNotificationIds: fetching pending ids');
     final pending = await _plugin.pendingNotificationRequests();
     final ids = pending.map((r) => r.id).toSet().toList()..sort();
-    log('NotificationService.pendingNotificationIds: pending ids=$ids');
     return ids;
-  }
-
-  Future<void> testScheduledNotification() async {
-    log('[TEST] Scheduling test notification for 30 seconds from now');
-    final testTime = DateTime.now().add(const Duration(seconds: 30));
-    final testReminder = ReminderModel(
-      id: 'test_scheduled_${DateTime.now().millisecondsSinceEpoch}',
-      title: 'Test Scheduled Notification',
-      description: 'If you see this, scheduled notifications are working!',
-      dateTime: testTime,
-    );
-    await scheduleReminder(testReminder);
-    log('[TEST] Scheduled test notification for $testTime');
-  }
-
-  Future<void> debugTestNotificationAtTime() async {
-    log('[DEBUG] Testing notification scheduling');
-    final testTime = DateTime.now().add(const Duration(minutes: 2));
-    final testReminder = ReminderModel(
-      id: 'debug_test_${DateTime.now().millisecondsSinceEpoch}',
-      title: 'DEBUG: 2-Minute Test',
-      description: 'This notification should appear at ${DateFormat('HH:mm:ss').format(testTime)}',
-      dateTime: testTime,
-    );
-    await scheduleReminder(testReminder);
-
-    final testTime2 = DateTime.now().add(const Duration(minutes: 5));
-    final testReminder2 = ReminderModel(
-      id: 'debug_test_2_${DateTime.now().millisecondsSinceEpoch}',
-      title: 'DEBUG: 5-Minute Test',
-      description: 'This notification should appear at ${DateFormat('HH:mm:ss').format(testTime2)}',
-      dateTime: testTime2,
-    );
-    await scheduleReminder(testReminder2);
-  }
-
-  Future<void> testImmediateShow() async {
-    log('[Test] Showing notification after 10 second delay');
-    await Future.delayed(const Duration(seconds: 10));
-    await _plugin.show(
-      _stableId('test_show'),
-      'Immediate Test',
-      'This is an immediate notification',
-      _platformDetails(),
-      payload: 'test_show',
-    );
-    log('[Test] Immediate notification shown');
   }
 
   Future<void> welcomeImmediateShow() async {
@@ -324,16 +230,12 @@ Future<void> _ensureTimeZoneInitialized() async {
   }
 
   Future<void> debugNotificationStatus() async {
-    log('========== NOTIFICATION STATUS DEBUG ==========');
     await init();
-
     if (Platform.isAndroid) {
       final androidPlugin = _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
-
       if (androidPlugin != null) {
         final canScheduleExact = await androidPlugin.canScheduleExactNotifications();
         log('Can schedule exact alarms: $canScheduleExact');
-
         final channels = await androidPlugin.getNotificationChannels();
         log('Available notification channels:');
         if (channels != null && channels.isNotEmpty) {
@@ -343,10 +245,8 @@ Future<void> _ensureTimeZoneInitialized() async {
         } else {
           log('  No channels found!');
         }
-
         final permissionStatus = await Permission.notification.status;
         log('Notification permission: $permissionStatus');
-
         final pending = await _plugin.pendingNotificationRequests();
         log('Total pending notifications: ${pending.length}');
         if (pending.isNotEmpty) {
@@ -357,28 +257,15 @@ Future<void> _ensureTimeZoneInitialized() async {
         }
       }
     }
-
     log('Current time: ${DateTime.now()}');
-    _ensureTimeZoneInitialized();
+    await _ensureTimeZoneInitialized();
     log('TZ time: ${tz.TZDateTime.now(tz.local)}');
     log('Timezone: ${tz.local}');
     log('========== DEBUG COMPLETE ==========');
-  }
-
-  Future<void> testChannelWorking() async {
-    log('[CHANNEL TEST] Testing if notification channel works...');
-    await init();
-    await _plugin.show(
-      999999,
-      '🔔 Channel Test',
-      'If you see this, the channel is working!',
-      _platformDetails(),
-    );
-    log('[CHANNEL TEST] Test notification sent');
   }
 }
 
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse response) {
-  log('🔔 Background notification tapped. payload=${response.payload}');
+  log('[NOTIFICATION TAPPED] Background notification tapped. payload=${response.payload}');
 }

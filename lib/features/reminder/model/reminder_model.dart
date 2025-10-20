@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 import 'package:eslam_s_application/features/reminder/enum/reminder_priority.dart';
 import 'package:hive/hive.dart';
@@ -29,6 +28,9 @@ class ReminderModel extends Equatable {
   @HiveField(6)
   final bool isCompleted;
 
+  @HiveField(7)
+  final bool notificationsEnabled;
+
   const ReminderModel({
     required this.id,
     required this.title,
@@ -37,6 +39,7 @@ class ReminderModel extends Equatable {
     this.priority = "Medium",
     this.dateTime,
     this.isCompleted = false,
+    this.notificationsEnabled = true,
   });
 
   ReminderPriority get priorityEnum => ReminderPriorityText.fromText(priority);
@@ -50,6 +53,7 @@ class ReminderModel extends Equatable {
         priority,
         dateTime,
         isCompleted,
+        notificationsEnabled,
       ];
 
   ReminderModel copyWith({
@@ -60,6 +64,7 @@ class ReminderModel extends Equatable {
     String? priority,
     DateTime? dateTime,
     bool? isCompleted,
+    bool? notificationsEnabled,
   }) {
     return ReminderModel(
       id: id ?? this.id,
@@ -69,6 +74,7 @@ class ReminderModel extends Equatable {
       priority: priority ?? this.priority,
       dateTime: dateTime ?? this.dateTime,
       isCompleted: isCompleted ?? this.isCompleted,
+      notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
     );
   }
 }
@@ -87,6 +93,7 @@ class ReminderModelAdapter extends TypeAdapter<ReminderModel> {
     final priority = reader.readString();
     final dateTime = reader.read() as DateTime?;
     final isCompleted = reader.readBool();
+    final notificationsEnabled = reader.readBool();
 
     return ReminderModel(
       id: id,
@@ -96,6 +103,7 @@ class ReminderModelAdapter extends TypeAdapter<ReminderModel> {
       priority: priority,
       dateTime: dateTime,
       isCompleted: isCompleted,
+      notificationsEnabled: notificationsEnabled,
     );
   }
 
@@ -108,5 +116,6 @@ class ReminderModelAdapter extends TypeAdapter<ReminderModel> {
     writer.writeString(obj.priority);
     writer.write(obj.dateTime);
     writer.writeBool(obj.isCompleted);
+    writer.writeBool(obj.notificationsEnabled);
   }
 }

@@ -1,5 +1,4 @@
 import 'package:eslam_s_application/core/utils/app_export.dart';
-import 'package:eslam_s_application/core/local_storage/hive.dart';
 import 'package:eslam_s_application/features/reminder/cubit/reminder_cubit.dart';
 import 'package:eslam_s_application/features/reminder/cubit/reminder_state.dart';
 import 'package:eslam_s_application/features/reminder/enum/filter_type.dart';
@@ -19,11 +18,7 @@ class ReminderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final box = HiveService.reminderBox;
-    return BlocProvider(
-      create: (_) => ReminderCubit(box),
-      child: const ReminderPageBody(),
-    );
+    return const ReminderPageBody();
   }
 }
 
@@ -85,6 +80,10 @@ class ReminderPageBody extends StatelessWidget {
                                 reminder: item,
                                 onDelete: () => cubit.removeReminder(item.id),
                                 onToggleCompletion: (_) => cubit.toggleReminder(item.id),
+                                onNotifiTapped: () {
+                                  final updated = item.copyWith(notificationsEnabled: !item.notificationsEnabled);
+                                  cubit.editReminder(updated);
+                                },
                                 onEdit: () => showAddReminderBottomSheet(
                                   context,
                                   reminder: item,
