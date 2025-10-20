@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
+import 'package:eslam_s_application/core/notifications/notification_service.dart';
 import 'package:eslam_s_application/features/reminder/enum/filter_type.dart';
 import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
 import 'package:hive/hive.dart';
@@ -11,6 +14,9 @@ class ReminderCubit extends Cubit<ReminderState> {
   ReminderCubit(this._box) : super(const ReminderState()) {
     _loadReminders();
   }
+
+  // late final NotificationService notificationService;
+  final  notificationService = NotificationService.instance;
 
   FilterType get filter => state.filter;
   String get search => state.search;
@@ -35,18 +41,19 @@ class ReminderCubit extends Cubit<ReminderState> {
   /// ===== Load All Reminders from Hive =====
   void _loadReminders() {
     final reminders = _box.values.toList();
-    emit(state.copyWith(reminder: reminders, status: ReminderStateStatus.loaded));
+    emit(state.copyWith(
+        reminder: reminders, status: ReminderStateStatus.loaded));
   }
 
   /// ===== Add New Reminder =====
-  void addReminder({
+  Future<void> addReminder({
     required String title,
     String? description,
     String? location,
     String? priority,
     DateTime? dateTime,
     String? id,
-  }) {
+  }) async {
     if (title.trim().isEmpty) return;
 
     final reminder = ReminderModel(
@@ -58,39 +65,25 @@ class ReminderCubit extends Cubit<ReminderState> {
       dateTime: dateTime,
       isCompleted: false,
     );
+    log(' added reminder id=${reminder.id} title=${reminder.title} description=${reminder.description}  dateTime=${reminder.dateTime}');
 
     _box.put(reminder.id, reminder);
+    if (reminder.dateTime != null) {
+      await notificationService.scheduleReminder(
+        reminder
+      );
+    }
     _loadReminders();
   }
 
-// void updateReminder({
-//   required String id,
-//   required String title,
-//   required String description,
-//   required String priority,
-//   DateTime? dateTime,
-// }) {
-//   final updatedList = state.reminder.map((r) {
-//     if (r.id == id) {
-//       return r.copyWith(
-//         title: title,
-//         description: description,
-//         priority: priority,
-//         dateTime: dateTime,
-//         time: dateTime != null
-//             ? TimeOfDay.fromDateTime(dateTime)
-//             : r.time,
-//       );
-//     }
-//     return r;
-//   }).toList();
 
-//   emit(state.copyWith(reminders: updatedList));
-//   saveToHive(updatedList);
-// }
-
-  void removeReminder(String id) {
+  void removeReminder(String id) async{
+    final reminder = _box.get(id);
+    if (reminder != null && reminder.dateTime != null) {
+  await notificationService.cancelReminder(id);
+    }
     _box.delete(id);
+
     _loadReminders();
   }
 
@@ -107,6 +100,12 @@ class ReminderCubit extends Cubit<ReminderState> {
   void editReminder(ReminderModel updated) {
     if (_box.containsKey(updated.id)) {
       _box.put(updated.id, updated);
+
+     // NotificationService.instance.cancelReminder(updated.id);
+      if (updated.dateTime != null) {
+      //  NotificationService.instance.scheduleReminder(updated);
+      }
+
       _loadReminders();
     }
   }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:eslam_s_application/features/reminder/enum/reminder_priority.dart';
 import 'package:eslam_s_application/features/reminder/cubit/reminder_cubit.dart';
@@ -328,6 +330,44 @@ Widget reminderButton({
   );
 }
 
+// void handleAddReminder({
+//   required BuildContext context,
+//   required BuildContext ctx,
+//   required GlobalKey<FormState> formKey,
+//   required TextEditingController titleController,
+//   required TextEditingController descController,
+//   required ReminderPriority? selectedPriority,
+//   required DateTime? selectedDate,
+//   required TimeOfDay? selectedTime,
+//   required String? reminderId,
+// }) {
+//   if (formKey.currentState!.validate()) {
+//     final reminderCubit = context.read<ReminderCubit>();
+
+//     DateTime? finalDateTime;
+//     if (selectedDate != null && selectedTime != null) {
+//       finalDateTime = DateTime(
+//         selectedDate.year,
+//         selectedDate.month,
+//         selectedDate.day,
+//         selectedTime.hour,
+//         selectedTime.minute,
+//       );
+//     } else if (selectedDate != null) {
+//       finalDateTime = selectedDate;
+//     }
+
+//     reminderCubit.addReminder(
+//       title: titleController.text,
+//       description: descController.text,
+//       priority: selectedPriority?.toText ?? ReminderPriority.medium.toText,
+//       dateTime: finalDateTime,
+//       id: reminderId,
+//     );
+
+//     Navigator.pop(ctx);
+//   }
+// }
 void handleAddReminder({
   required BuildContext context,
   required BuildContext ctx,
@@ -363,9 +403,22 @@ void handleAddReminder({
       id: reminderId,
     );
 
+    // Show user feedback: if date/time provided notify scheduled time
+    if (finalDateTime != null) {
+      final formatted = DateFormat('yyyy-MM-dd • hh:mm a').format(finalDateTime);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('reminder_scheduled_for'.tr(args: [formatted]))),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('reminder_saved'.tr())),
+      );
+    }
+
     Navigator.pop(ctx);
   }
 }
+
 
 Row CustomTitleText({
   required String text,

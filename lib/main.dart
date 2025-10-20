@@ -1,33 +1,33 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
-import 'package:eslam_s_application/core/local_storage/hive.dart';
+import 'package:eslam_s_application/core/init/app_providers.dart';
+import 'package:eslam_s_application/core/init/init_app.dart';
+import 'package:eslam_s_application/core/notifications/notification_service.dart';
 import 'package:eslam_s_application/features/app_home_screen/cubit/cubit/theme_cubit.dart';
-import 'package:eslam_s_application/features/user/user_cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'core/utils/app_export.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
-  await HiveService.init();
+ 
+
+    await AppInitializer.init();
+    
+
+
+
   runApp(
     EasyLocalization(
       supportedLocales: [Locale('en'), Locale('ar')],
       path: 'assets/translations',
       fallbackLocale: Locale('en'),
       child: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => ThemeCubit(),
-          ),
-          BlocProvider(
-            create: (_) => UserCubit(HiveService.userBox),
-          )
-        ],
+        providers: AppProviders.providers,
         child: MyApp(),
       ),
     ),
+    
   );
 }
 
