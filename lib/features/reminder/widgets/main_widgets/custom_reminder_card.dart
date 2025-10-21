@@ -3,8 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:eslam_s_application/core/utils/app_export.dart';
 import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'done_button.dart';
+import '../done_button.dart';
 
 class ReminderCard extends StatelessWidget {
   final ReminderModel reminder;

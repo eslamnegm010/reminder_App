@@ -1,4 +1,4 @@
-import 'package:eslam_s_application/features/reminder/widgets/create_new.dart';
+import 'package:eslam_s_application/features/reminder/widgets/main_widgets/create_new.dart';
 import 'package:flutter/material.dart';
 import 'package:eslam_s_application/core/utils/app_export.dart';
 
@@ -22,7 +22,7 @@ class PageHeader extends StatelessWidget {
                 width: double.infinity,
                 height: 56,
                 decoration: BoxDecoration(
-                  color: isDarkMode  ?  AppColors.blueColor : AppColors.white ,
+                  color: isDarkMode ? AppColors.blueColor : AppColors.white,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: AppColors.blueColor.withOpacity(0.12)),
                   boxShadow: [
@@ -38,25 +38,22 @@ class PageHeader extends StatelessWidget {
                     Container(
                       width: 10,
                       height: double.infinity,
-                      decoration: BoxDecoration(
-                        color: isDarkMode ? Colors.white : AppColors.blueColor
-                      ),
+                      decoration: BoxDecoration(color: isDarkMode ? Colors.white : AppColors.blueColor),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: TitleText(
                         text: 'add_your_reminder',
-                        color: isDarkMode ? Colors.white :  AppColors.blueColor,
+                        color: isDarkMode ? Colors.white : AppColors.blueColor,
                         subtractedSize: 10,
                       ),
                     ),
                     const SizedBox(width: 12),
                     Padding(
-                     padding: const EdgeInsets.only(right: 14.0),
-                     child: Icon(Icons.add_circle_rounded,
-                      color:
-                     isDarkMode ? Colors.white : AppColors.blueColor , size: 28),
-                   ),
+                      padding: const EdgeInsets.only(right: 14.0),
+                      child: Icon(Icons.add_circle_rounded,
+                          color: isDarkMode ? Colors.white : AppColors.blueColor, size: 28),
+                    ),
                   ],
                 ),
               ),

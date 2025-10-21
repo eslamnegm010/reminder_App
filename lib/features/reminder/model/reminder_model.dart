@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:eslam_s_application/features/reminder/enum/reminder_priority.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 /// ==========
@@ -60,7 +61,7 @@ class ReminderModel extends Equatable {
     String? id,
     String? title,
     String? description,
-    String? location,
+    ValueGetter<String?>? location,
     String? priority,
     DateTime? dateTime,
     bool? isCompleted,
@@ -70,7 +71,7 @@ class ReminderModel extends Equatable {
       id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
-      location: location ?? this.location,
+      location: location != null ? location() : this.location,
       priority: priority ?? this.priority,
       dateTime: dateTime ?? this.dateTime,
       isCompleted: isCompleted ?? this.isCompleted,

@@ -28,16 +28,17 @@ void showSettings(BuildContext context) {
     ),
     builder: (ctx) {
       return DraggableScrollableSheet(
-        initialChildSize: 0.9,
-        minChildSize: 0.28,
-        maxChildSize: 0.9,
-        expand: false,
+        initialChildSize: 0.96,
+        minChildSize: 0.8,
+        maxChildSize: 0.96,
         builder: (_, controller) {
           return Container(
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 18,
+            ),
             child: Column(
               children: [
                 swaper(),

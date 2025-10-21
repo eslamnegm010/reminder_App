@@ -5,12 +5,18 @@ class AppColors {
 //  static const blueColor = Color.fromARGB(255, 39, 194, 241);
   static const blueColor = Color.fromARGB(255, 86, 140, 188);
   static const bluedark = Color.fromARGB(255, 38, 67, 91);
+  static const bluelight = Color.fromARGB(255, 209, 219, 245);
 
   static const greyColor = Colors.grey;
 
   static Color getCardBackgroundColor(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return isDarkMode ? Colors.white.withOpacity(0.1) : Colors.grey.shade200;
+  }
+
+  static Color getOrangColor(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return isDarkMode ? AppColors.orange.shade100 : Colors.orangeAccent.shade200;
   }
 
   static Color getTextColor(BuildContext context) {
@@ -82,6 +88,11 @@ class AppColors {
     Color(0xFF2E55A5),
     Color(0xFF2E55A3),
   ]);
+
+  static Color blueTextColor(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    return isDarkMode ? bluelight : bluedark;
+  }
 }
 // decoration: BoxDecoration(
         //   gradient: LinearGradient(
