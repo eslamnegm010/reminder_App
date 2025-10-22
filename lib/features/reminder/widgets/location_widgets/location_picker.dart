@@ -74,7 +74,7 @@ class _LocationPickerState extends State<LocationPicker> {
         ),
         // implementaion for saved Locations
         const SizedBox(height: 8),
-        saveedPlaces(),
+        savedPlaces(),
         const SizedBox(height: 8),
 
         if (widget.location != null && showLocationOptions) ...[
@@ -188,7 +188,7 @@ class _LocationPickerState extends State<LocationPicker> {
     );
   }
 
-  Widget saveedPlaces() {
+  Widget savedPlaces() {
     return FutureBuilder<List<SavedLocation>>(
       future: LocationManager.getSavedLocations(),
       builder: (context, snapshot) {

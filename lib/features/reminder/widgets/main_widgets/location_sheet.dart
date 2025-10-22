@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:timezone/timezone.dart';
 import '../../../../core/utils/app_export.dart';
 
 const initialEgyptLocation = LatLng(30.0444, 31.2357);
@@ -207,9 +206,9 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(children: [
         _buildMapTypeChip('standard', 'standard', Icons.map_outlined),
-        const SizedBox(width: 8),
+        const SizedBox(width: 5),
         _buildMapTypeChip('satellite', 'satellite', Icons.satellite_alt_outlined),
-        const Spacer(),
+        const SizedBox(width: 5),
         _buildZoomControls(),
       ]),
     );
@@ -222,7 +221,7 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
       borderRadius: BorderRadius.circular(12),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
             color: isSelected ? AppColors.blueColor : AppColors.blueColor.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
@@ -232,7 +231,7 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
           const SizedBox(width: 6),
           TitleText(
             text: label,
-            subtractedSize: 12,
+            subtractedSize: 13,
             color: isSelected ? Colors.white : AppColors.blueColor,
             fontWeight: FontWeight.w600,
           )
