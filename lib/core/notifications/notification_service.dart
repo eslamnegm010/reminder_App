@@ -263,6 +263,18 @@ class NotificationService {
     log('Timezone: ${tz.local}');
     log('========== DEBUG COMPLETE ==========');
   }
+
+  // showImmediate for location
+  Future<void> showImmediate(String title, String body, {String? payload}) async {
+    await init();
+    await _plugin.show(
+      _stableId(title + (body)),
+      title,
+      body,
+      _platformDetails(),
+      payload: payload,
+    );
+  }
 }
 
 @pragma('vm:entry-point')

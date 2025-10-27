@@ -6,7 +6,7 @@ import 'package:eslam_s_application/core/utils/app_export.dart';
 import 'package:eslam_s_application/features/reminder/cubit/reminder_cubit.dart';
 import 'package:eslam_s_application/features/reminder/enum/reminder_priority.dart';
 import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
-import 'package:eslam_s_application/core/validator.dart';
+import 'package:eslam_s_application/core/utils/validator.dart';
 import 'package:eslam_s_application/sheared_widgets/default_button.dart';
 import 'package:eslam_s_application/sheared_widgets/others/app_divider.dart';
 import 'package:eslam_s_application/sheared_widgets/others/snack_bar.dart';

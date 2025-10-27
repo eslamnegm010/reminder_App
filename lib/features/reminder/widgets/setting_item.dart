@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../core/utils/app_export.dart';
 
-/// Small helper widget for drawer rows
 class SettingItem extends StatelessWidget {
   final IconData icon;
   final String title;

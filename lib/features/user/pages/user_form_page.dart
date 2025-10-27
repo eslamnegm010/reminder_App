@@ -1,5 +1,5 @@
 import 'package:eslam_s_application/core/utils/app_export.dart';
-import 'package:eslam_s_application/core/validator.dart';
+import 'package:eslam_s_application/core/utils/validator.dart';
 import 'package:eslam_s_application/features/user/user_cubit/user_cubit.dart';
 import 'package:eslam_s_application/features/user/widgets/profile_header.dart';
 import 'package:eslam_s_application/features/user/widgets/profile_form_card.dart';
@@ -36,8 +36,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
   void _onFieldChanged() {
     final user = context.read<UserCubit>().state.user;
-    final changed = (user?.name ?? '') != _nameCtrl.text.trim() ||
-        (user?.email ?? '') != _emailCtrl.text.trim();
+    final changed = (user?.name ?? '') != _nameCtrl.text.trim() || (user?.email ?? '') != _emailCtrl.text.trim();
     if (changed != _valid) {
       setState(() => _valid = changed);
     }
@@ -86,7 +85,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
         centerTitle: true,
       ),
       body: Container(
-    
         child: SafeArea(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
@@ -170,8 +168,7 @@ class _ProfileHeaderIntro extends StatelessWidget {
         ),
         const SizedBox(height: 6),
         SubtitleText(
-          text:
-              'update_name_email',
+          text: 'update_name_email',
           color: AppColors.greyColor,
           textAlign: TextAlign.center,
         ),
@@ -179,11 +176,6 @@ class _ProfileHeaderIntro extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
 
 class _ProfileHintText extends StatelessWidget {
   const _ProfileHintText();
@@ -202,4 +194,3 @@ class _ProfileHintText extends StatelessWidget {
     );
   }
 }
-

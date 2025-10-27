@@ -1,9 +1,11 @@
 import 'package:eslam_s_application/core/location_services/Extensions/latLng_extensions.dart';
+import 'package:eslam_s_application/core/location_services/ensure_location_permissions.dart';
 import 'package:eslam_s_application/core/location_services/location_manger.dart';
 import 'package:eslam_s_application/core/location_services/location_search_service.dart';
 import 'package:eslam_s_application/core/location_services/models/location_model.dart';
 import 'package:eslam_s_application/features/reminder/widgets/location_widgets/saved_locations.dart';
 import 'package:eslam_s_application/features/reminder/widgets/main_widgets/location_sheet.dart';
+import 'package:eslam_s_application/sheared_widgets/others/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -227,14 +229,36 @@ class _LocationPickerState extends State<LocationPicker> {
   //   _loadLocationAddress();
   //   setState(() => showLocationOptions = true);
   // }
+  // void _handleLocationSelected(LatLng location) async {
+  //   widget.onLocationSelected(location);
+  //   _loadLocationAddress();
+  //   setState(() => showLocationOptions = true);
+
+  //   final newSavedLocation = SavedLocation(
+  //     createdAt: DateTime.now(), // TODO
+  //     id: DateTime.now().millisecondsSinceEpoch.toString(),
+  //     name: 'Saved Location ${DateTime.now().minute}',
+  //     coordinates: location,
+  //     address: locationAddress,
+  //     type: LocationType.other,
+  //   );
+
+  //   await LocationManager.saveLocation(newSavedLocation);
+  // }
   void _handleLocationSelected(LatLng location) async {
+    // final ok = await ensureLocationPermissions(context);
+    // if (!ok) {
+    //   showSnackbar(context, message: 'Please enable background location to set location reminders.');
+    //   return;
+    // }
     widget.onLocationSelected(location);
     _loadLocationAddress();
     setState(() => showLocationOptions = true);
 
+    final id = DateTime.now().millisecondsSinceEpoch.toString();
     final newSavedLocation = SavedLocation(
-      createdAt: DateTime.now(), // TODO
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      createdAt: DateTime.now(),
+      id: id,
       name: 'Saved Location ${DateTime.now().minute}',
       coordinates: location,
       address: locationAddress,
@@ -242,5 +266,23 @@ class _LocationPickerState extends State<LocationPicker> {
     );
 
     await LocationManager.saveLocation(newSavedLocation);
+    // final service = LocationReminderService();
+    // try {
+    //   await service.startMonitoring(
+    //     id: id,
+    //     lat: location.latitude,
+    //     lng: location.longitude,
+    //     radiusMeters: 100,
+    //     title: 'Reminder',
+    //     message: 'You reached your saved place',
+    //   );
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(content: Text('Location reminder set')),
+    //   );
+    // } catch (e) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     SnackBar(content: Text('Failed to start monitoring: $e')),
+    //   );
+    // }
   }
 }

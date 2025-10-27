@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:eslam_s_application/core/validator.dart';
+import 'package:eslam_s_application/core/utils/validator.dart';
 import 'package:eslam_s_application/sheared_widgets/default_button.dart';
 import 'package:eslam_s_application/sheared_widgets/text_field/default_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -48,8 +48,7 @@ class ProfileFormCard extends StatelessWidget {
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: Validator().validateUserName,
                 borderRadius: 12,
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
                 textColor: textColor,
                 hintColor: AppColors.grayDarkText,
                 fillColor: Colors.transparent,
@@ -62,12 +61,9 @@ class ProfileFormCard extends StatelessWidget {
                 currentFocusNode: emailFocusNode,
                 hint: 'email',
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (v) => Validator().isInvalidEmail(v ?? '')
-                    ? 'invalid email'
-                    : null,
+                validator: (v) => Validator().isInvalidEmail(v ?? '') ? 'invalid email' : null,
                 borderRadius: 12,
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
                 textColor: textColor,
                 hintColor: AppColors.grayDarkText,
                 fillColor: Colors.transparent,
@@ -88,9 +84,7 @@ class ProfileFormCard extends StatelessWidget {
                   const SizedBox(width: UIConstants.marginLarge),
                   Expanded(
                     child: DefaultButton.verySmall(
-                      backgroundColor: valid && formValid
-                          ? AppColors.blueColor
-                          : AppColors.Bordergrey,
+                      backgroundColor: valid && formValid ? AppColors.blueColor : AppColors.Bordergrey,
                       label: 'save'.tr().toUpperCase(),
                       labelColor: Colors.white,
                       onPressed: valid && formValid ? onSave : null,
