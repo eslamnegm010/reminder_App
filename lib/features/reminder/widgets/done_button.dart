@@ -24,7 +24,10 @@ class _DoneButtonState extends State<DoneButton> with SingleTickerProviderStateM
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    );
   }
 
   @override
@@ -73,14 +76,16 @@ class _DoneButtonState extends State<DoneButton> with SingleTickerProviderStateM
           shape: BoxShape.circle,
           gradient: widget.isCompleted
               ? LinearGradient(
-                  colors: [widget.color.withOpacity(0.9), widget.color],
+                  colors: [widget.color.withValues(alpha: 0.9), widget.color],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 )
               : null,
           color: widget.isCompleted ? null : Theme.of(context).cardColor,
           border: Border.all(
-            color: widget.isCompleted ? widget.color : Colors.grey.withOpacity(0.18),
+            color: widget.isCompleted
+                ? widget.color
+                : Colors.grey.withValues(alpha: 0.18),
             width: 1.2,
           ),
         ),

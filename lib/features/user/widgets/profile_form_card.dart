@@ -53,7 +53,7 @@ class ProfileFormCard extends StatelessWidget {
                 hintColor: AppColors.grayDarkText,
                 fillColor: Colors.transparent,
                 // ignore: deprecated_member_use
-                borderColor: AppColors.blueColor.withOpacity(0.25),
+                borderColor: AppColors.blueColor.withValues(alpha: 0.25),
               ),
               const SizedBox(height: 12),
               DefaultTextFormField(
@@ -61,14 +61,15 @@ class ProfileFormCard extends StatelessWidget {
                 currentFocusNode: emailFocusNode,
                 hint: 'email',
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (v) => Validator().isInvalidEmail(v ?? '') ? 'invalid email' : null,
+                validator: (v) =>
+                    Validator().isInvalidEmail(v ?? '') ? 'invalid email' : null,
                 borderRadius: 12,
                 contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
                 textColor: textColor,
                 hintColor: AppColors.grayDarkText,
                 fillColor: Colors.transparent,
                 // ignore: deprecated_member_use
-                borderColor: AppColors.blueColor.withOpacity(0.25),
+                borderColor: AppColors.blueColor.withValues(alpha: 0.25),
               ),
               const SizedBox(height: 18),
               Row(
@@ -84,7 +85,9 @@ class ProfileFormCard extends StatelessWidget {
                   const SizedBox(width: UIConstants.marginLarge),
                   Expanded(
                     child: DefaultButton.verySmall(
-                      backgroundColor: valid && formValid ? AppColors.blueColor : AppColors.Bordergrey,
+                      backgroundColor: valid && formValid
+                          ? AppColors.blueColor
+                          : AppColors.Bordergrey,
                       label: 'save'.tr().toUpperCase(),
                       labelColor: Colors.white,
                       onPressed: valid && formValid ? onSave : null,

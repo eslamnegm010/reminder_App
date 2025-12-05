@@ -15,12 +15,10 @@ class AppNavigationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        bottom: false,
-        top: false,
-        child: Scaffold(
-          appBar: _buildAppBar(context),
-          body: _buildPageBody(context),
-        ));
+      bottom: false,
+      top: false,
+      child: Scaffold(appBar: _buildAppBar(context), body: _buildPageBody(context)),
+    );
   }
 
   Widget _buildPageBody(BuildContext context) {
@@ -39,9 +37,7 @@ class AppNavigationScreen extends StatelessWidget {
               width: logoSize,
               child: FittedBox(
                 fit: BoxFit.contain,
-                child: Image.asset(
-                  AppAssets.appLogoLight,
-                ),
+                child: Image.asset(AppAssets.appLogoLight),
               ),
             ),
             SizedBox(height: 36.h),
@@ -66,10 +62,14 @@ class AppNavigationScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: AppColors.getCardBackgroundColor(context),
-                      border: Border.all(color: AppColors.blueColor.withOpacity(0.08)),
+                      border: Border.all(
+                        color: AppColors.blueColor.withValues(alpha: 0.08),
+                      ),
                       boxShadow: [
                         BoxShadow(
-                          color: isDarkMode ? Colors.black26 : Colors.grey.withOpacity(0.06),
+                          color: isDarkMode
+                              ? Colors.black26
+                              : Colors.grey.withValues(alpha: 0.06),
                           blurRadius: 12,
                           offset: const Offset(0, 6),
                         ),
@@ -114,7 +114,7 @@ class AppNavigationScreen extends StatelessWidget {
                           margin: const EdgeInsets.only(right: 12),
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: AppColors.blueColor.withOpacity(0.12),
+                            color: AppColors.blueColor.withValues(alpha: 0.12),
                             shape: BoxShape.circle,
                           ),
                           child: Icon(Icons.arrow_forward, color: AppColors.blueColor),
@@ -159,11 +159,7 @@ class AppNavigationScreen extends StatelessWidget {
             color: AppColors.getTextColor(context),
           ),
           const SizedBox(width: 8),
-          Icon(
-            Icons.language,
-            size: 18,
-            color: AppColors.greyColor,
-          ),
+          Icon(Icons.language, size: 18, color: AppColors.greyColor),
         ],
       ),
     );
@@ -171,7 +167,8 @@ class AppNavigationScreen extends StatelessWidget {
 
   void onTapScreenTitle(BuildContext context) {
     final user = context.read<UserCubit>().state.user;
-    final hasUser = user != null && user.name.trim().isNotEmpty && user.email.trim().isNotEmpty;
+    final hasUser =
+        user != null && user.name.trim().isNotEmpty && user.email.trim().isNotEmpty;
     if (hasUser) {
       Navigator.pushReplacementNamed(context, AppRoutes.remainderPage);
     } else {

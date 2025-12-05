@@ -36,7 +36,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
   void _onFieldChanged() {
     final user = context.read<UserCubit>().state.user;
-    final changed = (user?.name ?? '') != _nameCtrl.text.trim() || (user?.email ?? '') != _emailCtrl.text.trim();
+    final changed =
+        (user?.name ?? '') != _nameCtrl.text.trim() ||
+        (user?.email ?? '') != _emailCtrl.text.trim();
     if (changed != _valid) {
       setState(() => _valid = changed);
     }
@@ -78,10 +80,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        title: TitleText.small(
-          text: 'profile',
-          color: AppColors.blueColor,
-        ),
+        title: TitleText.small(text: 'profile', color: AppColors.blueColor),
         centerTitle: true,
       ),
       body: Container(
@@ -140,9 +139,9 @@ class _ProfileHeaderIntro extends StatelessWidget {
             gradient: LinearGradient(
               colors: [
                 // ignore: deprecated_member_use
-                AppColors.blueColor.withOpacity(0.8),
+                AppColors.blueColor.withValues(alpha: 0.8),
                 // ignore: deprecated_member_use
-                AppColors.blueColor.withOpacity(0.4),
+                AppColors.blueColor.withValues(alpha: 0.4),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -150,7 +149,7 @@ class _ProfileHeaderIntro extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 // ignore: deprecated_member_use
-                color: AppColors.blueColor.withOpacity(0.3),
+                color: AppColors.blueColor.withValues(alpha: 0.3),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),

@@ -2,7 +2,7 @@ import 'package:eslam_s_application/features/reminder/enum/reminder_priority.dar
 import 'package:flutter/material.dart';
 
 class AppColors {
-//  static const blueColor = Color.fromARGB(255, 39, 194, 241);
+  //  static const blueColor = Color.fromARGB(255, 39, 194, 241);
   static const blueColor = Color.fromARGB(255, 86, 140, 188);
   static const bluedark = Color.fromARGB(255, 38, 67, 91);
   static const bluelight = Color.fromARGB(255, 209, 219, 245);
@@ -11,7 +11,7 @@ class AppColors {
 
   static Color getCardBackgroundColor(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    return isDarkMode ? Colors.white.withOpacity(0.1) : Colors.grey.shade200;
+    return isDarkMode ? Colors.white.withValues(alpha: 0.1) : Colors.grey.shade200;
   }
 
   static Color getOrangColor(BuildContext context) {
@@ -33,7 +33,7 @@ class AppColors {
   static const scaffoldBackgroundColorLight = Color(0XFFFFFFFF);
   static const scaffoldBackgroundColorDark = Color(0xFF000000);
   static const white = Color(0xFFFFFFFF);
-  static final Color borderwhite = Colors.white.withOpacity(0.15);
+  static final Color borderwhite = Colors.white.withValues(alpha: 0.15);
   static const Dark = Color(0xFF000000);
   static const grayDarkText = Color.fromARGB(255, 128, 125, 125);
   static const graylightText = Color.fromARGB(255, 241, 235, 235);
@@ -53,9 +53,7 @@ class AppColors {
       ),
       dialogBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
       textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(
-          foregroundColor: AppColors.blueColor,
-        ),
+        style: TextButton.styleFrom(foregroundColor: AppColors.blueColor),
       ),
       useMaterial3: false,
     );
@@ -84,10 +82,9 @@ class AppColors {
     }
   }
 
-  static const COMPOUND_GRADIENT = LinearGradient(colors: [
-    Color(0xFF2E55A5),
-    Color(0xFF2E55A3),
-  ]);
+  static const COMPOUND_GRADIENT = LinearGradient(
+    colors: [Color(0xFF2E55A5), Color(0xFF2E55A3)],
+  );
 
   static Color blueTextColor(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;

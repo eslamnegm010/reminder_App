@@ -38,9 +38,7 @@ class ReminderPageBody extends StatelessWidget {
             onPressed: () => showAddReminderBottomSheet(context),
             child: const Icon(Icons.add),
             backgroundColor: AppColors.blueColor,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(100),
-            ),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -81,13 +79,13 @@ class ReminderPageBody extends StatelessWidget {
                                 onDelete: () => cubit.removeReminder(item.id),
                                 onToggleCompletion: (_) => cubit.toggleReminder(item.id),
                                 onNotifiTapped: () {
-                                  final updated = item.copyWith(notificationsEnabled: !item.notificationsEnabled);
+                                  final updated = item.copyWith(
+                                    notificationsEnabled: !item.notificationsEnabled,
+                                  );
                                   cubit.editReminder(updated);
                                 },
-                                onEdit: () => showAddReminderBottomSheet(
-                                  context,
-                                  reminder: item,
-                                ),
+                                onEdit: () =>
+                                    showAddReminderBottomSheet(context, reminder: item),
                               ),
                             );
                           },
@@ -102,29 +100,29 @@ class ReminderPageBody extends StatelessWidget {
   }
 
   AppBar _buildAppBar(BuildContext context) => AppBar(
-        title: TitleText.small(
-          text: 'reminder',
-          color: AppColors.blueColor,
-          fontWeight: FontWeight.w500,
+    title: TitleText.small(
+      text: 'reminder',
+      color: AppColors.blueColor,
+      fontWeight: FontWeight.w500,
+    ),
+    centerTitle: true,
+    elevation: 0,
+    actions: [
+      IconButton(
+        icon: const Icon(Icons.search_rounded),
+        onPressed: () => _openSearch(context),
+      ),
+      IconButton(
+        icon: SvgPicture.asset(
+          AppAssets.userCircleIcon,
+          height: 24,
+          width: 24,
+          colorFilter: ColorFilter.mode(AppColors.getTextColor(context), BlendMode.srcIn),
         ),
-        centerTitle: true,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.search_rounded),
-            onPressed: () => _openSearch(context),
-          ),
-          IconButton(
-            icon: SvgPicture.asset(
-              AppAssets.userCircleIcon,
-              height: 24,
-              width: 24,
-              colorFilter: ColorFilter.mode(AppColors.getTextColor(context), BlendMode.srcIn),
-            ),
-            onPressed: () => showSettings(context),
-          ),
-        ],
-      );
+        onPressed: () => showSettings(context),
+      ),
+    ],
+  );
 
   void _openSearch(BuildContext context) {
     showSearch<String>(
@@ -135,16 +133,16 @@ class ReminderPageBody extends StatelessWidget {
     );
   }
 
-  Widget _buildFilterButton(
-    BuildContext context,
-    String label,
-    FilterType type,
-  ) {
+  Widget _buildFilterButton(BuildContext context, String label, FilterType type) {
     final cubit = context.read<ReminderCubit>();
     final active = cubit.filter == type;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor = active ? AppColors.blueColor : AppColors.getCardBackgroundColor(context);
-    final textColor = active ? Colors.white : (isDark ? Colors.white70 : AppColors.Dark.withOpacity(0.8));
+    final bgColor = active
+        ? AppColors.blueColor
+        : AppColors.getCardBackgroundColor(context);
+    final textColor = active
+        ? Colors.white
+        : (isDark ? Colors.white70 : AppColors.Dark.withValues(alpha: 0.8));
 
     return GestureDetector(
       onTap: () => cubit.setFilter(type),
@@ -155,20 +153,22 @@ class ReminderPageBody extends StatelessWidget {
           color: bgColor,
           borderRadius: BorderRadius.circular(25),
           border: Border.all(
-            color: active ? AppColors.blueColor.withOpacity(0.9) : Colors.transparent,
+            color: active
+                ? AppColors.blueColor.withValues(alpha: 0.9)
+                : Colors.transparent,
             width: 1.2,
           ),
           boxShadow: active
               ? [
                   BoxShadow(
-                    color: AppColors.blueColor.withOpacity(0.4),
+                    color: AppColors.blueColor.withValues(alpha: 0.4),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
                 ]
               : [
                   BoxShadow(
-                    color: isDark ? Colors.black26 : Colors.grey.withOpacity(0.12),
+                    color: isDark ? Colors.black26 : Colors.grey.withValues(alpha: 0.12),
                     blurRadius: 6,
                     offset: const Offset(0, 3),
                   ),
@@ -179,17 +179,9 @@ class ReminderPageBody extends StatelessWidget {
             if (active)
               Padding(
                 padding: const EdgeInsets.only(right: 6),
-                child: Icon(
-                  Icons.check_circle,
-                  color: Colors.white,
-                  size: 18,
-                ),
+                child: Icon(Icons.check_circle, color: Colors.white, size: 18),
               ),
-            TitleText(
-              subtractedSize: 12,
-              text: label,
-              color: textColor,
-            ),
+            TitleText(subtractedSize: 12, text: label, color: textColor),
           ],
         ),
       ),

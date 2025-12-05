@@ -266,7 +266,7 @@ Future<void> showAddReminderBottomSheet(
                             Expanded(
                               child: reminderButton(
                                 label: "cancel",
-                                backgroundColor: Colors.grey.withOpacity(.3),
+                                backgroundColor: Colors.grey.withValues(alpha: .3),
                                 labelColor: AppColors.getTextColor(ctx),
                                 onPressed: () => Navigator.pop(ctx),
                               ),
@@ -316,8 +316,8 @@ Widget _buildDateTimeButton({
   return OutlinedButton.icon(
     onPressed: onTap,
     style: OutlinedButton.styleFrom(
-      side: BorderSide(color: AppColors.blueColor.withOpacity(0.1)),
-      backgroundColor: AppColors.blueColor.withOpacity(0.05),
+      side: BorderSide(color: AppColors.blueColor.withValues(alpha: 0.1)),
+      backgroundColor: AppColors.blueColor.withValues(alpha: 0.05),
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
     ),
@@ -342,12 +342,12 @@ Widget _priorityCard({
     duration: const Duration(milliseconds: 250),
     curve: Curves.easeInOut,
     decoration: BoxDecoration(
-      color: isSelected ? color.withOpacity(.85) : color.withOpacity(.15),
+      color: isSelected ? color.withValues(alpha: .85) : color.withValues(alpha: .15),
       borderRadius: BorderRadius.circular(16),
       boxShadow: isSelected
           ? [
               BoxShadow(
-                color: color.withOpacity(.4),
+                color: color.withValues(alpha: .4),
                 blurRadius: 8,
                 offset: const Offset(0, 4),
               ),
@@ -363,7 +363,7 @@ Widget _priorityCard({
           children: [
             Icon(
               icon,
-              color: isSelected ? Colors.white : color.withOpacity(.8),
+              color: isSelected ? Colors.white : color.withValues(alpha: .8),
               size: 22,
             ),
             const SizedBox(height: 4),
@@ -400,7 +400,7 @@ Widget reminderTextField(
     hintColor: AppColors.grayDarkText,
     contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 14),
     textColor: AppColors.getTextColor(context),
-    borderColor: AppColors.blueColor.withOpacity(0.16),
+    borderColor: AppColors.blueColor.withValues(alpha: 0.16),
     fillColor: Colors.transparent,
   );
 }

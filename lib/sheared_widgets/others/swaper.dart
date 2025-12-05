@@ -7,7 +7,7 @@ Container swaper() {
     height: 4,
     margin: const EdgeInsets.only(bottom: 12),
     decoration: BoxDecoration(
-      color: AppColors.grayDarkText.withOpacity(0.6),
+      color: AppColors.grayDarkText.withValues(alpha: 0.6),
       borderRadius: BorderRadius.circular(10),
     ),
   );

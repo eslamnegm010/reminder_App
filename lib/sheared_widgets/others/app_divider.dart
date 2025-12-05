@@ -9,7 +9,7 @@ class AppBarDivider extends StatelessWidget {
     return Divider(
       endIndent: indent,
       indent: indent,
-      color: Theme.of(context).canvasColor.withOpacity(.8),
+      color: Theme.of(context).canvasColor.withValues(alpha: .8),
       height: .5,
       thickness: 0.6,
     );
@@ -17,7 +17,7 @@ class AppBarDivider extends StatelessWidget {
 
   static Divider getAppBarDivider(context) {
     return Divider(
-      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
+      color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.3),
       height: .5,
       thickness: 0.6,
     );

@@ -34,7 +34,7 @@ class SettingItem extends StatelessWidget {
           width: 44,
           height: 44,
           decoration: BoxDecoration(
-            color: (color ?? AppColors.blueColor).withOpacity(0.12),
+            color: (color ?? AppColors.blueColor).withValues(alpha: 0.12),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(icon, color: color ?? AppColors.blueColor),
@@ -45,8 +45,13 @@ class SettingItem extends StatelessWidget {
           color: color ?? textColor,
           fontWeight: FontWeight.w500,
         ),
-        subtitle:
-            subtitle == null ? null : SubtitleText(text: subtitle!, subtractedSize: 2, color: AppColors.greyColor),
+        subtitle: subtitle == null
+            ? null
+            : SubtitleText(
+                text: subtitle!,
+                subtractedSize: 2,
+                color: AppColors.greyColor,
+              ),
         trailing: trailing,
       ),
     );

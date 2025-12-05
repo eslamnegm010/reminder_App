@@ -7,13 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
-enum _DefaultButtonLabelType {
-  verySmall,
-  small,
-  medium,
-  large,
-  extraLarge,
-}
+enum _DefaultButtonLabelType { verySmall, small, medium, large, extraLarge }
 
 class DefaultButton extends StatefulWidget {
   const DefaultButton({
@@ -47,8 +41,11 @@ class DefaultButton extends StatefulWidget {
     this.labelColor,
     this.shape = BoxShape.rectangle,
     this.elevation,
-  })  : assert(label == null || labelWidget == null, 'You must provide only a label or a labelWidget but not both.'),
-        _labelType = null;
+  }) : assert(
+         label == null || labelWidget == null,
+         'You must provide only a label or a labelWidget but not both.',
+       ),
+       _labelType = null;
   const DefaultButton.verySmall({
     super.key,
     this.label,
@@ -80,8 +77,11 @@ class DefaultButton extends StatefulWidget {
     this.labelColor,
     this.shape = BoxShape.rectangle,
     this.elevation,
-  })  : assert(label == null || labelWidget == null, 'You must provide only a label or a labelWidget but not both.'),
-        _labelType = _DefaultButtonLabelType.verySmall;
+  }) : assert(
+         label == null || labelWidget == null,
+         'You must provide only a label or a labelWidget but not both.',
+       ),
+       _labelType = _DefaultButtonLabelType.verySmall;
   const DefaultButton.small({
     super.key,
     this.label,
@@ -113,8 +113,11 @@ class DefaultButton extends StatefulWidget {
     this.labelColor,
     this.shape = BoxShape.rectangle,
     this.elevation,
-  })  : assert(label == null || labelWidget == null, 'You must provide only a label or a labelWidget but not both.'),
-        _labelType = _DefaultButtonLabelType.small;
+  }) : assert(
+         label == null || labelWidget == null,
+         'You must provide only a label or a labelWidget but not both.',
+       ),
+       _labelType = _DefaultButtonLabelType.small;
   const DefaultButton.medium({
     super.key,
     this.label,
@@ -146,8 +149,11 @@ class DefaultButton extends StatefulWidget {
     this.labelColor,
     this.shape = BoxShape.rectangle,
     this.elevation,
-  })  : assert(label == null || labelWidget == null, 'You must provide only a label or a labelWidget but not both.'),
-        _labelType = _DefaultButtonLabelType.medium;
+  }) : assert(
+         label == null || labelWidget == null,
+         'You must provide only a label or a labelWidget but not both.',
+       ),
+       _labelType = _DefaultButtonLabelType.medium;
 
   const DefaultButton.large({
     super.key,
@@ -180,8 +186,11 @@ class DefaultButton extends StatefulWidget {
     this.labelColor,
     this.shape = BoxShape.rectangle,
     this.elevation,
-  })  : assert(label == null || labelWidget == null, 'You must provide only a label or a labelWidget but not both.'),
-        _labelType = _DefaultButtonLabelType.large;
+  }) : assert(
+         label == null || labelWidget == null,
+         'You must provide only a label or a labelWidget but not both.',
+       ),
+       _labelType = _DefaultButtonLabelType.large;
   const DefaultButton.extraLarge({
     super.key,
     this.label,
@@ -213,8 +222,11 @@ class DefaultButton extends StatefulWidget {
     this.labelColor,
     this.shape = BoxShape.rectangle,
     this.elevation,
-  })  : assert(label == null || labelWidget == null, 'You must provide only a label or a labelWidget but not both.'),
-        _labelType = _DefaultButtonLabelType.extraLarge;
+  }) : assert(
+         label == null || labelWidget == null,
+         'You must provide only a label or a labelWidget but not both.',
+       ),
+       _labelType = _DefaultButtonLabelType.extraLarge;
   final _DefaultButtonLabelType? _labelType;
   final FutureCallback? onPressed;
   final String? label;
@@ -264,10 +276,15 @@ class DefaultButtonState extends State<DefaultButton> with TickerProviderStateMi
   Widget build(BuildContext context) {
     final iconOnStart = widget.iconLocation == DefaultButtonIconLocation.Start;
     final buttonContents = <Widget>[
-      if (widget.icon != null) ...[widget.icon!, if (widget.label != null) const SizedBox(width: 8.0)],
+      if (widget.icon != null) ...[
+        widget.icon!,
+        if (widget.label != null) const SizedBox(width: 8.0),
+      ],
       if (widget.label != null || widget.labelWidget != null)
         Padding(
-          padding: widget.icon != null ? const EdgeInsets.only(top: 3.0) : EdgeInsets.zero,
+          padding: widget.icon != null
+              ? const EdgeInsets.only(top: 3.0)
+              : EdgeInsets.zero,
           child: widget.labelWidget ?? _buildLabelText(),
         ),
     ];
@@ -283,11 +300,15 @@ class DefaultButtonState extends State<DefaultButton> with TickerProviderStateMi
               strokeAlign: BorderSide.strokeAlignOutside,
             )
           : null,
-      borderRadius: _isBusy && !widget.keepButtonSizeOnLoading ? BorderRadius.circular(100.0) : widget.borderRadius,
+      borderRadius: _isBusy && !widget.keepButtonSizeOnLoading
+          ? BorderRadius.circular(100.0)
+          : widget.borderRadius,
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: widget.enabled ? widget.backgroundColor : const Color(0x88888888),
-          gradient: widget.backgroundColor == null && widget.enabled ? widget.gradient : null,
+          gradient: widget.backgroundColor == null && widget.enabled
+              ? widget.gradient
+              : null,
           boxShadow: widget.shadow,
           shape: widget.shape,
         ),
@@ -301,9 +322,13 @@ class DefaultButtonState extends State<DefaultButton> with TickerProviderStateMi
                     child: Padding(
                       padding: widget.padding,
                       child: Row(
-                        mainAxisSize: widget.isExpanded ? MainAxisSize.max : MainAxisSize.min,
+                        mainAxisSize: widget.isExpanded
+                            ? MainAxisSize.max
+                            : MainAxisSize.min,
                         mainAxisAlignment: widget.contentAlignment,
-                        children: iconOnStart ? buttonContents : buttonContents.reversed.toList(),
+                        children: iconOnStart
+                            ? buttonContents
+                            : buttonContents.reversed.toList(),
                       ),
                     ),
                   ),
@@ -323,16 +348,9 @@ class DefaultButtonState extends State<DefaultButton> with TickerProviderStateMi
     );
 
     if (widget.alignment != null)
-      child = Align(
-        alignment: widget.alignment!,
-        child: child,
-      );
+      child = Align(alignment: widget.alignment!, child: child);
 
-    if (widget.margin != null)
-      child = Padding(
-        padding: widget.margin!,
-        child: child,
-      );
+    if (widget.margin != null) child = Padding(padding: widget.margin!, child: child);
 
     if (widget.elevation != null)
       child = PhysicalModel(
@@ -361,7 +379,7 @@ class DefaultButtonState extends State<DefaultButton> with TickerProviderStateMi
       child: FittedBox(
         fit: BoxFit.contain,
         child: LoadingAnimationWidget.hexagonDots(
-          color: Theme.of(context).canvasColor.withOpacity(0.5),
+          color: Theme.of(context).canvasColor.withValues(alpha: 0.5),
           size: 40.0,
         ),
       ),
@@ -431,10 +449,7 @@ class DefaultButtonState extends State<DefaultButton> with TickerProviderStateMi
   }
 }
 
-enum DefaultButtonIconLocation {
-  Start,
-  End,
-}
+enum DefaultButtonIconLocation { Start, End }
 
 class _AnimatedClipRRect extends StatelessWidget {
   const _AnimatedClipRRect({
@@ -455,10 +470,7 @@ class _AnimatedClipRRect extends StatelessWidget {
 
   Widget _builder(BuildContext context, BorderRadiusGeometry radius, Widget? child) {
     return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: radius,
-        border: border,
-      ),
+      decoration: BoxDecoration(borderRadius: radius, border: border),
       child: ClipRRect(borderRadius: radius, child: child),
     );
   }

@@ -37,14 +37,29 @@ class SavedLocationsList extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.location_off_outlined, size: 64, color: AppColors.getGrayTextColor(context).withOpacity(0.4)),
+          Icon(
+            Icons.location_off_outlined,
+            size: 64,
+            color: AppColors.getGrayTextColor(context).withValues(alpha: 0.4),
+          ),
           const SizedBox(height: 16),
-          Text('no_saved_locations'.tr(),
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.getGrayTextColor(context))),
+          Text(
+            'no_saved_locations'.tr(),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+              color: AppColors.getGrayTextColor(context),
+            ),
+          ),
           const SizedBox(height: 8),
-          Text('tap_to_save_location'.tr(),
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 13, color: AppColors.getGrayTextColor(context).withOpacity(0.7))),
+          Text(
+            'tap_to_save_location'.tr(),
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 13,
+              color: AppColors.getGrayTextColor(context).withValues(alpha: 0.7),
+            ),
+          ),
         ],
       ),
     );
@@ -55,7 +70,10 @@ class SavedLocationsList extends StatelessWidget {
       key: Key(location.id),
       direction: DismissDirection.endToStart,
       background: Container(
-        decoration: BoxDecoration(color: AppColors.redColor, borderRadius: BorderRadius.circular(16)),
+        decoration: BoxDecoration(
+          color: AppColors.redColor,
+          borderRadius: BorderRadius.circular(16),
+        ),
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
         child: const Icon(Icons.delete_outline_rounded, color: Colors.white),
@@ -70,31 +88,51 @@ class SavedLocationsList extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                  colors: [AppColors.blueColor.withOpacity(0.08), AppColors.blueColor.withOpacity(0.04)]),
+                colors: [
+                  AppColors.blueColor.withValues(alpha: 0.08),
+                  AppColors.blueColor.withValues(alpha: 0.04),
+                ],
+              ),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.blueColor.withOpacity(0.2)),
+              border: Border.all(color: AppColors.blueColor.withValues(alpha: 0.2)),
             ),
             child: Row(
               children: [
                 Container(
                   padding: const EdgeInsets.all(12),
-                  decoration:
-                      BoxDecoration(color: _getIconColor(location.type).withOpacity(0.15), shape: BoxShape.circle),
-                  child: Icon(_getIconData(location.type), color: _getIconColor(location.type), size: 22),
+                  decoration: BoxDecoration(
+                    color: _getIconColor(location.type).withValues(alpha: 0.15),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    _getIconData(location.type),
+                    color: _getIconColor(location.type),
+                    size: 22,
+                  ),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(location.name,
-                          style: TextStyle(
-                              fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.getTextColor(context))),
+                      Text(
+                        location.name,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.getTextColor(context),
+                        ),
+                      ),
                       const SizedBox(height: 4),
-                      Text(location.address ?? location.coordinates.toFormattedString(),
-                          style: TextStyle(fontSize: 12, color: AppColors.getGrayTextColor(context)),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis),
+                      Text(
+                        location.address ?? location.coordinates.toFormattedString(),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColors.getGrayTextColor(context),
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ],
                   ),
                 ),

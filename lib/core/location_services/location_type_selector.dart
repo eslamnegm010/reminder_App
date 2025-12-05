@@ -7,7 +7,8 @@ class LocationTypeSelector extends StatelessWidget {
   final LocationType? selectedType;
   final ValueChanged<LocationType> onTypeSelected;
 
-  const LocationTypeSelector({Key? key, this.selectedType, required this.onTypeSelected}) : super(key: key);
+  const LocationTypeSelector({Key? key, this.selectedType, required this.onTypeSelected})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +30,32 @@ class LocationTypeSelector extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelected ? _getTypeColor(type) : _getTypeColor(type).withOpacity(0.12),
+          color: isSelected
+              ? _getTypeColor(type)
+              : _getTypeColor(type).withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: _getTypeColor(type).withOpacity(isSelected ? 1.0 : 0.3), width: 1.5),
+          border: Border.all(
+            color: _getTypeColor(type).withValues(alpha: isSelected ? 1.0 : 0.3),
+            width: 1.5,
+          ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(_getTypeIcon(type), size: 18, color: isSelected ? Colors.white : _getTypeColor(type)),
+            Icon(
+              _getTypeIcon(type),
+              size: 18,
+              color: isSelected ? Colors.white : _getTypeColor(type),
+            ),
             const SizedBox(width: 8),
-            Text(_getTypeName(type),
-                style: TextStyle(
-                    fontSize: 13, fontWeight: FontWeight.w600, color: isSelected ? Colors.white : _getTypeColor(type))),
+            Text(
+              _getTypeName(type),
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: isSelected ? Colors.white : _getTypeColor(type),
+              ),
+            ),
           ],
         ),
       ),

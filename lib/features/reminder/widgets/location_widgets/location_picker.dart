@@ -89,12 +89,12 @@ class _LocationPickerState extends State<LocationPicker> {
     return ElevatedButton.icon(
       onPressed: _openLocationPicker,
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.blueColor.withOpacity(0.08),
+        backgroundColor: AppColors.blueColor.withValues(alpha: 0.08),
         foregroundColor: AppColors.blueColor,
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14),
-          side: BorderSide(color: AppColors.blueColor.withOpacity(0.2)),
+          side: BorderSide(color: AppColors.blueColor.withValues(alpha: 0.2)),
         ),
         elevation: 0,
       ),
@@ -120,7 +120,7 @@ class _LocationPickerState extends State<LocationPicker> {
         setState(() => showLocationOptions = false);
       },
       style: IconButton.styleFrom(
-        backgroundColor: AppColors.redColor.withOpacity(0.1),
+        backgroundColor: AppColors.redColor.withValues(alpha: 0.1),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       icon: Icon(Icons.close_rounded, color: AppColors.redColor, size: 20),
@@ -134,9 +134,9 @@ class _LocationPickerState extends State<LocationPicker> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.shade50,
+        color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade50,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.blueColor.withOpacity(0.2)),
+        border: Border.all(color: AppColors.blueColor.withValues(alpha: 0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,7 +174,7 @@ class _LocationPickerState extends State<LocationPicker> {
         Container(
           padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
-            color: AppColors.blueColor.withOpacity(0.12),
+            color: AppColors.blueColor.withValues(alpha: 0.12),
             shape: BoxShape.circle,
           ),
           child: Icon(icon, size: 16, color: AppColors.blueColor),

@@ -66,7 +66,7 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
             borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: 20,
                 spreadRadius: 5,
               ),
@@ -112,8 +112,8 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  AppColors.blueColor.withOpacity(0.2),
-                  AppColors.blueColor.withOpacity(0.1),
+                  AppColors.blueColor.withValues(alpha: 0.2),
+                  AppColors.blueColor.withValues(alpha: 0.1),
                 ],
               ),
               shape: BoxShape.circle,
@@ -150,9 +150,9 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
         decoration: BoxDecoration(
-          color: isDark ? Colors.white.withOpacity(0.08) : Colors.grey.shade100,
+          color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.grey.shade100,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.blueColor.withOpacity(0.2)),
+          border: Border.all(color: AppColors.blueColor.withValues(alpha: 0.2)),
         ),
         child: TextField(
           controller: _searchController,
@@ -198,10 +198,10 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.blueColor.withOpacity(0.2)),
+        border: Border.all(color: AppColors.blueColor.withValues(alpha: 0.2)),
         boxShadow: [
           BoxShadow(
-            color: AppColors.blueColor.withOpacity(0.1),
+            color: AppColors.blueColor.withValues(alpha: 0.1),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -212,7 +212,7 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
         padding: const EdgeInsets.all(8),
         itemCount: _suggestions.length,
         separatorBuilder: (_, __) => Divider(
-          color: AppColors.getGrayTextColor(context).withOpacity(0.1),
+          color: AppColors.getGrayTextColor(context).withValues(alpha: 0.1),
           height: 1,
         ),
         itemBuilder: (ctx, i) => _buildSuggestionTile(ctx, _suggestions[i]),
@@ -226,7 +226,7 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
       leading: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: AppColors.blueColor.withOpacity(0.12),
+          color: AppColors.blueColor.withValues(alpha: 0.12),
           shape: BoxShape.circle,
         ),
         child: Icon(Icons.location_on_outlined, color: AppColors.blueColor, size: 20),
@@ -274,10 +274,12 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.blueColor : AppColors.blueColor.withOpacity(0.1),
+          color: isSelected
+              ? AppColors.blueColor
+              : AppColors.blueColor.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: AppColors.blueColor.withOpacity(isSelected ? 1.0 : 0.3),
+            color: AppColors.blueColor.withValues(alpha: isSelected ? 1.0 : 0.3),
           ),
         ),
         child: Row(
@@ -337,9 +339,9 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: AppColors.blueColor.withOpacity(0.12),
+          color: AppColors.blueColor.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: AppColors.blueColor.withOpacity(0.3)),
+          border: Border.all(color: AppColors.blueColor.withValues(alpha: 0.3)),
         ),
         child: Icon(icon, size: 20, color: AppColors.blueColor),
       ),
@@ -403,7 +405,7 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
               color: AppColors.redColor,
               size: 50,
               shadows: [
-                Shadow(color: AppColors.redColor.withOpacity(0.4), blurRadius: 8),
+                Shadow(color: AppColors.redColor.withValues(alpha: 0.4), blurRadius: 8),
               ],
             ),
           ),
@@ -420,9 +422,11 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.95),
+          color: Theme.of(context).scaffoldBackgroundColor.withValues(alpha: 0.95),
           borderRadius: BorderRadius.circular(12),
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 8)],
+          boxShadow: [
+            BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 8),
+          ],
         ),
         child: Row(
           children: [
@@ -515,7 +519,7 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
                 child: _buildActionButton(
                   label: 'Save for later',
                   icon: Icons.bookmark_border_rounded,
-                  backgroundColor: AppColors.blueColor.withOpacity(0.1),
+                  backgroundColor: AppColors.blueColor.withValues(alpha: 0.1),
                   textColor: AppColors.blueColor,
                   onPressed: () => _showSaveLocationDialog(context),
                 ),

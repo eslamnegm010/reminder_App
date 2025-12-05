@@ -6,15 +6,11 @@ class ParticlePainter extends CustomPainter {
   final Color color;
   final int particleCount;
 
-  ParticlePainter({
-    required this.progress,
-    required this.color,
-    this.particleCount = 10,
-  });
+  ParticlePainter({required this.progress, required this.color, this.particleCount = 10});
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..color = color.withOpacity(1 - progress);
+    final paint = Paint()..color = color.withValues(alpha: 1 - progress);
     final center = Offset(size.width / 2, size.height / 2);
     final radius = 50 * progress;
 

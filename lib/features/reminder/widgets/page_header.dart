@@ -24,10 +24,12 @@ class PageHeader extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: isDarkMode ? AppColors.blueColor : AppColors.white,
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.blueColor.withOpacity(0.12)),
+                  border: Border.all(color: AppColors.blueColor.withValues(alpha: 0.12)),
                   boxShadow: [
                     BoxShadow(
-                      color: isDarkMode ? Colors.black26 : Colors.grey.withOpacity(0.06),
+                      color: isDarkMode
+                          ? Colors.black26
+                          : Colors.grey.withValues(alpha: 0.06),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
@@ -38,7 +40,9 @@ class PageHeader extends StatelessWidget {
                     Container(
                       width: 10,
                       height: double.infinity,
-                      decoration: BoxDecoration(color: isDarkMode ? Colors.white : AppColors.blueColor),
+                      decoration: BoxDecoration(
+                        color: isDarkMode ? Colors.white : AppColors.blueColor,
+                      ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(
@@ -51,8 +55,11 @@ class PageHeader extends StatelessWidget {
                     const SizedBox(width: 12),
                     Padding(
                       padding: const EdgeInsets.only(right: 14.0),
-                      child: Icon(Icons.add_circle_rounded,
-                          color: isDarkMode ? Colors.white : AppColors.blueColor, size: 28),
+                      child: Icon(
+                        Icons.add_circle_rounded,
+                        color: isDarkMode ? Colors.white : AppColors.blueColor,
+                        size: 28,
+                      ),
                     ),
                   ],
                 ),

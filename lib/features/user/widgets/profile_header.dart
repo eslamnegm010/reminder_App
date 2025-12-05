@@ -21,16 +21,8 @@ class ProfileHeader extends StatelessWidget {
     final textColor = AppColors.getTextColor(context);
 
     final gradientColors = isDark
-        ? [
-            const Color(0xFF0F2027),
-            const Color(0xFF203A43),
-            const Color(0xFF2C5364),
-          ]
-        : [
-            const Color(0xFFE3F2FD),
-            const Color(0xFFBBDEFB),
-            const Color(0xFF90CAF9),
-          ];
+        ? [const Color(0xFF0F2027), const Color(0xFF203A43), const Color(0xFF2C5364)]
+        : [const Color(0xFFE3F2FD), const Color(0xFFBBDEFB), const Color(0xFF90CAF9)];
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
@@ -48,9 +40,9 @@ class ProfileHeader extends StatelessWidget {
           BoxShadow(
             color: isDark
                 // ignore: deprecated_member_use
-                ? Colors.blueAccent.withOpacity(0.1)
+                ? Colors.blueAccent.withValues(alpha: 0.1)
                 // ignore: deprecated_member_use
-                : Colors.blue.withOpacity(0.15),
+                : Colors.blue.withValues(alpha: 0.15),
             blurRadius: 16,
             spreadRadius: 1,
             offset: const Offset(0, 6),
@@ -59,9 +51,9 @@ class ProfileHeader extends StatelessWidget {
         border: Border.all(
           color: isDark
               // ignore: deprecated_member_use
-              ? Colors.blueGrey.shade700.withOpacity(0.4)
+              ? Colors.blueGrey.shade700.withValues(alpha: 0.4)
               // ignore: deprecated_member_use
-              : Colors.blue.shade100.withOpacity(0.6),
+              : Colors.blue.shade100.withValues(alpha: 0.6),
           width: 1.1,
         ),
       ),
@@ -70,14 +62,20 @@ class ProfileHeader extends StatelessWidget {
           Positioned(
             top: -25,
             right: -40,
-            child: Icon(Icons.blur_on,
-                color: Colors.white.withOpacity(0.1), size: 120),
+            child: Icon(
+              Icons.blur_on,
+              color: Colors.white.withValues(alpha: 0.1),
+              size: 120,
+            ),
           ),
           Positioned(
             bottom: -15,
             left: -40,
-            child: Icon(Icons.blur_on,
-                color: Colors.white.withOpacity(0.08), size: 100),
+            child: Icon(
+              Icons.blur_on,
+              color: Colors.white.withValues(alpha: 0.08),
+              size: 100,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -90,12 +88,12 @@ class ProfileHeader extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: Colors.white.withOpacity(0.6),
+                      color: Colors.white.withValues(alpha: 0.6),
                       width: 1.5,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withValues(alpha: 0.1),
                         blurRadius: 8,
                         offset: const Offset(0, 4),
                       ),
@@ -115,9 +113,7 @@ class ProfileHeader extends StatelessWidget {
                         duration: const Duration(milliseconds: 300),
                         child: TitleText(
                           key: ValueKey(nameCtrl),
-                          text: nameCtrl.isEmpty
-                              ? 'guest_user'
-                              : nameCtrl,
+                          text: nameCtrl.isEmpty ? 'guest_user' : nameCtrl,
                           subtractedSize: 6,
                           fontWeight: FontWeight.w700,
                           color: textColor,
@@ -130,8 +126,7 @@ class ProfileHeader extends StatelessWidget {
                           key: ValueKey(emailCtrl),
                           text: emailCtrl.isEmpty ? '—' : emailCtrl,
                           subtractedSize: 1,
-                          color: isDark ?
-                          Colors.white54 : Colors.black54,
+                          color: isDark ? Colors.white54 : Colors.black54,
                         ),
                       ),
                     ],
