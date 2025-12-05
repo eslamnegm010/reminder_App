@@ -3,6 +3,8 @@ import 'package:eslam_s_application/features/reminder/enum/reminder_priority.dar
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
+part 'reminder_model.g.dart';
+
 /// ==========
 /// MODEL
 /// ==========
@@ -32,6 +34,12 @@ class ReminderModel extends Equatable {
   @HiveField(7)
   final bool notificationsEnabled;
 
+  @HiveField(8)
+  final double? latitude;
+
+  @HiveField(9)
+  final double? longitude;
+
   const ReminderModel({
     required this.id,
     required this.title,
@@ -41,21 +49,25 @@ class ReminderModel extends Equatable {
     this.dateTime,
     this.isCompleted = false,
     this.notificationsEnabled = true,
+    this.latitude,
+    this.longitude,
   });
 
   ReminderPriority get priorityEnum => ReminderPriorityText.fromText(priority);
 
   @override
   List<Object?> get props => [
-        id,
-        title,
-        description,
-        location,
-        priority,
-        dateTime,
-        isCompleted,
-        notificationsEnabled,
-      ];
+    id,
+    title,
+    description,
+    location,
+    priority,
+    dateTime,
+    isCompleted,
+    notificationsEnabled,
+    latitude,
+    longitude,
+  ];
 
   ReminderModel copyWith({
     String? id,
@@ -66,6 +78,8 @@ class ReminderModel extends Equatable {
     DateTime? dateTime,
     bool? isCompleted,
     bool? notificationsEnabled,
+    double? latitude,
+    double? longitude,
   }) {
     return ReminderModel(
       id: id ?? this.id,
@@ -76,47 +90,10 @@ class ReminderModel extends Equatable {
       dateTime: dateTime ?? this.dateTime,
       isCompleted: isCompleted ?? this.isCompleted,
       notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
+      latitude: latitude ?? this.latitude,
+      longitude: longitude ?? this.longitude,
     );
   }
 }
 
 /// ============
-class ReminderModelAdapter extends TypeAdapter<ReminderModel> {
-  @override
-  final int typeId = 0;
-
-  @override
-  ReminderModel read(BinaryReader reader) {
-    final id = reader.readString();
-    final title = reader.readString();
-    final description = reader.readString();
-    final location = reader.read() as String?;
-    final priority = reader.readString();
-    final dateTime = reader.read() as DateTime?;
-    final isCompleted = reader.readBool();
-    final notificationsEnabled = reader.readBool();
-
-    return ReminderModel(
-      id: id,
-      title: title,
-      description: description,
-      location: location,
-      priority: priority,
-      dateTime: dateTime,
-      isCompleted: isCompleted,
-      notificationsEnabled: notificationsEnabled,
-    );
-  }
-
-  @override
-  void write(BinaryWriter writer, ReminderModel obj) {
-    writer.writeString(obj.id);
-    writer.writeString(obj.title);
-    writer.writeString(obj.description);
-    writer.write(obj.location);
-    writer.writeString(obj.priority);
-    writer.write(obj.dateTime);
-    writer.writeBool(obj.isCompleted);
-    writer.writeBool(obj.notificationsEnabled);
-  }
-}

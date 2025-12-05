@@ -1,3 +1,4 @@
+import 'package:eslam_s_application/core/location_services/location_service.dart';
 import 'package:eslam_s_application/core/location_services/location_manger.dart';
 import 'package:eslam_s_application/core/location_services/models/location_model.dart';
 import 'package:eslam_s_application/core/location_services/location_search_service.dart';
@@ -19,7 +20,8 @@ class LocationSelectionSheet extends StatefulWidget {
   State<LocationSelectionSheet> createState() => _LocationSelectionSheetState();
 }
 
-class _LocationSelectionSheetState extends State<LocationSelectionSheet> with SingleTickerProviderStateMixin {
+class _LocationSelectionSheetState extends State<LocationSelectionSheet>
+    with SingleTickerProviderStateMixin {
   LatLng? _pickedLocation;
   late TextEditingController _searchController;
   late MapController _mapController;
@@ -36,7 +38,10 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
     _pickedLocation = widget.initialLocation;
     _searchController = TextEditingController();
     _mapController = MapController();
-    _animController = AnimationController(vsync: this, duration: const Duration(milliseconds: 300));
+    _animController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+    );
   }
 
   @override
@@ -59,7 +64,13 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
           decoration: BoxDecoration(
             color: Theme.of(context).scaffoldBackgroundColor,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 20, spreadRadius: 5)],
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 20,
+                spreadRadius: 5,
+              ),
+            ],
           ),
           child: Column(
             children: [
@@ -82,11 +93,14 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
   }
 
   Widget _buildDragHandle(bool isDark) => Container(
-      margin: const EdgeInsets.only(top: 12, bottom: 8),
-      width: 50,
-      height: 5,
-      decoration: BoxDecoration(
-          color: isDark ? Colors.white24 : Colors.grey.shade300, borderRadius: BorderRadius.circular(10)));
+    margin: const EdgeInsets.only(top: 12, bottom: 8),
+    width: 50,
+    height: 5,
+    decoration: BoxDecoration(
+      color: isDark ? Colors.white24 : Colors.grey.shade300,
+      borderRadius: BorderRadius.circular(10),
+    ),
+  );
 
   Widget _buildHeader(BuildContext context) {
     return Padding(
@@ -96,27 +110,35 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              gradient:
-                  LinearGradient(colors: [AppColors.blueColor.withOpacity(0.2), AppColors.blueColor.withOpacity(0.1)]),
+              gradient: LinearGradient(
+                colors: [
+                  AppColors.blueColor.withOpacity(0.2),
+                  AppColors.blueColor.withOpacity(0.1),
+                ],
+              ),
               shape: BoxShape.circle,
             ),
             child: Icon(Icons.map_outlined, color: AppColors.blueColor, size: 24),
           ),
           const SizedBox(width: 12),
           Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              TitleText(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TitleText(
                   text: 'select_location',
                   subtractedSize: 8,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.blueTextColor(context)),
-              const SizedBox(height: 2),
-              TitleText(
-                text: 'tap_map_or_search',
-                subtractedSize: 13,
-                color: AppColors.getGrayTextColor(context),
-              ),
-            ]),
+                  color: AppColors.blueTextColor(context),
+                ),
+                const SizedBox(height: 2),
+                TitleText(
+                  text: 'tap_map_or_search',
+                  subtractedSize: 13,
+                  color: AppColors.getGrayTextColor(context),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -128,9 +150,10 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
         decoration: BoxDecoration(
-            color: isDark ? Colors.white.withOpacity(0.08) : Colors.grey.shade100,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.blueColor.withOpacity(0.2))),
+          color: isDark ? Colors.white.withOpacity(0.08) : Colors.grey.shade100,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.blueColor.withOpacity(0.2)),
+        ),
         child: TextField(
           controller: _searchController,
           decoration: InputDecoration(
@@ -139,8 +162,12 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
             prefixIcon: Icon(Icons.search_rounded, color: AppColors.blueColor),
             suffixIcon: _searchController.text.isNotEmpty
                 ? IconButton(
-                    icon: Icon(Icons.close_rounded, color: AppColors.getGrayTextColor(context)),
-                    onPressed: _clearSearch)
+                    icon: Icon(
+                      Icons.close_rounded,
+                      color: AppColors.getGrayTextColor(context),
+                    ),
+                    onPressed: _clearSearch,
+                  )
                 : null,
             border: InputBorder.none,
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -169,17 +196,25 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       constraints: const BoxConstraints(maxHeight: 220),
       decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.blueColor.withOpacity(0.2)),
-          boxShadow: [
-            BoxShadow(color: AppColors.blueColor.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, 4))
-          ]),
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.blueColor.withOpacity(0.2)),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.blueColor.withOpacity(0.1),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
       child: ListView.separated(
         shrinkWrap: true,
         padding: const EdgeInsets.all(8),
         itemCount: _suggestions.length,
-        separatorBuilder: (_, __) => Divider(color: AppColors.getGrayTextColor(context).withOpacity(0.1), height: 1),
+        separatorBuilder: (_, __) => Divider(
+          color: AppColors.getGrayTextColor(context).withOpacity(0.1),
+          height: 1,
+        ),
         itemBuilder: (ctx, i) => _buildSuggestionTile(ctx, _suggestions[i]),
       ),
     );
@@ -189,14 +224,28 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
       leading: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(color: AppColors.blueColor.withOpacity(0.12), shape: BoxShape.circle),
-          child: Icon(Icons.location_on_outlined, color: AppColors.blueColor, size: 20)),
-      title: Text(result.displayName,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.getTextColor(context))),
-      trailing: Icon(Icons.arrow_forward_ios_rounded, size: 16, color: AppColors.blueColor),
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: AppColors.blueColor.withOpacity(0.12),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(Icons.location_on_outlined, color: AppColors.blueColor, size: 20),
+      ),
+      title: Text(
+        result.displayName,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+          color: AppColors.getTextColor(context),
+        ),
+      ),
+      trailing: Icon(
+        Icons.arrow_forward_ios_rounded,
+        size: 16,
+        color: AppColors.blueColor,
+      ),
       onTap: () => _selectSuggestion(result),
     );
   }
@@ -204,13 +253,15 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
   Widget _buildMapControls(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(children: [
-        _buildMapTypeChip('standard', 'standard', Icons.map_outlined),
-        const SizedBox(width: 5),
-        _buildMapTypeChip('satellite', 'satellite', Icons.satellite_alt_outlined),
-        const SizedBox(width: 5),
-        _buildZoomControls(),
-      ]),
+      child: Row(
+        children: [
+          _buildMapTypeChip('standard', 'standard', Icons.map_outlined),
+          const SizedBox(width: 5),
+          _buildMapTypeChip('satellite', 'satellite', Icons.satellite_alt_outlined),
+          const SizedBox(width: 5),
+          _buildZoomControls(),
+        ],
+      ),
     );
   }
 
@@ -223,32 +274,40 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
-            color: isSelected ? AppColors.blueColor : AppColors.blueColor.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColors.blueColor.withOpacity(isSelected ? 1.0 : 0.3))),
-        child: Row(mainAxisSize: MainAxisSize.min, children: [
-          Icon(icon, size: 16, color: isSelected ? Colors.white : AppColors.blueColor),
-          const SizedBox(width: 6),
-          TitleText(
-            text: label,
-            subtractedSize: 13,
-            color: isSelected ? Colors.white : AppColors.blueColor,
-            fontWeight: FontWeight.w600,
-          )
-        ]),
+          color: isSelected ? AppColors.blueColor : AppColors.blueColor.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: AppColors.blueColor.withOpacity(isSelected ? 1.0 : 0.3),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, size: 16, color: isSelected ? Colors.white : AppColors.blueColor),
+            const SizedBox(width: 6),
+            TitleText(
+              text: label,
+              subtractedSize: 13,
+              color: isSelected ? Colors.white : AppColors.blueColor,
+              fontWeight: FontWeight.w600,
+            ),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildZoomControls() {
-    return Row(children: [
-      _buildZoomButton(Icons.remove_rounded, _zoomOut),
-      const SizedBox(width: 8),
-      _buildZoomButton(Icons.add_rounded, _zoomIn),
-      const SizedBox(width: 8),
-      _buildZoomButton(Icons.my_location_rounded, _centerOnLocation),
-      const SizedBox(width: 8), // TODO need to test
-    ]);
+    return Row(
+      children: [
+        _buildZoomButton(Icons.remove_rounded, _zoomOut),
+        const SizedBox(width: 8),
+        _buildZoomButton(Icons.add_rounded, _zoomIn),
+        const SizedBox(width: 8),
+        _buildZoomButton(Icons.my_location_rounded, _centerOnLocation),
+        const SizedBox(width: 8), // TODO need to test
+      ],
+    );
   }
 
   // Widget _buildSaveButton(BuildContext context) => ElevatedButton.icon(
@@ -276,12 +335,14 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
       onTap: onTap,
       borderRadius: BorderRadius.circular(10),
       child: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              color: AppColors.blueColor.withOpacity(0.12),
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: AppColors.blueColor.withOpacity(0.3))),
-          child: Icon(icon, size: 20, color: AppColors.blueColor)),
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: AppColors.blueColor.withOpacity(0.12),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: AppColors.blueColor.withOpacity(0.3)),
+        ),
+        child: Icon(icon, size: 20, color: AppColors.blueColor),
+      ),
     );
   }
 
@@ -290,25 +351,32 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        child: Stack(children: [
-          FlutterMap(
-            mapController: _mapController,
-            options: MapOptions(
+        child: Stack(
+          children: [
+            FlutterMap(
+              mapController: _mapController,
+              options: MapOptions(
                 initialCenter: _pickedLocation ?? initialEgyptLocation,
                 initialZoom: _currentZoom,
                 onTap: (tapPos, latlng) => _onMapTapped(latlng),
                 onPositionChanged: (position, hasGesture) {
                   if (hasGesture
-                      //  && position.zoom != null
-                      ) setState(() => _currentZoom = position.zoom);
-                }),
-            children: [
-              TileLayer(urlTemplate: _getMapTileUrl(), userAgentPackageName: 'com.reminder.en'),
-              if (_pickedLocation != null) _buildMarkerLayer(),
-            ],
-          ),
-          if (_pickedLocation != null) _buildLocationInfo(context),
-        ]),
+                  //  && position.zoom != null
+                  )
+                    setState(() => _currentZoom = position.zoom);
+                },
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate: _getMapTileUrl(),
+                  userAgentPackageName: 'com.reminder.en',
+                ),
+                if (_pickedLocation != null) _buildMarkerLayer(),
+              ],
+            ),
+            if (_pickedLocation != null) _buildLocationInfo(context),
+          ],
+        ),
       ),
     );
   }
@@ -321,19 +389,27 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
   }
 
   Widget _buildMarkerLayer() {
-    return MarkerLayer(markers: [
-      Marker(
+    return MarkerLayer(
+      markers: [
+        Marker(
           point: _pickedLocation!,
           width: 50,
           height: 50,
           child: AnimatedScale(
-              scale: 1.0,
-              duration: const Duration(milliseconds: 300),
-              child: Icon(Icons.location_on_rounded,
-                  color: AppColors.redColor,
-                  size: 50,
-                  shadows: [Shadow(color: AppColors.redColor.withOpacity(0.4), blurRadius: 8)]))),
-    ]);
+            scale: 1.0,
+            duration: const Duration(milliseconds: 300),
+            child: Icon(
+              Icons.location_on_rounded,
+              color: AppColors.redColor,
+              size: 50,
+              shadows: [
+                Shadow(color: AppColors.redColor.withOpacity(0.4), blurRadius: 8),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _buildLocationInfo(BuildContext context) {
@@ -344,20 +420,38 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.95),
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 8)]),
-        child: Row(children: [
-          Icon(Icons.pin_drop_rounded, color: AppColors.blueColor, size: 20),
-          const SizedBox(width: 8),
-          Expanded(
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('selected_coordinates'.tr(),
-                style: TextStyle(fontSize: 11, color: AppColors.getGrayTextColor(context))),
-            Text('${_pickedLocation!.latitude.toStringAsFixed(6)}, ${_pickedLocation!.longitude.toStringAsFixed(6)}',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.blueColor))
-          ])),
-        ]),
+          color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.95),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 8)],
+        ),
+        child: Row(
+          children: [
+            Icon(Icons.pin_drop_rounded, color: AppColors.blueColor, size: 20),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'selected_coordinates'.tr(),
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: AppColors.getGrayTextColor(context),
+                    ),
+                  ),
+                  Text(
+                    '${_pickedLocation!.latitude.toStringAsFixed(6)}, ${_pickedLocation!.longitude.toStringAsFixed(6)}',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.blueColor,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -366,43 +460,162 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(20),
-        child: Row(children: [
-          Expanded(
-              child: _buildActionButton(
-                  label: 'cancel'.tr(),
-                  icon: Icons.close_rounded,
-                  backgroundColor: isDark ? Colors.white12 : Colors.grey.shade200,
-                  textColor: AppColors.getTextColor(context),
-                  onPressed: () => Navigator.pop(context))),
-          const SizedBox(width: 12),
-          Expanded(
-              child: _buildActionButton(
-                  label: 'confirm'.tr(),
-                  icon: Icons.check_rounded,
-                  backgroundColor: AppColors.blueColor,
-                  textColor: Colors.white,
-                  onPressed: _pickedLocation != null ? () => Navigator.pop(context, _pickedLocation) : null)),
-        ]),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: _buildActionButton(
+                    label: 'cancel'.tr(),
+                    icon: Icons.close_rounded,
+                    backgroundColor: isDark ? Colors.white12 : Colors.grey.shade200,
+                    textColor: AppColors.getTextColor(context),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: _buildActionButton(
+                    label: 'confirm'.tr(),
+                    icon: Icons.check_rounded,
+                    backgroundColor: AppColors.blueColor,
+                    textColor: Colors.white,
+                    onPressed: _pickedLocation != null
+                        ? () {
+                            // If confirming, try to use a name if we have one (from search or just coords)
+                            String name = '';
+
+                            // If search text matches, usage it
+                            if (_searchController.text.isNotEmpty) {
+                              name = _searchController.text;
+                            }
+
+                            // If we have suggestions and one matches exact coords (unlikely but possible)
+
+                            final result = LocationSearchResult(
+                              displayName: name.isNotEmpty
+                                  ? name
+                                  : '${_pickedLocation!.latitude.toStringAsFixed(4)}, ${_pickedLocation!.longitude.toStringAsFixed(4)}',
+                              type: 'picked',
+                              location: _pickedLocation!,
+                              address:
+                                  {}, // We don't have full address here easily without async
+                            );
+                            Navigator.pop(context, result);
+                          }
+                        : null,
+                  ),
+                ),
+              ],
+            ),
+            if (_pickedLocation != null) ...[
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: _buildActionButton(
+                  label: 'Save for later',
+                  icon: Icons.bookmark_border_rounded,
+                  backgroundColor: AppColors.blueColor.withOpacity(0.1),
+                  textColor: AppColors.blueColor,
+                  onPressed: () => _showSaveLocationDialog(context),
+                ),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildActionButton(
-      {required String label,
-      required IconData icon,
-      required Color backgroundColor,
-      required Color textColor,
-      VoidCallback? onPressed}) {
+  Future<void> _showSaveLocationDialog(BuildContext context) async {
+    final nameController = TextEditingController();
+    return showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Name this location'),
+        content: TextField(
+          controller: nameController,
+          decoration: InputDecoration(
+            hintText: 'e.g., Home, Work, Gym',
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+          ),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text('Cancel')),
+          ElevatedButton(
+            onPressed: () async {
+              if (nameController.text.trim().isNotEmpty) {
+                await _saveLocationWithName(nameController.text.trim());
+                if (mounted) Navigator.pop(ctx);
+
+                // Also return this as the result!
+                final result = LocationSearchResult(
+                  displayName: nameController.text.trim(),
+                  type: 'saved',
+                  location: _pickedLocation!,
+                  address: {},
+                );
+                if (mounted) Navigator.pop(context, result);
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.blueColor,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ),
+            child: Text('Save', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+    );
+  }
+
+  Future<void> _saveLocationWithName(String name) async {
+    if (_pickedLocation == null) return;
+    try {
+      final address = await LocationSearchService.reverseGeocode(_pickedLocation!);
+      final newSaved = SavedLocation(
+        id: DateTime.now().millisecondsSinceEpoch.toString(),
+        name: name,
+        coordinates: _pickedLocation!,
+        address: address,
+        type: LocationType.other,
+        createdAt: DateTime.now(),
+      );
+      await LocationManager.saveLocation(newSaved);
+      if (mounted) {
+        showSnackbar(context, message: 'Location saved as "$name"');
+      }
+    } catch (e) {
+      if (mounted) {
+        showSnackbar(context, message: 'Failed to save location: $e');
+      }
+    }
+  }
+
+  Widget _buildActionButton({
+    required String label,
+    required IconData icon,
+    required Color backgroundColor,
+    required Color textColor,
+    VoidCallback? onPressed,
+  }) {
     return ElevatedButton.icon(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-            backgroundColor: backgroundColor,
-            foregroundColor: textColor,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-            elevation: 0),
-        icon: Icon(icon, size: 20),
-        label: Text(label, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600)));
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: backgroundColor,
+        foregroundColor: textColor,
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        elevation: 0,
+      ),
+      icon: Icon(icon, size: 20),
+      label: Text(
+        label,
+        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+      ),
+    );
   }
 
   void _clearSearch() {
@@ -458,9 +671,19 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
     _mapController.move(center, newZoom);
   }
 
-  void _centerOnLocation() {
-    if (_pickedLocation != null) {
-      _mapController.move(_pickedLocation!, _currentZoom);
+  Future<void> _centerOnLocation() async {
+    try {
+      final position = await LocationService.instance.determinePosition();
+      final newLoc = LatLng(position.latitude, position.longitude);
+
+      setState(() {
+        _pickedLocation = newLoc;
+        // Optional: Zoom in slightly when finding user location for better UX
+        // _currentZoom = 15.0;
+      });
+      _mapController.move(newLoc, _currentZoom);
+    } catch (e) {
+      showSnackbar(context, message: 'Could not get current location: $e');
     }
   }
 
@@ -478,4 +701,5 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet> with Si
     showSnackbar(context, message: 'Location saved successfully');
   }
 }
+
 // Move the map to the selected location with the current zoom level

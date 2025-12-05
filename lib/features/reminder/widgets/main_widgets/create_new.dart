@@ -1,4 +1,5 @@
 import 'package:eslam_s_application/features/reminder/widgets/location_widgets/location_picker.dart';
+import 'package:eslam_s_application/core/location_services/models/location_model.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -13,7 +14,10 @@ import 'package:eslam_s_application/sheared_widgets/others/snack_bar.dart';
 import 'package:eslam_s_application/sheared_widgets/text_field/default_text_form_field.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-Future<void> showAddReminderBottomSheet(BuildContext context, {ReminderModel? reminder}) async {
+Future<void> showAddReminderBottomSheet(
+  BuildContext context, {
+  ReminderModel? reminder,
+}) async {
   final titleController = TextEditingController();
   final descController = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -24,7 +28,7 @@ Future<void> showAddReminderBottomSheet(BuildContext context, {ReminderModel? re
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
   bool notificationsEnabled = reminder?.notificationsEnabled ?? true;
-  LatLng? selectedLocation;
+  LocationSearchResult? selectedLocation;
 
   if (reminder != null) {
     titleController.text = reminder.title;
@@ -38,13 +42,32 @@ Future<void> showAddReminderBottomSheet(BuildContext context, {ReminderModel? re
       ),
     );
     selectedDate = reminder.dateTime;
-    selectedTime = reminder.dateTime != null ? TimeOfDay.fromDateTime(reminder.dateTime!) : null;
-    if (reminder.location != null && reminder.location!.isNotEmpty) {
+    selectedTime = reminder.dateTime != null
+        ? TimeOfDay.fromDateTime(reminder.dateTime!)
+        : null;
+    if (reminder.location != null &&
+        reminder.latitude != null &&
+        reminder.longitude != null) {
+      selectedLocation = LocationSearchResult(
+        displayName: reminder.location!,
+        type: 'saved', // or 'unknown'
+        location: LatLng(reminder.latitude!, reminder.longitude!),
+        address: {},
+      );
+    } else if (reminder.location != null && reminder.location!.isNotEmpty) {
+      // Fallback for legacy data if any
       final parts = reminder.location!.split(',');
       if (parts.length == 2) {
         final lat = double.tryParse(parts[0].trim());
         final lng = double.tryParse(parts[1].trim());
-        if (lat != null && lng != null) selectedLocation = LatLng(lat, lng);
+        if (lat != null && lng != null) {
+          selectedLocation = LocationSearchResult(
+            displayName: reminder.location!,
+            type: 'legacy',
+            location: LatLng(lat, lng),
+            address: {},
+          );
+        }
       }
     }
   }
@@ -64,7 +87,11 @@ Future<void> showAddReminderBottomSheet(BuildContext context, {ReminderModel? re
         maxChildSize: 0.96,
         builder: (_, scrollController) {
           return Padding(
-            padding: EdgeInsets.only(left: 20, right: 20, bottom: MediaQuery.of(ctx).viewInsets.bottom),
+            padding: EdgeInsets.only(
+              left: 20,
+              right: 20,
+              bottom: MediaQuery.of(ctx).viewInsets.bottom,
+            ),
             child: StatefulBuilder(
               builder: (ctx, setState) {
                 return Form(
@@ -80,14 +107,19 @@ Future<void> showAddReminderBottomSheet(BuildContext context, {ReminderModel? re
                               children: [
                                 TitleText.small(
                                   padding: EdgeInsets.zero,
-                                  text: reminder != null ? "update_your_reminder" : "create_new_reminder",
+                                  text: reminder != null
+                                      ? "update_your_reminder"
+                                      : "create_new_reminder",
                                   color: AppColors.blueTextColor(context),
                                 ),
                                 const Spacer(),
                                 SizedBox(
                                   height: 30,
                                   child: ClipOval(
-                                    child: Image.asset(AppAssets.appLauncher, fit: BoxFit.cover),
+                                    child: Image.asset(
+                                      AppAssets.appLauncher,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -128,9 +160,13 @@ Future<void> showAddReminderBottomSheet(BuildContext context, {ReminderModel? re
                                         initialDate: selectedDate ?? DateTime.now(),
                                         firstDate: DateTime(2020),
                                         lastDate: DateTime(2100),
-                                        builder: (c, child) => Theme(data: AppColors.pickerTheme(c), child: child!),
+                                        builder: (c, child) => Theme(
+                                          data: AppColors.pickerTheme(c),
+                                          child: child!,
+                                        ),
                                       );
-                                      if (picked != null) setState(() => selectedDate = picked);
+                                      if (picked != null)
+                                        setState(() => selectedDate = picked);
                                     },
                                   ),
                                 ),
@@ -138,15 +174,21 @@ Future<void> showAddReminderBottomSheet(BuildContext context, {ReminderModel? re
                                 Expanded(
                                   child: _buildDateTimeButton(
                                     icon: AppAssets.alarm,
-                                    label: selectedTime == null ? "select_time".tr() : selectedTime!.format(ctx),
+                                    label: selectedTime == null
+                                        ? "select_time".tr()
+                                        : selectedTime!.format(ctx),
                                     onTap: () async {
                                       final picked = await showTimePicker(
                                         context: ctx,
                                         initialTime: selectedTime ?? TimeOfDay.now(),
-                                        builder: (c, child) => Theme(data: AppColors.pickerTheme(c), child: child!),
+                                        builder: (c, child) => Theme(
+                                          data: AppColors.pickerTheme(c),
+                                          child: child!,
+                                        ),
                                         barrierColor: Colors.transparent,
                                       );
-                                      if (picked != null) setState(() => selectedTime = picked);
+                                      if (picked != null)
+                                        setState(() => selectedTime = picked);
                                     },
                                   ),
                                 ),
@@ -164,7 +206,9 @@ Future<void> showAddReminderBottomSheet(BuildContext context, {ReminderModel? re
                                     color: Colors.greenAccent,
                                     icon: Icons.arrow_downward_rounded,
                                     isSelected: selectedPriority == ReminderPriority.low,
-                                    onTap: () => setState(() => selectedPriority = ReminderPriority.low),
+                                    onTap: () => setState(
+                                      () => selectedPriority = ReminderPriority.low,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 10),
@@ -173,8 +217,11 @@ Future<void> showAddReminderBottomSheet(BuildContext context, {ReminderModel? re
                                     title: "Medium",
                                     color: Colors.orangeAccent,
                                     icon: Icons.horizontal_rule_rounded,
-                                    isSelected: selectedPriority == ReminderPriority.medium,
-                                    onTap: () => setState(() => selectedPriority = ReminderPriority.medium),
+                                    isSelected:
+                                        selectedPriority == ReminderPriority.medium,
+                                    onTap: () => setState(
+                                      () => selectedPriority = ReminderPriority.medium,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(width: 10),
@@ -184,7 +231,9 @@ Future<void> showAddReminderBottomSheet(BuildContext context, {ReminderModel? re
                                     color: Colors.redAccent,
                                     icon: Icons.arrow_upward_rounded,
                                     isSelected: selectedPriority == ReminderPriority.high,
-                                    onTap: () => setState(() => selectedPriority = ReminderPriority.high),
+                                    onTap: () => setState(
+                                      () => selectedPriority = ReminderPriority.high,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -193,10 +242,11 @@ Future<void> showAddReminderBottomSheet(BuildContext context, {ReminderModel? re
                             CustomTitleText(text: "location", context: ctx),
                             const SizedBox(height: 10),
                             LocationPicker(
-                              location: selectedLocation,
+                              location: selectedLocation?.location,
                               hint: 'select_location',
                               helper: 'location_helper_text',
-                              onLocationSelected: (loc) => setState(() => selectedLocation = loc),
+                              onLocationSelected: (loc) =>
+                                  setState(() => selectedLocation = loc),
                               onClear: () => setState(() => selectedLocation = null),
                             ),
                             const SizedBox(height: 20),
@@ -271,8 +321,12 @@ Widget _buildDateTimeButton({
       padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 10),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
     ),
-    icon: SvgPicture.asset(icon,
-        height: 20, width: 20, colorFilter: ColorFilter.mode(AppColors.blueColor, BlendMode.srcIn)),
+    icon: SvgPicture.asset(
+      icon,
+      height: 20,
+      width: 20,
+      colorFilter: ColorFilter.mode(AppColors.blueColor, BlendMode.srcIn),
+    ),
     label: TitleText(subtractedSize: 12, text: label, color: AppColors.blueColor),
   );
 }
@@ -292,7 +346,11 @@ Widget _priorityCard({
       borderRadius: BorderRadius.circular(16),
       boxShadow: isSelected
           ? [
-              BoxShadow(color: color.withOpacity(.4), blurRadius: 8, offset: const Offset(0, 4)),
+              BoxShadow(
+                color: color.withOpacity(.4),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
             ]
           : [],
     ),
@@ -303,9 +361,17 @@ Widget _priorityCard({
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
         child: Column(
           children: [
-            Icon(icon, color: isSelected ? Colors.white : color.withOpacity(.8), size: 22),
+            Icon(
+              icon,
+              color: isSelected ? Colors.white : color.withOpacity(.8),
+              size: 22,
+            ),
             const SizedBox(height: 4),
-            TitleText(text: title, subtractedSize: 12, color: isSelected ? Colors.white : AppColors.greyColor),
+            TitleText(
+              text: title,
+              subtractedSize: 12,
+              color: isSelected ? Colors.white : AppColors.greyColor,
+            ),
           ],
         ),
       ),
@@ -346,7 +412,11 @@ Widget reminderButton({
   Color labelColor = Colors.white,
 }) {
   return DefaultButton.verySmall(
-      label: label, labelColor: labelColor, backgroundColor: backgroundColor, onPressed: onPressed);
+    label: label,
+    labelColor: labelColor,
+    backgroundColor: backgroundColor,
+    onPressed: onPressed,
+  );
 }
 
 void handleAddReminder({
@@ -360,22 +430,23 @@ void handleAddReminder({
   required TimeOfDay? selectedTime,
   required bool notificationsEnabled,
   required String? reminderId,
-  required LatLng? selectedLocation,
+  required LocationSearchResult? selectedLocation,
 }) {
   if (formKey.currentState!.validate()) {
     final reminderCubit = context.read<ReminderCubit>();
 
     DateTime? finalDateTime;
     if (selectedDate != null && selectedTime != null) {
-      finalDateTime =
-          DateTime(selectedDate.year, selectedDate.month, selectedDate.day, selectedTime.hour, selectedTime.minute);
+      finalDateTime = DateTime(
+        selectedDate.year,
+        selectedDate.month,
+        selectedDate.day,
+        selectedTime.hour,
+        selectedTime.minute,
+      );
     } else if (selectedDate != null) {
       finalDateTime = selectedDate;
     }
-
-    final locationString = selectedLocation != null
-        ? '${selectedLocation.latitude},${selectedLocation.longitude}'
-        : null; // TODO: implement location
 
     reminderCubit.addReminder(
       title: titleController.text,
@@ -384,7 +455,9 @@ void handleAddReminder({
       dateTime: finalDateTime,
       id: reminderId,
       notificationsEnabled: notificationsEnabled,
-      location: locationString, // TODO: implement location
+      location: selectedLocation?.displayName,
+      latitude: selectedLocation?.location.latitude ?? 0,
+      longitude: selectedLocation?.location.longitude ?? 0,
     );
 
     if (finalDateTime != null && notificationsEnabled) {
@@ -401,9 +474,14 @@ void handleAddReminder({
 Row CustomTitleText({required String text, required BuildContext context}) {
   return Row(
     children: [
-      TitleText(subtractedSize: 11, text: text, fontWeight: FontWeight.w600, color: AppColors.blueTextColor(context)),
+      TitleText(
+        subtractedSize: 11,
+        text: text,
+        fontWeight: FontWeight.w600,
+        color: AppColors.blueTextColor(context),
+      ),
       const SizedBox(width: 10),
-      Expanded(child: AppBarDivider.getAppBarDivider(context))
+      Expanded(child: AppBarDivider.getAppBarDivider(context)),
     ],
   );
 }
@@ -413,16 +491,22 @@ class NotificationToggle extends StatelessWidget {
   final ValueChanged<bool> onChanged;
   final String title;
 
-  const NotificationToggle(
-      {super.key, required this.value, required this.onChanged, this.title = "notify_for_this_reminder"});
+  const NotificationToggle({
+    super.key,
+    required this.value,
+    required this.onChanged,
+    this.title = "notify_for_this_reminder",
+  });
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      decoration:
-          BoxDecoration(color: isDark ? Colors.white12 : Colors.grey.shade100, borderRadius: BorderRadius.circular(14)),
+      decoration: BoxDecoration(
+        color: isDark ? Colors.white12 : Colors.grey.shade100,
+        borderRadius: BorderRadius.circular(14),
+      ),
       child: Row(
         children: [
           Expanded(
@@ -434,7 +518,11 @@ class NotificationToggle extends StatelessWidget {
               color: AppColors.getGrayTextColor(context),
             ),
           ),
-          Switch.adaptive(activeColor: AppColors.blueColor, value: value, onChanged: onChanged),
+          Switch.adaptive(
+            activeColor: AppColors.blueColor,
+            value: value,
+            onChanged: onChanged,
+          ),
         ],
       ),
     );

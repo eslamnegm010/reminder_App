@@ -15,7 +15,7 @@ class LocationPicker extends StatefulWidget {
   final LatLng? location;
   final String hint;
   final String helper;
-  final ValueChanged<LatLng?> onLocationSelected;
+  final ValueChanged<LocationSearchResult?> onLocationSelected;
   final VoidCallback? onClear;
 
   const LocationPicker({
@@ -65,9 +65,7 @@ class _LocationPickerState extends State<LocationPicker> {
       children: [
         Row(
           children: [
-            Expanded(
-              child: _buildLocationButton(context),
-            ),
+            Expanded(child: _buildLocationButton(context)),
             if (widget.location != null) ...[
               const SizedBox(width: 8),
               _buildClearButton(context),
@@ -106,7 +104,9 @@ class _LocationPickerState extends State<LocationPicker> {
         style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w500,
-          color: widget.location != null ? AppColors.blueColor : AppColors.getGrayTextColor(context),
+          color: widget.location != null
+              ? AppColors.blueColor
+              : AppColors.getGrayTextColor(context),
         ),
       ),
     );
@@ -149,7 +149,12 @@ class _LocationPickerState extends State<LocationPicker> {
           ),
           if (locationAddress != null) ...[
             const SizedBox(height: 12),
-            _buildDetailRow(context, Icons.location_city_rounded, 'address'.tr(), locationAddress!),
+            _buildDetailRow(
+              context,
+              Icons.location_city_rounded,
+              'address'.tr(),
+              locationAddress!,
+            ),
           ],
           const SizedBox(height: 5),
         ],
@@ -157,13 +162,21 @@ class _LocationPickerState extends State<LocationPicker> {
     );
   }
 
-  Widget _buildDetailRow(BuildContext context, IconData icon, String label, String value) {
+  Widget _buildDetailRow(
+    BuildContext context,
+    IconData icon,
+    String label,
+    String value,
+  ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           padding: const EdgeInsets.all(6),
-          decoration: BoxDecoration(color: AppColors.blueColor.withOpacity(0.12), shape: BoxShape.circle),
+          decoration: BoxDecoration(
+            color: AppColors.blueColor.withOpacity(0.12),
+            shape: BoxShape.circle,
+          ),
           child: Icon(icon, size: 16, color: AppColors.blueColor),
         ),
         const SizedBox(width: 10),
@@ -172,10 +185,11 @@ class _LocationPickerState extends State<LocationPicker> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TitleText(
-                  text: label,
-                  subtractedSize: 12,
-                  color: AppColors.getGrayTextColor(context),
-                  fontWeight: FontWeight.w500),
+                text: label,
+                subtractedSize: 12,
+                color: AppColors.getGrayTextColor(context),
+                fontWeight: FontWeight.w500,
+              ),
               const SizedBox(height: 2),
               TitleText(
                 text: value,
@@ -211,12 +225,10 @@ class _LocationPickerState extends State<LocationPicker> {
 
   Future<void> _openLocationPicker() async {
     // the main function to open the location picker
-    final picked = await showModalBottomSheet<LatLng>(
+    final picked = await showModalBottomSheet<LocationSearchResult>(
       context: context,
       isScrollControlled: true,
-      builder: (_) => LocationSelectionSheet(
-        initialLocation: widget.location,
-      ),
+      builder: (_) => LocationSelectionSheet(initialLocation: widget.location),
     );
 
     if (picked != null) {
@@ -245,22 +257,25 @@ class _LocationPickerState extends State<LocationPicker> {
 
   //   await LocationManager.saveLocation(newSavedLocation);
   // }
-  void _handleLocationSelected(LatLng location) async {
+  void _handleLocationSelected(LocationSearchResult result) async {
     // final ok = await ensureLocationPermissions(context);
     // if (!ok) {
     //   showSnackbar(context, message: 'Please enable background location to set location reminders.');
     //   return;
     // }
-    widget.onLocationSelected(location);
-    _loadLocationAddress();
-    setState(() => showLocationOptions = true);
+    widget.onLocationSelected(result);
+    // _loadLocationAddress(); // We might already have it in result
+    setState(() {
+      showLocationOptions = true;
+      locationAddress = result.displayName; // Or address
+    });
 
     final id = DateTime.now().millisecondsSinceEpoch.toString();
     final newSavedLocation = SavedLocation(
       createdAt: DateTime.now(),
       id: id,
       name: 'Saved Location ${DateTime.now().minute}',
-      coordinates: location,
+      coordinates: result.location,
       address: locationAddress,
       type: LocationType.other,
     );
