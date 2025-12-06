@@ -36,21 +36,15 @@ void showSettings(BuildContext context) {
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
             ),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 18,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 18),
             child: Column(
               children: [
                 swaper(),
                 _buildHeader(ctx),
                 const SizedBox(height: UIConstants.marginLarge),
                 Expanded(
-                    child: _buildSettingsList(
-                  context,
-                  ctx,
-                  controller,
-                  currentLocale,
-                )),
+                  child: _buildSettingsList(context, ctx, controller, currentLocale),
+                ),
                 SafeArea(
                   top: false,
                   bottom: true,
@@ -129,6 +123,7 @@ Widget _buildThemeItem(BuildContext context) {
         return Transform.scale(
           scale: 0.8,
           child: Switch.adaptive(
+            activeThumbColor: AppColors.blueColor,
             activeColor: AppColors.blueColor,
             value: state.isDark,
             onChanged: (_) => context.read<ThemeCubit>().toggleTheme(),
@@ -139,13 +134,21 @@ Widget _buildThemeItem(BuildContext context) {
   );
 }
 
-Widget _buildLanguageItem(BuildContext context, BuildContext sheetContext, Locale currentLocale) {
+Widget _buildLanguageItem(
+  BuildContext context,
+  BuildContext sheetContext,
+  Locale currentLocale,
+) {
   return SettingItem(
     icon: Icons.language,
     title: currentLocale.languageCode == 'ar' ? 'English' : 'عربي',
-    subtitle: currentLocale.languageCode == 'ar' ? 'Switch to English' : 'التبديل إلى العربية',
+    subtitle: currentLocale.languageCode == 'ar'
+        ? 'Switch to English'
+        : 'التبديل إلى العربية',
     onTap: () async {
-      await context.setLocale(currentLocale.languageCode == 'ar' ? const Locale('en') : const Locale('ar'));
+      await context.setLocale(
+        currentLocale.languageCode == 'ar' ? const Locale('en') : const Locale('ar'),
+      );
       Navigator.pop(sheetContext);
     },
   );
@@ -195,7 +198,11 @@ Widget _buildClearRemindersItem(BuildContext context, BuildContext sheetContext)
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dCtx, false),
-              child: TitleText(subtractedSize: 13, text: 'cancel', color: AppColors.redColor),
+              child: TitleText(
+                subtractedSize: 13,
+                text: 'cancel',
+                color: AppColors.redColor,
+              ),
             ),
             TextButton(
               onPressed: () => Navigator.pop(dCtx, true),
@@ -217,22 +224,20 @@ Widget _buildClearRemindersItem(BuildContext context, BuildContext sheetContext)
 
 Widget _buildAboutItem(BuildContext context, BuildContext sheetContext) {
   return FutureBuilder<PackageInfo>(
-      future: PackageInfo.fromPlatform(),
-      builder: (context, snapshot) {
-        final versionText = snapshot.hasData ? '${snapshot.data!.version}' : '...';
+    future: PackageInfo.fromPlatform(),
+    builder: (context, snapshot) {
+      final versionText = snapshot.hasData ? '${snapshot.data!.version}' : '...';
 
-        return SettingItem(
-          icon: Icons.info_outline,
-          title: 'about',
-          subtitle: 'version'.tr(args: [versionText]),
-          onTap: () {
-            showDialog(
-              context: context,
-              builder: (ctx) => const AppAboutDialog(),
-            );
-          },
-        );
-      });
+      return SettingItem(
+        icon: Icons.info_outline,
+        title: 'about',
+        subtitle: 'version'.tr(args: [versionText]),
+        onTap: () {
+          showDialog(context: context, builder: (ctx) => const AppAboutDialog());
+        },
+      );
+    },
+  );
 }
 
 Widget _buildSignOutItem(BuildContext context, BuildContext sheetContext) {
@@ -267,13 +272,16 @@ Widget _buildNotificationToggleItem(BuildContext context) {
       return SettingItem(
         icon: Icons.notifications_active_outlined,
         title: 'notifications',
-        subtitle: enabled ? 'tap_to_disable_notifications' : 'tap_to_enable_notifications',
+        subtitle: enabled
+            ? 'tap_to_disable_notifications'
+            : 'tap_to_enable_notifications',
         trailing: Transform.scale(
           scale: 0.8,
           child: Switch.adaptive(
             activeColor: AppColors.blueColor,
             value: enabled,
-            onChanged: (value) => context.read<ReminderCubit>().toggleNotifications(value),
+            onChanged: (value) =>
+                context.read<ReminderCubit>().toggleNotifications(value),
           ),
         ),
       );

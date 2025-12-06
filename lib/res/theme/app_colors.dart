@@ -1,3 +1,4 @@
+import 'package:eslam_s_application/core/utils/size_utils.dart';
 import 'package:eslam_s_application/features/reminder/enum/reminder_priority.dart';
 import 'package:flutter/material.dart';
 
@@ -43,19 +44,64 @@ class AppColors {
 
   static ThemeData pickerTheme(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final primaryColor = AppColors.blueColor;
+    final onPrimary = Colors.white;
+    final surface = isDarkMode ? const Color(0xFF1E1E1E) : Colors.white;
+    final onSurface = isDarkMode ? Colors.white : Colors.black;
 
-    return Theme.of(context).copyWith(
-      colorScheme: ColorScheme.light(
-        primary: AppColors.blueColor,
-        onPrimary: AppColors.Dark,
-        onSurface: isDarkMode ? AppColors.white : AppColors.Dark,
-        surface: Theme.of(context).scaffoldBackgroundColor,
+    return ThemeData(
+      useMaterial3: true,
+      colorScheme: isDarkMode
+          ? ColorScheme.dark(
+              primary: primaryColor,
+              onPrimary: onPrimary,
+              surface: surface,
+              onSurface: onSurface,
+              primaryContainer: primaryColor.withValues(alpha: 0.3),
+              onPrimaryContainer: Colors.white,
+            )
+          : ColorScheme.light(
+              primary: primaryColor,
+              onPrimary: onPrimary,
+              surface: surface,
+              onSurface: onSurface,
+              primaryContainer: primaryColor.withValues(alpha: 0.2),
+              onPrimaryContainer: AppColors.bluedark,
+            ),
+      scaffoldBackgroundColor: surface,
+      dialogBackgroundColor: surface,
+      datePickerTheme: DatePickerThemeData(
+        headerBackgroundColor: primaryColor,
+        headerForegroundColor: onPrimary,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        headerHelpStyle: TextStyle(
+          color: isDarkMode ? Colors.white70 : Colors.white,
+          fontSize: 16.h,
+        ),
+        headerHeadlineStyle: TextStyle(
+          color: onPrimary,
+          fontSize: 24.h,
+          fontWeight: FontWeight.bold,
+        ),
+        dayStyle: const TextStyle(fontWeight: FontWeight.w500),
       ),
-      dialogBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      timePickerTheme: TimePickerThemeData(
+        backgroundColor: surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        hourMinuteShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        dayPeriodBorderSide: BorderSide(color: AppColors.blueColor),
+        dayPeriodColor: AppColors.blueColor,
+        dayPeriodShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        dialHandColor: AppColors.blueColor,
+        dialBackgroundColor: isDarkMode ? Colors.grey[800] : Colors.grey[200],
+        entryModeIconColor: AppColors.blueColor,
+      ),
       textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(foregroundColor: AppColors.blueColor),
+        style: TextButton.styleFrom(
+          foregroundColor: primaryColor,
+          textStyle: const TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
-      useMaterial3: false,
     );
   }
 

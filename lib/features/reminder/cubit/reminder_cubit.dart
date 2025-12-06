@@ -29,7 +29,6 @@ class ReminderCubit extends Cubit<ReminderState> {
     return super.close();
   }
 
-  // late final NotificationService notificationService;
   final notificationService = NotificationService.instance;
 
   FilterType get filter => state.filter;
@@ -52,13 +51,11 @@ class ReminderCubit extends Cubit<ReminderState> {
     }).toList();
   }
 
-  /// ===== Load All Reminders from Hive =====
   void _loadReminders() {
     final reminders = _box.values.toList();
     emit(state.copyWith(reminder: reminders, status: ReminderStateStatus.loaded));
   }
 
-  /// ===== Add New Reminder =====
   Future<void> addReminder({
     required String title,
     String? description,
@@ -193,7 +190,6 @@ class ReminderCubit extends Cubit<ReminderState> {
           reminder.longitude!,
         );
 
-        // Threshold: 100 meters
         if (distance <= 100) {
           _triggerLocationNotification(reminder);
         }
