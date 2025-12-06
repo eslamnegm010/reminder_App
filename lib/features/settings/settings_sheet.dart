@@ -61,7 +61,6 @@ void showSettings(BuildContext context) {
   );
 }
 
-// HEADER SECTION
 Widget _buildHeader(BuildContext ctx) {
   return Row(
     children: [
@@ -85,7 +84,6 @@ Widget _buildHeader(BuildContext ctx) {
   );
 }
 
-// SETTINGS LIST SECTION
 Widget _buildSettingsList(
   BuildContext context,
   BuildContext sheetContext,
@@ -113,7 +111,6 @@ Widget _buildSettingsList(
   );
 }
 
-// INDIVIDUAL ITEMS
 Widget _buildThemeItem(BuildContext context) {
   return SettingItem(
     icon: Icons.light_mode_outlined,
@@ -214,9 +211,7 @@ Widget _buildClearRemindersItem(BuildContext context, BuildContext sheetContext)
       if (confirmed == true) {
         final reminderCubit = context.read<ReminderCubit>();
         reminderCubit.clearAll();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: TitleText.verySmall(text: 'all_reminders_removed')),
-        );
+        showSnackbar(context, message: 'all_reminders_removed');
       }
     },
   );
@@ -244,15 +239,14 @@ Widget _buildSignOutItem(BuildContext context, BuildContext sheetContext) {
   return SettingItem(
     icon: Icons.logout,
     title: 'sign_out',
-    onTap: () {
+    onTap: () async {
       Navigator.pop(sheetContext);
-      context.read<UserCubit>().clearUser();
+      await context.read<UserCubit>().clearUser();
       showSnackbar(context, message: 'you_have_been_signed_out');
     },
   );
 }
 
-// FOOTER SECTION
 Widget _buildFooter() {
   return Row(
     mainAxisAlignment: MainAxisAlignment.center,

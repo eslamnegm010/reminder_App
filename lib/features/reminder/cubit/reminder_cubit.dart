@@ -127,8 +127,8 @@ class ReminderCubit extends Cubit<ReminderState> {
     }
   }
 
-  void clearAll() {
-    _box.clear();
+  Future<void> clearAll() async {
+    await _box.clear();
     _loadReminders();
   }
 

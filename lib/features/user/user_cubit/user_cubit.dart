@@ -27,8 +27,8 @@ class UserCubit extends Cubit<UserState> {
     emit(state.copyWith(status: UserStatus.loaded, user: user));
   }
 
-  void clearUser() {
-    _box.delete(_key);
+  Future<void> clearUser() async {
+    await _box.delete(_key);
     emit(const UserState());
   }
 }

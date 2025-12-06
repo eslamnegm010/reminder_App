@@ -3,11 +3,11 @@ import 'package:eslam_s_application/features/reminder/cubit/reminder_cubit.dart'
 import 'package:eslam_s_application/features/reminder/cubit/reminder_state.dart';
 import 'package:eslam_s_application/features/reminder/enum/filter_type.dart';
 import 'package:eslam_s_application/features/reminder/page/search_page.dart';
-import 'package:eslam_s_application/features/reminder/page/app_settings.dart';
 import 'package:eslam_s_application/features/reminder/widgets/empty_page.dart';
 import 'package:eslam_s_application/features/reminder/widgets/page_header.dart';
 import 'package:eslam_s_application/features/reminder/widgets/main_widgets/custom_reminder_card.dart';
 import 'package:eslam_s_application/features/reminder/widgets/main_widgets/create_new.dart';
+import 'package:eslam_s_application/features/settings/settings_sheet.dart';
 import 'package:eslam_s_application/sheared_widgets/others/app_divider.dart';
 import 'package:eslam_s_application/sheared_widgets/others/dismissible_wrapper.dart';
 import 'package:flutter/material.dart';
