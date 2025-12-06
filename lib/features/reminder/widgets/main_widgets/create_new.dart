@@ -16,6 +16,8 @@ import '../add_reminder_sheet/reminder_text_field.dart';
 import '../add_reminder_sheet/section_title_text.dart';
 import '../add_reminder_sheet/add_reminder_logic.dart';
 
+enum ReminderType { time, location }
+
 Future<void> showAddReminderBottomSheet(
   BuildContext context, {
   ReminderModel? reminder,
@@ -32,6 +34,9 @@ Future<void> showAddReminderBottomSheet(
   bool notificationsEnabled = reminder?.notificationsEnabled ?? true;
   LocationSearchResult? selectedLocation;
 
+  // Initialize Type
+  ReminderType reminderType = ReminderType.time; // Default
+
   if (reminder != null) {
     titleController.text = reminder.title;
     descController.text = reminder.description;
@@ -47,6 +52,7 @@ Future<void> showAddReminderBottomSheet(
     selectedTime = reminder.dateTime != null
         ? TimeOfDay.fromDateTime(reminder.dateTime!)
         : null;
+
     if (reminder.location != null &&
         reminder.latitude != null &&
         reminder.longitude != null) {
@@ -71,6 +77,13 @@ Future<void> showAddReminderBottomSheet(
           );
         }
       }
+    }
+
+    // Determine type based on existing data
+    if ((selectedLocation != null) && (selectedDate == null)) {
+      reminderType = ReminderType.location;
+    } else {
+      reminderType = ReminderType.time;
     }
   }
 
@@ -127,6 +140,74 @@ Future<void> showAddReminderBottomSheet(
                               ],
                             ),
                             const SizedBox(height: 14),
+
+                            // Reminder Type Selector
+                            Container(
+                              padding: const EdgeInsets.all(4),
+                              decoration: BoxDecoration(
+                                color: isDark
+                                    ? Colors.grey.withValues(alpha: 0.1)
+                                    : Colors.grey.shade200,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () => setState(
+                                        () => reminderType = ReminderType.time,
+                                      ),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 10),
+                                        decoration: BoxDecoration(
+                                          color: reminderType == ReminderType.time
+                                              ? AppColors.blueColor
+                                              : Colors.transparent,
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: TitleText(
+                                          subtractedSize: 10,
+                                          text: "date_and_time".tr().toUpperCase(),
+                                          color: reminderType == ReminderType.time
+                                              ? Colors.white
+                                              : AppColors.getTextColor(ctx),
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () => setState(
+                                        () => reminderType = ReminderType.location,
+                                      ),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(vertical: 10),
+                                        decoration: BoxDecoration(
+                                          color: reminderType == ReminderType.location
+                                              ? AppColors.blueColor
+                                              : Colors.transparent,
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: TitleText(
+                                          subtractedSize: 10,
+                                          text: "Location".tr().toUpperCase(),
+                                          color: reminderType == ReminderType.location
+                                              ? Colors.white
+                                              : AppColors.getTextColor(ctx),
+
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+
                             ReminderTextField(
                               controller: titleController,
                               focusNode: titleFocus,
@@ -144,57 +225,64 @@ Future<void> showAddReminderBottomSheet(
                               maxLines: 3,
                             ),
                             const SizedBox(height: 20),
-                            const SectionTitleText(text: "date_and_time"),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: DateTimePickerButton(
-                                    icon: AppAssets.calendarIcon,
-                                    label: selectedDate == null
-                                        ? "select_date".tr()
-                                        : DateFormat('yyyy-MM-dd').format(selectedDate!),
-                                    onTap: () async {
-                                      final picked = await showDatePicker(
-                                        context: ctx,
-                                        initialDate: selectedDate ?? DateTime.now(),
-                                        firstDate: DateTime(2020),
-                                        lastDate: DateTime(2100),
-                                        builder: (c, child) => Theme(
-                                          data: AppColors.pickerTheme(c),
-                                          child: child!,
-                                        ),
-                                      );
-                                      if (picked != null)
-                                        setState(() => selectedDate = picked);
-                                    },
+
+                            // Time & Date Section
+                            if (reminderType == ReminderType.time) ...[
+                              const SectionTitleText(text: "date_and_time"),
+                              const SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: DateTimePickerButton(
+                                      icon: AppAssets.calendarIcon,
+                                      label: selectedDate == null
+                                          ? "select_date".tr()
+                                          : DateFormat(
+                                              'yyyy-MM-dd',
+                                            ).format(selectedDate!),
+                                      onTap: () async {
+                                        final picked = await showDatePicker(
+                                          context: ctx,
+                                          initialDate: selectedDate ?? DateTime.now(),
+                                          firstDate: DateTime(2020),
+                                          lastDate: DateTime(2100),
+                                          builder: (c, child) => Theme(
+                                            data: AppColors.pickerTheme(c),
+                                            child: child!,
+                                          ),
+                                        );
+                                        if (picked != null)
+                                          setState(() => selectedDate = picked);
+                                      },
+                                    ),
                                   ),
-                                ),
-                                const SizedBox(width: 10),
-                                Expanded(
-                                  child: DateTimePickerButton(
-                                    icon: AppAssets.alarm,
-                                    label: selectedTime == null
-                                        ? "select_time".tr()
-                                        : selectedTime!.format(ctx),
-                                    onTap: () async {
-                                      final picked = await showTimePicker(
-                                        context: ctx,
-                                        initialTime: selectedTime ?? TimeOfDay.now(),
-                                        builder: (c, child) => Theme(
-                                          data: AppColors.pickerTheme(c),
-                                          child: child!,
-                                        ),
-                                        barrierColor: Colors.transparent,
-                                      );
-                                      if (picked != null)
-                                        setState(() => selectedTime = picked);
-                                    },
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: DateTimePickerButton(
+                                      icon: AppAssets.alarm,
+                                      label: selectedTime == null
+                                          ? "select_time".tr()
+                                          : selectedTime!.format(ctx),
+                                      onTap: () async {
+                                        final picked = await showTimePicker(
+                                          context: ctx,
+                                          initialTime: selectedTime ?? TimeOfDay.now(),
+                                          builder: (c, child) => Theme(
+                                            data: AppColors.pickerTheme(c),
+                                            child: child!,
+                                          ),
+                                          barrierColor: Colors.transparent,
+                                        );
+                                        if (picked != null)
+                                          setState(() => selectedTime = picked);
+                                      },
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 20),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                            ],
+
                             const SectionTitleText(text: "priority"),
                             const SizedBox(height: 10),
                             Row(
@@ -239,17 +327,22 @@ Future<void> showAddReminderBottomSheet(
                               ],
                             ),
                             const SizedBox(height: 20),
-                            const SectionTitleText(text: "location"),
-                            const SizedBox(height: 10),
-                            LocationPicker(
-                              location: selectedLocation?.location,
-                              hint: 'select_location',
-                              helper: 'location_helper_text',
-                              onLocationSelected: (loc) =>
-                                  setState(() => selectedLocation = loc),
-                              onClear: () => setState(() => selectedLocation = null),
-                            ),
-                            const SizedBox(height: 20),
+
+                            // Location Section
+                            if (reminderType == ReminderType.location) ...[
+                              const SectionTitleText(text: "location"),
+                              const SizedBox(height: 10),
+                              LocationPicker(
+                                location: selectedLocation?.location,
+                                hint: 'select_location',
+                                helper: 'location_helper_text',
+                                onLocationSelected: (loc) =>
+                                    setState(() => selectedLocation = loc),
+                                onClear: () => setState(() => selectedLocation = null),
+                              ),
+                              const SizedBox(height: 20),
+                            ],
+
                             NotificationToggle(
                               value: notificationsEnabled,
                               onChanged: (v) => setState(() => notificationsEnabled = v),
@@ -283,11 +376,18 @@ Future<void> showAddReminderBottomSheet(
                                     titleController: titleController,
                                     descController: descController,
                                     selectedPriority: selectedPriority,
-                                    selectedDate: selectedDate,
-                                    selectedTime: selectedTime,
+                                    selectedDate: reminderType == ReminderType.time
+                                        ? selectedDate
+                                        : null,
+                                    selectedTime: reminderType == ReminderType.time
+                                        ? selectedTime
+                                        : null,
                                     notificationsEnabled: notificationsEnabled,
                                     reminderId: reminder?.id,
-                                    selectedLocation: selectedLocation,
+                                    selectedLocation:
+                                        reminderType == ReminderType.location
+                                        ? selectedLocation
+                                        : null,
                                   );
                                 },
                               ),
