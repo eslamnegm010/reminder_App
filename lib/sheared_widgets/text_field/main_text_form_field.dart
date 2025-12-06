@@ -16,6 +16,7 @@ abstract class MainTextFormField extends StatefulWidget {
   final EdgeInsetsGeometry? margin;
   final bool enabled;
   final int? maxLength;
+  final TextStyle? hintStyle;
   final List<TextInputFormatter>? inputFormatters;
   final Iterable<String>? autofillHints;
   final bool expanded;
@@ -45,48 +46,50 @@ abstract class MainTextFormField extends StatefulWidget {
   final double? cursorHeight;
   final AutovalidateMode? autovalidateMode;
   final bool? autofocus;
-  const MainTextFormField(
-      {super.key,
-      required this.currentFocusNode,
-      this.nextFocusNode,
-      required this.currentController,
-      required this.hintText,
-      this.keyboardType,
-      this.textInputAction,
-      required this.validator,
-      this.textCapitalization = TextCapitalization.none,
-      this.margin = const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      this.enabled = true,
-      this.maxLength,
-      this.inputFormatters,
-      this.expanded = false,
-      this.maxLines,
-      this.contentPadding,
-      this.borderColor,
-      this.hintColor,
-      this.enableSuggestions = false,
-      this.showScrollbar = false,
-      this.obscureText,
-      this.suffixIcon,
-      this.onChanged,
-      this.onFieldSubmitted,
-      this.fillColor,
-      this.cursorColor,
-      this.style,
-      this.prefixIcon,
-      this.textColor,
-      this.onTap,
-      this.onTapOutside,
-      this.onEditingComplete,
-      this.autofillHints,
-      this.readOnly,
-      this.isOutlineInputBorder = true,
-      this.borderRadius = const BorderRadius.all(Radius.circular(0.0)),
-      this.textAlign = TextAlign.start,
-      this.fontWeight,
-      this.cursorHeight,
-      this.autovalidateMode,
-      this.autofocus = false});
+  const MainTextFormField({
+    super.key,
+    required this.currentFocusNode,
+    this.nextFocusNode,
+    this.hintStyle,
+    required this.currentController,
+    required this.hintText,
+    this.keyboardType,
+    this.textInputAction,
+    required this.validator,
+    this.textCapitalization = TextCapitalization.none,
+    this.margin = const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+    this.enabled = true,
+    this.maxLength,
+    this.inputFormatters,
+    this.expanded = false,
+    this.maxLines,
+    this.contentPadding,
+    this.borderColor,
+    this.hintColor,
+    this.enableSuggestions = false,
+    this.showScrollbar = false,
+    this.obscureText,
+    this.suffixIcon,
+    this.onChanged,
+    this.onFieldSubmitted,
+    this.fillColor,
+    this.cursorColor,
+    this.style,
+    this.prefixIcon,
+    this.textColor,
+    this.onTap,
+    this.onTapOutside,
+    this.onEditingComplete,
+    this.autofillHints,
+    this.readOnly,
+    this.isOutlineInputBorder = true,
+    this.borderRadius = const BorderRadius.all(Radius.circular(0.0)),
+    this.textAlign = TextAlign.start,
+    this.fontWeight,
+    this.cursorHeight,
+    this.autovalidateMode,
+    this.autofocus = false,
+  });
 
   @override
   MainTextFormFieldState createState() => MainTextFormFieldState();
@@ -109,13 +112,15 @@ class MainTextFormFieldState extends State<MainTextFormField> {
       onTap: () {
         var selection = widget.currentController.selection;
         var length = widget.currentController.text.length;
-        var isLast = selection == TextSelection.fromPosition(TextPosition(offset: length - 1));
+        var isLast =
+            selection == TextSelection.fromPosition(TextPosition(offset: length - 1));
         if (isLast) {
           selection = TextSelection.fromPosition(TextPosition(offset: length));
         }
         if (widget.onTap != null) widget.onTap!();
       },
-      cursorColor: widget.cursorColor ?? widget.textColor ?? Theme.of(context).canvasColor,
+      cursorColor:
+          widget.cursorColor ?? widget.textColor ?? Theme.of(context).canvasColor,
       autofillHints: widget.autofillHints,
       textDirection: _currentDir,
       focusNode: widget.currentFocusNode,
@@ -128,16 +133,30 @@ class MainTextFormFieldState extends State<MainTextFormField> {
       maxLength: widget.maxLength,
       expands: widget.expanded,
       enableSuggestions: widget.enableSuggestions,
-      style: widget.style ??
+      style:
+          widget.style ??
           context
               .sizeHelper(
-                mobileLarge: textTheme.bodySmall!.copyWith(fontSize: arabic ? 12.0 : 10.0),
-                tabletSmall: textTheme.bodyMedium!.copyWith(fontSize: arabic ? 16.0 : 14.0),
-                tabletNormal: textTheme.bodySmall!.copyWith(fontSize: arabic ? 20.0 : 18.0),
-                desktopSmall: textTheme.bodySmall!.copyWith(fontSize: arabic ? 22.0 : 20.0),
-                desktopExtraLarge: textTheme.bodySmall!.copyWith(fontSize: arabic ? 24.0 : 22.0),
+                mobileLarge: textTheme.bodySmall!.copyWith(
+                  fontSize: arabic ? 12.0 : 10.0,
+                ),
+                tabletSmall: textTheme.bodyMedium!.copyWith(
+                  fontSize: arabic ? 16.0 : 14.0,
+                ),
+                tabletNormal: textTheme.bodySmall!.copyWith(
+                  fontSize: arabic ? 20.0 : 18.0,
+                ),
+                desktopSmall: textTheme.bodySmall!.copyWith(
+                  fontSize: arabic ? 22.0 : 20.0,
+                ),
+                desktopExtraLarge: textTheme.bodySmall!.copyWith(
+                  fontSize: arabic ? 24.0 : 22.0,
+                ),
               )
-              .copyWith(color: widget.textColor ?? Theme.of(context).canvasColor, fontWeight: widget.fontWeight),
+              .copyWith(
+                color: widget.textColor ?? Theme.of(context).canvasColor,
+                fontWeight: widget.fontWeight,
+              ),
       textCapitalization: widget.textCapitalization,
       textAlign: widget.textAlign,
       textAlignVertical: widget.expanded ? const TextAlignVertical(y: -0.8) : null,
@@ -145,62 +164,97 @@ class MainTextFormFieldState extends State<MainTextFormField> {
       decoration: InputDecoration(
         fillColor: widget.enabled ? widget.fillColor ?? Colors.white : widget.fillColor,
         filled: true,
-        contentPadding: widget.contentPadding ?? const EdgeInsets.fromLTRB(18.0, 0, 18.0, 0),
+        contentPadding:
+            widget.contentPadding ?? const EdgeInsets.fromLTRB(18.0, 0, 18.0, 0),
         hintText: widget.hintText.tr(),
         alignLabelWithHint: true,
-        hintStyle: context
-            .sizeHelper(
-              // mobileLarge: textTheme.bodySmall!.copyWith(fontSize: 16.0),
-              // tabletSmall: textTheme.bodyMedium!.copyWith(fontSize: 16.0),
-              // tabletNormal: textTheme.bodySmall!.copyWith(fontSize: 16.0),
-              // desktopSmall: textTheme.bodySmall!.copyWith(fontSize: 24.0),
-              // desktopExtraLarge: textTheme.bodySmall!.copyWith(fontSize: 26.0),
-              mobileLarge: textTheme.bodySmall!.copyWith(fontSize: arabic ? 12.0 : 10.0),
-              tabletSmall: textTheme.bodyMedium!.copyWith(fontSize: arabic ? 16.0 : 14.0),
-              tabletNormal: textTheme.bodySmall!.copyWith(fontSize: arabic ? 20.0 : 18.0),
-              desktopSmall: textTheme.bodySmall!.copyWith(fontSize: arabic ? 22.0 : 20.0),
-              desktopExtraLarge: textTheme.bodySmall!.copyWith(fontSize: arabic ? 24.0 : 22.0),
-            )
-            .copyWith(
-                color: widget.hintColor ?? widget.borderColor ?? AppColors.greyColor, fontWeight: FontWeight.bold),
+        hintStyle:
+            widget.hintStyle ??
+            context
+                .sizeHelper(
+                  // mobileLarge: textTheme.bodySmall!.copyWith(fontSize: 16.0),
+                  // tabletSmall: textTheme.bodyMedium!.copyWith(fontSize: 16.0),
+                  // tabletNormal: textTheme.bodySmall!.copyWith(fontSize: 16.0),
+                  // desktopSmall: textTheme.bodySmall!.copyWith(fontSize: 24.0),
+                  // desktopExtraLarge: textTheme.bodySmall!.copyWith(fontSize: 26.0),
+                  mobileLarge: textTheme.bodySmall!.copyWith(
+                    fontSize: arabic ? 12.0 : 10.0,
+                  ),
+                  tabletSmall: textTheme.bodyMedium!.copyWith(
+                    fontSize: arabic ? 16.0 : 14.0,
+                  ),
+                  tabletNormal: textTheme.bodySmall!.copyWith(
+                    fontSize: arabic ? 20.0 : 14.0,
+                  ),
+                  desktopSmall: textTheme.bodySmall!.copyWith(
+                    fontSize: arabic ? 22.0 : 20.0,
+                  ),
+                  desktopExtraLarge: textTheme.bodySmall!.copyWith(
+                    fontSize: arabic ? 24.0 : 22.0,
+                  ),
+                )
+                .copyWith(
+                  color: widget.hintColor ?? widget.borderColor ?? AppColors.greyColor,
+                  fontWeight: FontWeight.bold,
+                ),
         suffixIcon: widget.suffixIcon,
         prefixIcon: widget.prefixIcon,
-        enabledBorder: (widget.isOutlineInputBorder ? OutlineInputBorder.new : UnderlineInputBorder.new)(
-            borderRadius: widget.isOutlineInputBorder ? widget.borderRadius ?? BorderRadius.zero : BorderRadius.zero,
-            borderSide: BorderSide(
-              color: widget.borderColor ?? Theme.of(context).secondaryHeaderColor,
-              width: borderWidth,
-            )),
-        focusedBorder: (widget.isOutlineInputBorder ? OutlineInputBorder.new : UnderlineInputBorder.new)(
-          borderRadius: widget.isOutlineInputBorder ? widget.borderRadius ?? BorderRadius.zero : BorderRadius.zero,
-          borderSide: BorderSide(
-            color: widget.borderColor ?? Theme.of(context).secondaryHeaderColor,
-            width: borderWidth,
-          ),
-        ),
-        errorBorder: (widget.isOutlineInputBorder ? OutlineInputBorder.new : UnderlineInputBorder.new)(
-          borderSide: const BorderSide(
-            color: Colors.red,
-            width: borderWidth,
-          ),
-          borderRadius: widget.isOutlineInputBorder ? widget.borderRadius ?? BorderRadius.zero : BorderRadius.zero,
-        ),
-        focusedErrorBorder: (widget.isOutlineInputBorder ? OutlineInputBorder.new : UnderlineInputBorder.new)(
-          borderSide: const BorderSide(
-            color: Colors.red,
-            width: borderWidth,
-          ),
-          borderRadius: widget.isOutlineInputBorder ? widget.borderRadius ?? BorderRadius.zero : BorderRadius.zero,
-        ),
+        enabledBorder:
+            (widget.isOutlineInputBorder
+            ? OutlineInputBorder.new
+            : UnderlineInputBorder.new)(
+              borderRadius: widget.isOutlineInputBorder
+                  ? widget.borderRadius ?? BorderRadius.zero
+                  : BorderRadius.zero,
+              borderSide: BorderSide(
+                color: widget.borderColor ?? Theme.of(context).secondaryHeaderColor,
+                width: borderWidth,
+              ),
+            ),
+        focusedBorder:
+            (widget.isOutlineInputBorder
+            ? OutlineInputBorder.new
+            : UnderlineInputBorder.new)(
+              borderRadius: widget.isOutlineInputBorder
+                  ? widget.borderRadius ?? BorderRadius.zero
+                  : BorderRadius.zero,
+              borderSide: BorderSide(
+                color: widget.borderColor ?? Theme.of(context).secondaryHeaderColor,
+                width: borderWidth,
+              ),
+            ),
+        errorBorder:
+            (widget.isOutlineInputBorder
+            ? OutlineInputBorder.new
+            : UnderlineInputBorder.new)(
+              borderSide: const BorderSide(color: Colors.red, width: borderWidth),
+              borderRadius: widget.isOutlineInputBorder
+                  ? widget.borderRadius ?? BorderRadius.zero
+                  : BorderRadius.zero,
+            ),
+        focusedErrorBorder:
+            (widget.isOutlineInputBorder
+            ? OutlineInputBorder.new
+            : UnderlineInputBorder.new)(
+              borderSide: const BorderSide(color: Colors.red, width: borderWidth),
+              borderRadius: widget.isOutlineInputBorder
+                  ? widget.borderRadius ?? BorderRadius.zero
+                  : BorderRadius.zero,
+            ),
         counterText: '',
         border: InputBorder.none,
-        disabledBorder: (widget.isOutlineInputBorder ? OutlineInputBorder.new : UnderlineInputBorder.new)(
-          borderRadius: widget.isOutlineInputBorder ? widget.borderRadius ?? BorderRadius.zero : BorderRadius.zero,
-          borderSide: BorderSide(
-            color: widget.borderColor ?? Theme.of(context).secondaryHeaderColor,
-            width: borderWidth,
-          ),
-        ),
+        disabledBorder:
+            (widget.isOutlineInputBorder
+            ? OutlineInputBorder.new
+            : UnderlineInputBorder.new)(
+              borderRadius: widget.isOutlineInputBorder
+                  ? widget.borderRadius ?? BorderRadius.zero
+                  : BorderRadius.zero,
+              borderSide: BorderSide(
+                color: widget.borderColor ?? Theme.of(context).secondaryHeaderColor,
+                width: borderWidth,
+              ),
+            ),
       ),
       validator: widget.validator,
       onEditingComplete: widget.onEditingComplete,
@@ -225,10 +279,7 @@ class MainTextFormFieldState extends State<MainTextFormField> {
     if (widget.showScrollbar) textFieldWidget = Scrollbar(child: textFieldWidget);
 
     return widget.margin != null
-        ? Padding(
-            padding: widget.margin!,
-            child: textFieldWidget,
-          )
+        ? Padding(padding: widget.margin!, child: textFieldWidget)
         : textFieldWidget;
   }
 

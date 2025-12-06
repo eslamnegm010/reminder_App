@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:eslam_s_application/res/theme/app_colors.dart';
 import 'package:eslam_s_application/sheared_widgets/text/title_text.dart';
 
+enum MapType { standard, satellite }
+
 class LocationMapControls extends StatelessWidget {
-  final String selectedMapType;
-  final ValueChanged<String> onMapTypeChanged;
+  final MapType selectedMapType;
+  final ValueChanged<MapType> onMapTypeChanged;
   final VoidCallback onZoomIn;
   final VoidCallback onZoomOut;
   final VoidCallback onCenterLocation;
@@ -24,15 +26,15 @@ class LocationMapControls extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
         children: [
-          _buildMapTypeChip(context, 'standard', 'standard', Icons.map_outlined),
+          _buildMapTypeChip(context, MapType.standard, 'standard', Icons.map_outlined),
           const SizedBox(width: 5),
           _buildMapTypeChip(
             context,
-            'satellite',
+            MapType.satellite,
             'satellite',
             Icons.satellite_alt_outlined,
           ),
-          const SizedBox(width: 5),
+          const Spacer(),
           _buildZoomControls(),
         ],
       ),
@@ -41,7 +43,7 @@ class LocationMapControls extends StatelessWidget {
 
   Widget _buildMapTypeChip(
     BuildContext context,
-    String type,
+    MapType type,
     String label,
     IconData icon,
   ) {

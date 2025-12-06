@@ -59,7 +59,13 @@
   "reminder_scheduled_for": "محدد في {}",
   "location_helper_text": "اربط هذا التذكير بمكان معين، وستتلقى إشعارًا عند الوصول إليه.",
   "select_location": "اختر المكان",
-  "pick_location":"اختر المكان"
+  "pick_location":"اختر المكان",
+  "tap_map_or_search":"اضغط على الخريطة أو البحث لتحديد المكان",
+  "search_location": "بحث عن المكان" ,
+  "selected_coordinates": "الموقع المحدد",
+  "save_for_later": "حفظ لوقت لاحق",
+  "name_this_location": "قم بتسمية هذا الموقع" 
+
 
 
 

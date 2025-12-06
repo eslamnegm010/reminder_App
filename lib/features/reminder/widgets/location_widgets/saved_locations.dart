@@ -1,6 +1,6 @@
 import 'package:eslam_s_application/core/location_services/Extensions/latLng_extensions.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../../../../core/location_services/models/location_model.dart';
 import '../../../../core/utils/app_export.dart';
@@ -9,18 +9,19 @@ class SavedLocationsList extends StatelessWidget {
   final List<SavedLocation> locations;
   final ValueChanged<SavedLocation> onLocationSelected;
   final ValueChanged<SavedLocation>? onLocationDeleted;
+  final LatLng? selectedLocation;
 
   const SavedLocationsList({
     Key? key,
     required this.locations,
     required this.onLocationSelected,
     this.onLocationDeleted,
+    this.selectedLocation,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     if (locations.isEmpty) return SizedBox.shrink();
-    //_buildEmptyState(context);
 
     return ListView.separated(
       shrinkWrap: true,
@@ -31,41 +32,15 @@ class SavedLocationsList extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyState(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(32),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.location_off_outlined,
-            size: 64,
-            color: AppColors.getGrayTextColor(context).withValues(alpha: 0.4),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'no_saved_locations'.tr(),
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: AppColors.getGrayTextColor(context),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'tap_to_save_location'.tr(),
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 13,
-              color: AppColors.getGrayTextColor(context).withValues(alpha: 0.7),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildLocationCard(BuildContext context, SavedLocation location) {
+    bool isSelected = false;
+    if (selectedLocation != null) {
+      if (location.coordinates.latitude == selectedLocation!.latitude &&
+          location.coordinates.longitude == selectedLocation!.longitude) {
+        isSelected = true;
+      }
+    }
+
     return Dismissible(
       key: Key(location.id),
       direction: DismissDirection.endToStart,
@@ -94,7 +69,12 @@ class SavedLocationsList extends StatelessWidget {
                 ],
               ),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.blueColor.withValues(alpha: 0.2)),
+              border: Border.all(
+                color: isSelected
+                    ? AppColors.blueColor
+                    : AppColors.blueColor.withValues(alpha: 0.2),
+                width: isSelected ? 2 : 1,
+              ),
             ),
             child: Row(
               children: [
@@ -115,28 +95,23 @@ class SavedLocationsList extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        location.name,
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.getTextColor(context),
-                        ),
+                      TitleText(
+                        text: location.name,
+                        color: AppColors.getTextColor(context),
+                        fontWeight: FontWeight.w600,
+                        subtractedSize: 10,
                       ),
                       const SizedBox(height: 4),
-                      Text(
-                        location.address ?? location.coordinates.toFormattedString(),
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AppColors.getGrayTextColor(context),
-                        ),
+                      SubtitleText(
+                        text:
+                            location.address ?? location.coordinates.toFormattedString(),
+                        color: AppColors.getGrayTextColor(context),
                         maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                        subtractedSize: 5,
                       ),
                     ],
                   ),
                 ),
-                Icon(Icons.chevron_right_rounded, color: AppColors.blueColor),
               ],
             ),
           ),

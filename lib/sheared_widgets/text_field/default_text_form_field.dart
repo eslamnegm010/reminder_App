@@ -24,7 +24,9 @@ class DefaultTextFormField extends MainTextFormField {
     super.fillColor,
     super.hintColor,
     super.textColor,
+    super.hintStyle,
     super.borderColor,
+    super.textInputAction,
     final double borderRadius = 10,
     super.textCapitalization = TextCapitalization.sentences,
     final String? Function(String?)? validator,
@@ -36,10 +38,12 @@ class DefaultTextFormField extends MainTextFormField {
     double? borderWidth,
     super.cursorHeight,
     super.autovalidateMode,
+    super.autofocus,
   }) : super(
-            validator: validator ?? (isRequired ? Validator().validateEmptyField : null),
-            hintText: hint,
-            borderRadius: BorderRadius.circular(borderRadius),
-            onTapOutside: currentFocusNode?.unfocus,
-            onFieldSubmitted: onSubmitted);
+         validator: validator ?? (isRequired ? Validator().validateEmptyField : null),
+         hintText: hint,
+         borderRadius: BorderRadius.circular(borderRadius),
+         onTapOutside: currentFocusNode?.unfocus,
+         onFieldSubmitted: onSubmitted,
+       );
 }

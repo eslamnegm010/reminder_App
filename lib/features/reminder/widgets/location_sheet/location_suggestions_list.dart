@@ -1,3 +1,4 @@
+import 'package:eslam_s_application/sheared_widgets/text/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:eslam_s_application/res/theme/app_colors.dart';
 import 'package:eslam_s_application/core/location_services/models/location_model.dart';
@@ -55,15 +56,12 @@ class LocationSuggestionsList extends StatelessWidget {
         ),
         child: Icon(Icons.location_on_outlined, color: AppColors.blueColor, size: 20),
       ),
-      title: Text(
-        result.displayName,
+      title: TitleText(
+        text: result.displayName,
         maxLines: 2,
-        overflow: TextOverflow.ellipsis,
-        style: TextStyle(
-          fontSize: 13,
-          fontWeight: FontWeight.w600,
-          color: AppColors.getTextColor(context),
-        ),
+        subtractedSize: 11,
+        color: AppColors.getTextColor(context),
+        fontWeight: FontWeight.w600,
       ),
       trailing: Icon(
         Icons.arrow_forward_ios_rounded,

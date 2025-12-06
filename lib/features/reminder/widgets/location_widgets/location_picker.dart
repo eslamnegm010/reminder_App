@@ -1,15 +1,15 @@
 import 'package:eslam_s_application/core/location_services/Extensions/latLng_extensions.dart';
-import 'package:eslam_s_application/core/location_services/ensure_location_permissions.dart';
-import 'package:eslam_s_application/core/location_services/location_manger.dart';
-import 'package:eslam_s_application/core/location_services/location_search_service.dart';
 import 'package:eslam_s_application/core/location_services/models/location_model.dart';
 import 'package:eslam_s_application/features/reminder/widgets/location_widgets/saved_locations.dart';
 import 'package:eslam_s_application/features/reminder/widgets/main_widgets/location_sheet.dart';
-import 'package:eslam_s_application/sheared_widgets/others/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../../../../core/utils/app_export.dart';
+
+import 'package:eslam_s_application/features/reminder/cubit/location_picker_cubit.dart';
+import 'package:eslam_s_application/features/reminder/cubit/location_picker_state.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LocationPicker extends StatefulWidget {
   final LatLng? location;
@@ -32,62 +32,72 @@ class LocationPicker extends StatefulWidget {
 }
 
 class _LocationPickerState extends State<LocationPicker> {
-  bool showLocationOptions = false;
-  String? locationAddress;
-
   @override
-  void initState() {
-    super.initState();
-    _loadLocationAddress();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => LocationPickerCubit()..init(widget.location),
+      child: Builder(
+        builder: (context) => _LocationPickerContent(
+          location: widget.location,
+          hint: widget.hint,
+          helper: widget.helper,
+          onLocationSelected: widget.onLocationSelected,
+          onClear: widget.onClear,
+        ),
+      ),
+    );
   }
+}
 
-  @override
-  void didUpdateWidget(LocationPicker oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (widget.location != oldWidget.location) {
-      _loadLocationAddress();
-    }
-  }
+class _LocationPickerContent extends StatelessWidget {
+  final LatLng? location;
+  final String hint;
+  final String helper;
+  final ValueChanged<LocationSearchResult?> onLocationSelected;
+  final VoidCallback? onClear;
 
-  Future<void> _loadLocationAddress() async {
-    if (widget.location != null) {
-      final addr = await LocationSearchService.reverseGeocode(widget.location!);
-      if (mounted) {
-        setState(() => locationAddress = addr);
-      }
-    }
-  }
+  const _LocationPickerContent({
+    Key? key,
+    this.location,
+    required this.hint,
+    required this.helper,
+    required this.onLocationSelected,
+    this.onClear,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
+    return BlocBuilder<LocationPickerCubit, LocationPickerState>(
+      builder: (context, state) {
+        final cubit = context.read<LocationPickerCubit>();
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(child: _buildLocationButton(context)),
-            if (widget.location != null) ...[
-              const SizedBox(width: 8),
-              _buildClearButton(context),
+            Row(
+              children: [
+                Expanded(child: _buildLocationButton(context, cubit)),
+                if (location != null) ...[
+                  const SizedBox(width: 8),
+                  _buildClearButton(context, cubit),
+                ],
+              ],
+            ),
+            const SizedBox(height: 8),
+            _buildSavedPlaces(context, cubit, state),
+
+            if (location != null && state.showLocationOptions) ...[
+              _buildLocationDetails(context, state),
             ],
           ],
-        ),
-        // implementaion for saved Locations
-        const SizedBox(height: 8),
-        savedPlaces(),
-        const SizedBox(height: 8),
-
-        if (widget.location != null && showLocationOptions) ...[
-          const SizedBox(height: 16),
-          _buildLocationDetails(context),
-        ],
-      ],
+        );
+      },
     );
   }
 
-  Widget _buildLocationButton(BuildContext context) {
+  Widget _buildLocationButton(BuildContext context, LocationPickerCubit cubit) {
     return ElevatedButton.icon(
-      onPressed: _openLocationPicker,
+      onPressed: () => _openLocationPicker(context, cubit),
       style: ElevatedButton.styleFrom(
         backgroundColor: AppColors.blueColor.withValues(alpha: 0.08),
         foregroundColor: AppColors.blueColor,
@@ -100,11 +110,11 @@ class _LocationPickerState extends State<LocationPicker> {
       ),
       icon: Icon(Icons.location_on_rounded, size: 20),
       label: Text(
-        widget.location != null ? widget.location!.toFormattedString() : widget.hint.tr(),
+        location != null ? location!.toFormattedString() : hint.tr(),
         style: TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w500,
-          color: widget.location != null
+          color: location != null
               ? AppColors.blueColor
               : AppColors.getGrayTextColor(context),
         ),
@@ -112,13 +122,10 @@ class _LocationPickerState extends State<LocationPicker> {
     );
   }
 
-  Widget _buildClearButton(BuildContext context) {
+  Widget _buildClearButton(BuildContext context, LocationPickerCubit cubit) {
     return IconButton(
-      onPressed: () {
-        widget.onLocationSelected(null);
-        widget.onClear?.call();
-        setState(() => showLocationOptions = false);
-      },
+      onPressed: () =>
+          cubit.clearSelection(onSelected: onLocationSelected, onClear: onClear),
       style: IconButton.styleFrom(
         backgroundColor: AppColors.redColor.withValues(alpha: 0.1),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -127,12 +134,10 @@ class _LocationPickerState extends State<LocationPicker> {
     );
   }
 
-  Widget _buildLocationDetails(BuildContext context) {
-    // Card for location details after selection
+  Widget _buildLocationDetails(BuildContext context, LocationPickerState state) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade50,
         borderRadius: BorderRadius.circular(16),
@@ -141,19 +146,12 @@ class _LocationPickerState extends State<LocationPicker> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildDetailRow(
-            context,
-            Icons.pin_drop_rounded,
-            'coordinates'.tr(),
-            widget.location!.toFormattedString(),
-          ),
-          if (locationAddress != null) ...[
-            const SizedBox(height: 12),
+          if (state.locationAddress != null) ...[
             _buildDetailRow(
               context,
               Icons.location_city_rounded,
               'address'.tr(),
-              locationAddress!,
+              state.locationAddress!,
             ),
           ],
           const SizedBox(height: 5),
@@ -204,100 +202,50 @@ class _LocationPickerState extends State<LocationPicker> {
     );
   }
 
-  Widget savedPlaces() {
-    return FutureBuilder<List<SavedLocation>>(
-      future: LocationManager.getSavedLocations(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) return CircularProgressIndicator();
-        final locations = snapshot.data!;
-        return SavedLocationsList(
-          locations: locations,
-          onLocationSelected: (loc) {
-            Navigator.pop(context, loc.coordinates);
-          },
-          onLocationDeleted: (loc) async {
-            await LocationManager.deleteSavedLocation(loc.id);
-          },
+  Widget _buildSavedPlaces(
+    BuildContext context,
+    LocationPickerCubit cubit,
+    LocationPickerState state,
+  ) {
+    if (state.isLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
+
+    return SavedLocationsList(
+      locations: state.savedLocations,
+      selectedLocation: location,
+      onLocationSelected: (loc) {
+        final result = LocationSearchResult(
+          displayName: loc.name,
+          type: 'saved',
+          location: loc.coordinates,
+          address: {'address': loc.address},
+        );
+        cubit.handleLocationSelection(result: result, onSelected: onLocationSelected);
+      },
+      onLocationDeleted: (loc) {
+        cubit.deleteSavedLocation(
+          loc: loc,
+          currentSelectedCoordinates: location,
+          onSelected: onLocationSelected,
+          onClear: onClear,
         );
       },
     );
   }
 
-  Future<void> _openLocationPicker() async {
-    // the main function to open the location picker
+  Future<void> _openLocationPicker(
+    BuildContext context,
+    LocationPickerCubit cubit,
+  ) async {
     final picked = await showModalBottomSheet<LocationSearchResult>(
       context: context,
       isScrollControlled: true,
-      builder: (_) => LocationSelectionSheet(initialLocation: widget.location),
+      builder: (_) => LocationSelectionSheet(initialLocation: location),
     );
 
     if (picked != null) {
-      _handleLocationSelected(picked);
+      cubit.handleLocationSelection(result: picked, onSelected: onLocationSelected);
     }
-  }
-
-  // void _handleLocationSelected(LatLng location) {
-  //   widget.onLocationSelected(location);
-  //   _loadLocationAddress();
-  //   setState(() => showLocationOptions = true);
-  // }
-  // void _handleLocationSelected(LatLng location) async {
-  //   widget.onLocationSelected(location);
-  //   _loadLocationAddress();
-  //   setState(() => showLocationOptions = true);
-
-  //   final newSavedLocation = SavedLocation(
-  //     createdAt: DateTime.now(), // TODO
-  //     id: DateTime.now().millisecondsSinceEpoch.toString(),
-  //     name: 'Saved Location ${DateTime.now().minute}',
-  //     coordinates: location,
-  //     address: locationAddress,
-  //     type: LocationType.other,
-  //   );
-
-  //   await LocationManager.saveLocation(newSavedLocation);
-  // }
-  void _handleLocationSelected(LocationSearchResult result) async {
-    // final ok = await ensureLocationPermissions(context);
-    // if (!ok) {
-    //   showSnackbar(context, message: 'Please enable background location to set location reminders.');
-    //   return;
-    // }
-    widget.onLocationSelected(result);
-    // _loadLocationAddress(); // We might already have it in result
-    setState(() {
-      showLocationOptions = true;
-      locationAddress = result.displayName; // Or address
-    });
-
-    final id = DateTime.now().millisecondsSinceEpoch.toString();
-    final newSavedLocation = SavedLocation(
-      createdAt: DateTime.now(),
-      id: id,
-      name: 'Saved Location ${DateTime.now().minute}',
-      coordinates: result.location,
-      address: locationAddress,
-      type: LocationType.other,
-    );
-
-    await LocationManager.saveLocation(newSavedLocation);
-    // final service = LocationReminderService();
-    // try {
-    //   await service.startMonitoring(
-    //     id: id,
-    //     lat: location.latitude,
-    //     lng: location.longitude,
-    //     radiusMeters: 100,
-    //     title: 'Reminder',
-    //     message: 'You reached your saved place',
-    //   );
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(content: Text('Location reminder set')),
-    //   );
-    // } catch (e) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     SnackBar(content: Text('Failed to start monitoring: $e')),
-    //   );
-    // }
   }
 }

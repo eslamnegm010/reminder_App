@@ -1,9 +1,12 @@
 import 'package:eslam_s_application/core/location_services/location_service.dart';
-import 'package:eslam_s_application/core/location_services/location_manger.dart';
 import 'package:eslam_s_application/core/location_services/models/location_model.dart';
-import 'package:eslam_s_application/core/location_services/location_search_service.dart';
+import 'package:eslam_s_application/features/reminder/cubit/location_picker_cubit.dart';
+import 'package:eslam_s_application/features/reminder/cubit/location_picker_state.dart';
+import 'package:eslam_s_application/features/reminder/widgets/location_sheet/save_location_dialog.dart';
+import 'package:eslam_s_application/sheared_widgets/default_button.dart';
 import 'package:eslam_s_application/sheared_widgets/others/snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -26,91 +29,107 @@ class LocationSelectionSheet extends StatefulWidget {
 
 class _LocationSelectionSheetState extends State<LocationSelectionSheet>
     with SingleTickerProviderStateMixin {
-  LatLng? _pickedLocation;
   late TextEditingController _searchController;
   late MapController _mapController;
-  late AnimationController _animController;
-
-  List<LocationSearchResult> _suggestions = [];
-  bool _isSearching = false;
-  String _selectedMapType = 'standard';
-  double _currentZoom = 13.0;
 
   @override
   void initState() {
     super.initState();
-    _pickedLocation = widget.initialLocation;
     _searchController = TextEditingController();
     _mapController = MapController();
-    _animController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-    );
   }
 
   @override
   void dispose() {
     _searchController.dispose();
-    _animController.dispose();
+    _mapController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return BlocProvider(
+      create: (context) => LocationPickerCubit()..init(widget.initialLocation),
+      child: Builder(builder: (context) => _buildSheetContent(context)),
+    );
+  }
 
-    return DraggableScrollableSheet(
-      initialChildSize: 0.95,
-      minChildSize: 0.7,
-      maxChildSize: 0.95,
-      builder: (context, scrollController) {
-        return Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.1),
-                blurRadius: 20,
-                spreadRadius: 5,
+  Widget _buildSheetContent(BuildContext context) {
+    return BlocConsumer<LocationPickerCubit, LocationPickerState>(
+      listener: (context, state) {
+        // TODO
+      },
+      builder: (context, state) {
+        final cubit = context.read<LocationPickerCubit>();
+        final isDark = Theme.of(context).brightness == Brightness.dark;
+
+        return DraggableScrollableSheet(
+          initialChildSize: 0.95,
+          minChildSize: 0.7,
+          maxChildSize: 0.95,
+          builder: (context, scrollController) {
+            return Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 20,
+                    spreadRadius: 5,
+                  ),
+                ],
               ),
-            ],
-          ),
-          child: Column(
-            children: [
-              const LocationSheetHeader(),
-              const SizedBox(height: 16),
-              LocationSearchBar(
-                controller: _searchController,
-                onClear: _clearSearch,
-                onChanged: _onSearchChanged,
-                onSubmitted: _performSearch,
-                isSearching: _isSearching,
+              child: Column(
+                children: [
+                  const LocationSheetHeader(),
+                  const SizedBox(height: 16),
+                  LocationSearchBar(
+                    controller: _searchController,
+                    onClear: () {
+                      _searchController.clear();
+                      cubit.clearSearch();
+                    },
+                    onChanged: (val) {
+                      if (val.isEmpty) cubit.clearSearch();
+                    },
+                    onSubmitted: (query) => cubit.searchLocations(query),
+                    isSearching: state.isSearching,
+                  ),
+                  if (state.searchResults.isNotEmpty)
+                    LocationSuggestionsList(
+                      suggestions: state.searchResults,
+                      onSelect: (result) {
+                        cubit.selectSuggestion(result);
+                        _searchController.text = result.displayName;
+                        _mapController.move(result.location, 15);
+                      },
+                    ),
+                  const SizedBox(height: 12),
+                  LocationMapControls(
+                    selectedMapType: state.selectedMapType,
+                    onMapTypeChanged: cubit.updateMapType,
+                    onZoomIn: () => _zoomIn(cubit, state),
+                    onZoomOut: () => _zoomOut(cubit, state),
+                    onCenterLocation: () => _centerOnLocation(context, cubit, state),
+                  ),
+                  const SizedBox(height: 12),
+                  Expanded(child: _buildMap(context, cubit, state)),
+                  _buildBottomActions(context, cubit, state, isDark),
+                ],
               ),
-              if (_suggestions.isNotEmpty)
-                LocationSuggestionsList(
-                  suggestions: _suggestions,
-                  onSelect: _selectSuggestion,
-                ),
-              const SizedBox(height: 12),
-              LocationMapControls(
-                selectedMapType: _selectedMapType,
-                onMapTypeChanged: (type) => setState(() => _selectedMapType = type),
-                onZoomIn: _zoomIn,
-                onZoomOut: _zoomOut,
-                onCenterLocation: _centerOnLocation,
-              ),
-              const SizedBox(height: 12),
-              Expanded(child: _buildMap(context)),
-              _buildBottomActions(context, isDark),
-            ],
-          ),
+            );
+          },
         );
       },
     );
   }
 
-  Widget _buildMap(BuildContext context) {
+  Widget _buildMap(
+    BuildContext context,
+    LocationPickerCubit cubit,
+    LocationPickerState state,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: ClipRRect(
@@ -120,43 +139,37 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
             FlutterMap(
               mapController: _mapController,
               options: MapOptions(
-                initialCenter: _pickedLocation ?? initialEgyptLocation,
-                initialZoom: _currentZoom,
-                onTap: (tapPos, latlng) => _onMapTapped(latlng),
+                initialCenter: widget.initialLocation ?? initialEgyptLocation,
+                initialZoom: state.currentZoom,
+                onTap: (tapPos, latlng) => cubit.selectMapLocation(latlng),
                 onPositionChanged: (position, hasGesture) {
-                  if (hasGesture
-                  //  && position.zoom != null
-                  )
-                    setState(() => _currentZoom = position.zoom);
+                  if (hasGesture) {
+                    cubit.updateZoom(position.zoom);
+                  }
                 },
               ),
               children: [
                 TileLayer(
-                  urlTemplate: _getMapTileUrl(),
-                  userAgentPackageName: 'com.reminder.en',
+                  urlTemplate: cubit.getMapTileUrl(state.selectedMapType),
+                  userAgentPackageName: cubit.userAgentPackageName,
                 ),
-                if (_pickedLocation != null) _buildMarkerLayer(),
+                if (state.pickedLocation != null)
+                  _buildMarkerLayer(state.pickedLocation!),
               ],
             ),
-            if (_pickedLocation != null) _buildLocationInfo(context),
+            if (state.pickedLocation != null)
+              _buildLocationInfo(context, state.pickedLocation!),
           ],
         ),
       ),
     );
   }
 
-  String _getMapTileUrl() {
-    // TODO TO Change with free map api
-    return _selectedMapType == 'satellite'
-        ? 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-        : 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-  }
-
-  Widget _buildMarkerLayer() {
+  Widget _buildMarkerLayer(LatLng location) {
     return MarkerLayer(
       markers: [
         Marker(
-          point: _pickedLocation!,
+          point: location,
           width: 50,
           height: 50,
           child: AnimatedScale(
@@ -176,7 +189,7 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
     );
   }
 
-  Widget _buildLocationInfo(BuildContext context) {
+  Widget _buildLocationInfo(BuildContext context, LatLng location) {
     return Positioned(
       top: 12,
       left: 12,
@@ -198,20 +211,17 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    'selected_coordinates'.tr(),
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: AppColors.getGrayTextColor(context),
-                    ),
+                  TitleText(
+                    text: 'selected_coordinates'.tr(),
+                    color: AppColors.getGrayTextColor(context),
+                    subtractedSize: 12,
                   ),
-                  Text(
-                    '${_pickedLocation!.latitude.toStringAsFixed(6)}, ${_pickedLocation!.longitude.toStringAsFixed(6)}',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.blueColor,
-                    ),
+                  TitleText(
+                    text:
+                        '${location.latitude.toStringAsFixed(6)}, ${location.longitude.toStringAsFixed(6)}',
+                    color: AppColors.blueColor,
+                    subtractedSize: 12,
+                    fontWeight: FontWeight.w600,
                   ),
                 ],
               ),
@@ -222,7 +232,12 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
     );
   }
 
-  Widget _buildBottomActions(BuildContext context, bool isDark) {
+  Widget _buildBottomActions(
+    BuildContext context,
+    LocationPickerCubit cubit,
+    LocationPickerState state,
+    bool isDark,
+  ) {
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -246,26 +261,20 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
                     icon: Icons.check_rounded,
                     backgroundColor: AppColors.blueColor,
                     textColor: Colors.white,
-                    onPressed: _pickedLocation != null
+                    onPressed: state.pickedLocation != null
                         ? () {
-                            // If confirming, try to use a name if we have one (from search or just coords)
                             String name = '';
-
-                            // If search text matches, usage it
                             if (_searchController.text.isNotEmpty) {
                               name = _searchController.text;
                             }
 
-                            // If we have suggestions and one matches exact coords (unlikely but possible)
-
                             final result = LocationSearchResult(
                               displayName: name.isNotEmpty
                                   ? name
-                                  : '${_pickedLocation!.latitude.toStringAsFixed(4)}, ${_pickedLocation!.longitude.toStringAsFixed(4)}',
+                                  : '${state.pickedLocation!.latitude.toStringAsFixed(4)}, ${state.pickedLocation!.longitude.toStringAsFixed(4)}',
                               type: 'picked',
-                              location: _pickedLocation!,
-                              address:
-                                  {}, // We don't have full address here easily without async
+                              location: state.pickedLocation!,
+                              address: {},
                             );
                             Navigator.pop(context, result);
                           }
@@ -274,16 +283,16 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
                 ),
               ],
             ),
-            if (_pickedLocation != null) ...[
+            if (state.pickedLocation != null) ...[
               const SizedBox(height: 12),
               SizedBox(
                 width: double.infinity,
                 child: _buildActionButton(
-                  label: 'Save for later',
+                  label: 'save_for_later',
                   icon: Icons.bookmark_border_rounded,
                   backgroundColor: AppColors.blueColor.withValues(alpha: 0.1),
                   textColor: AppColors.blueColor,
-                  onPressed: () => _showSaveLocationDialog(context),
+                  onPressed: () => showSaveLocationDialog(context, cubit),
                 ),
               ),
             ],
@@ -293,73 +302,6 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
     );
   }
 
-  Future<void> _showSaveLocationDialog(BuildContext context) async {
-    final nameController = TextEditingController();
-    return showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text('Name this location'),
-        content: TextField(
-          controller: nameController,
-          decoration: InputDecoration(
-            hintText: 'e.g., Home, Work, Gym',
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-          ),
-          autofocus: true,
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: Text('Cancel')),
-          ElevatedButton(
-            onPressed: () async {
-              if (nameController.text.trim().isNotEmpty) {
-                await _saveLocationWithName(nameController.text.trim());
-                if (mounted) Navigator.pop(ctx);
-
-                // Also return this as the result!
-                final result = LocationSearchResult(
-                  displayName: nameController.text.trim(),
-                  type: 'saved',
-                  location: _pickedLocation!,
-                  address: {},
-                );
-                if (mounted) Navigator.pop(context, result);
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.blueColor,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-            ),
-            child: Text('Save', style: TextStyle(color: Colors.white)),
-          ),
-        ],
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      ),
-    );
-  }
-
-  Future<void> _saveLocationWithName(String name) async {
-    if (_pickedLocation == null) return;
-    try {
-      final address = await LocationSearchService.reverseGeocode(_pickedLocation!);
-      final newSaved = SavedLocation(
-        id: DateTime.now().millisecondsSinceEpoch.toString(),
-        name: name,
-        coordinates: _pickedLocation!,
-        address: address,
-        type: LocationType.other,
-        createdAt: DateTime.now(),
-      );
-      await LocationManager.saveLocation(newSaved);
-      if (mounted) {
-        showSnackbar(context, message: 'Location saved as "$name"');
-      }
-    } catch (e) {
-      if (mounted) {
-        showSnackbar(context, message: 'Failed to save location: $e');
-      }
-    }
-  }
-
   Widget _buildActionButton({
     required String label,
     required IconData icon,
@@ -367,105 +309,54 @@ class _LocationSelectionSheetState extends State<LocationSelectionSheet>
     required Color textColor,
     VoidCallback? onPressed,
   }) {
-    return ElevatedButton.icon(
+    return DefaultButton(
+      borderRadius: BorderRadius.circular(12),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+      elevation: 0,
       onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: backgroundColor,
-        foregroundColor: textColor,
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        elevation: 0,
+      backgroundColor: backgroundColor,
+      labelColor: textColor,
+      loadingSize: 20,
+      icon: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5),
+        child: Icon(icon, size: 20.h),
       ),
-      icon: Icon(icon, size: 20),
-      label: Text(
-        label,
-        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+      labelWidget: TitleText(
+        text: label.tr().toUpperCase(),
+        subtractedSize: 10,
+        fontWeight: FontWeight.w600,
+        color: textColor,
       ),
     );
   }
 
-  void _clearSearch() {
-    setState(() {
-      _searchController.clear();
-      _suggestions = [];
-    });
-  }
-
-  void _onSearchChanged(String value) {
-    if (value.isEmpty) setState(() => _suggestions = []);
-  }
-
-  Future<void> _performSearch() async {
-    if (_searchController.text.trim().isEmpty) return;
-
-    setState(() => _isSearching = true);
-    try {
-      final results = await LocationSearchService.search(_searchController.text);
-      setState(() {
-        _suggestions = results;
-        _isSearching = false;
-      });
-    } catch (e) {
-      setState(() => _isSearching = false);
-    }
-  }
-
-  void _selectSuggestion(LocationSearchResult result) {
-    setState(() {
-      _pickedLocation = result.location;
-      _suggestions = [];
-      _searchController.text = result.displayName;
-    });
-    _mapController.move(result.location, 15);
-  }
-
-  void _onMapTapped(LatLng location) {
-    setState(() => _pickedLocation = location);
-  }
-
-  void _zoomIn() {
-    final newZoom = (_currentZoom + 1).clamp(1.0, 18.0);
-    setState(() => _currentZoom = newZoom);
-    final center = _pickedLocation ?? initialEgyptLocation;
+  void _zoomIn(LocationPickerCubit cubit, LocationPickerState state) {
+    final newZoom = (state.currentZoom + 1).clamp(1.0, 18.0);
+    cubit.updateZoom(newZoom);
+    final center = state.pickedLocation ?? initialEgyptLocation;
     _mapController.move(center, newZoom);
   }
 
-  void _zoomOut() {
-    final newZoom = (_currentZoom - 1).clamp(1.0, 18.0);
-    setState(() => _currentZoom = newZoom);
-    final center = _pickedLocation ?? initialEgyptLocation;
+  void _zoomOut(LocationPickerCubit cubit, LocationPickerState state) {
+    final newZoom = (state.currentZoom - 1).clamp(1.0, 18.0);
+    cubit.updateZoom(newZoom);
+    final center = state.pickedLocation ?? initialEgyptLocation;
     _mapController.move(center, newZoom);
   }
 
-  Future<void> _centerOnLocation() async {
+  Future<void> _centerOnLocation(
+    BuildContext context,
+    LocationPickerCubit cubit,
+    LocationPickerState state,
+  ) async {
     try {
       final position = await LocationService.instance.determinePosition();
       final newLoc = LatLng(position.latitude, position.longitude);
 
-      setState(() {
-        _pickedLocation = newLoc;
-        // Optional: Zoom in slightly when finding user location for better UX
-        // _currentZoom = 15.0;
-      });
-      _mapController.move(newLoc, _currentZoom);
+      cubit.selectMapLocation(newLoc);
+      _mapController.move(newLoc, state.currentZoom);
     } catch (e) {
       showSnackbar(context, message: 'Could not get current location: $e');
     }
   }
-
-  Future<void> saveLocation(LatLng coordinates) async {
-    final address = await LocationSearchService.reverseGeocode(coordinates);
-    final newSaved = SavedLocation(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      name: 'Custom Location',
-      coordinates: coordinates,
-      address: address,
-      type: LocationType.other,
-      createdAt: DateTime.now(),
-    );
-    await LocationManager.saveLocation(newSaved);
-    showSnackbar(context, message: 'Location saved successfully');
-  }
 }
-
-// Move the map to the selected location with the current zoom level

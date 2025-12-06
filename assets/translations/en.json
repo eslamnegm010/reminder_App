@@ -57,9 +57,14 @@
   "tap_to_disable_notifications": "Tap to disable notifications",
   "tap_to_enable_notifications": "Tap to enable notifications",
   "reminder_scheduled_for": "Set for {}",
-    "location_helper_text": "Link this reminder to a location. You’ll get notified when you arrive there.",
-    "select_location": "Select Location",
-    "pick_location": "Pick Location"
+  "location_helper_text": "Link this reminder to a location. You’ll get notified when you arrive there.",
+  "select_location": "Select Location",
+  "pick_location": "Pick Location",
+  "tap_map_or_search": "Tap map or search to select location",
+  "search_location": "Search location",
+  "selected_coordinates": "Selected coordinates",
+  "save_for_later": "Save for later",
+  "name_this_location": "Name this location"
 
   
 
