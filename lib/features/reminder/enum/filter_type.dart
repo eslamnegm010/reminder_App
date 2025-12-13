@@ -1,11 +1,6 @@
 enum FilterType { all, active, completed }
 
-enum PriorityFilter {
-  all,
-  low,
-  medium,
-  high,
-}
+enum PriorityFilter { all, low, medium, high }
 
 extension PriorityFilterExt on PriorityFilter {
   String get name {
@@ -17,7 +12,6 @@ extension PriorityFilterExt on PriorityFilter {
       case PriorityFilter.high:
         return 'high';
       case PriorityFilter.all:
-      default:
         return 'all';
     }
   }
