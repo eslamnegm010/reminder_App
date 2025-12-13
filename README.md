@@ -109,8 +109,6 @@ The app uses `ThemeCubit` to handle theme switching.
 
 # Developed by Eslam Negm
 
-# github - https://github.com/eslamnegm010/
-
 # linkedin - https://www.linkedin.com/in/eslam-negm-mobile-dev/
 
 # with Flutter.
