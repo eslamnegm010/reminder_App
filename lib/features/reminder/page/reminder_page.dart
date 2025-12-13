@@ -2,7 +2,6 @@ import 'package:reminder_app/core/utils/app_export.dart';
 import 'package:reminder_app/features/reminder/cubit/reminder_cubit.dart';
 import 'package:reminder_app/features/reminder/cubit/reminder_state.dart';
 import 'package:reminder_app/features/reminder/enum/filter_type.dart';
-import 'package:reminder_app/features/reminder/page/search_page.dart';
 import 'package:reminder_app/features/reminder/widgets/empty_page.dart';
 import 'package:reminder_app/features/reminder/widgets/page_header.dart';
 import 'package:reminder_app/features/reminder/widgets/main_widgets/custom_reminder_card.dart';
@@ -102,16 +101,12 @@ class ReminderPageBody extends StatelessWidget {
   AppBar _buildAppBar(BuildContext context) => AppBar(
     title: TitleText.small(
       text: 'reminder',
-      color: AppColors.blueColor,
+      color: AppColors.white,
       fontWeight: FontWeight.w500,
     ),
     centerTitle: true,
     elevation: 0,
     actions: [
-      IconButton(
-        icon: const Icon(Icons.search_rounded),
-        onPressed: () => _openSearch(context),
-      ),
       IconButton(
         icon: SvgPicture.asset(
           AppAssets.userCircleIcon,
@@ -123,15 +118,6 @@ class ReminderPageBody extends StatelessWidget {
       ),
     ],
   );
-
-  void _openSearch(BuildContext context) {
-    showSearch<String>(
-      context: context,
-      delegate: ReminderSearchDelegate(
-        onQueryUpdate: (txt) => context.read<ReminderCubit>().setSearch(txt),
-      ),
-    );
-  }
 
   Widget _buildFilterButton(BuildContext context, String label, FilterType type) {
     final cubit = context.read<ReminderCubit>();

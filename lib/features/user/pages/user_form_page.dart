@@ -138,9 +138,7 @@ class _ProfileHeaderIntro extends StatelessWidget {
             shape: BoxShape.circle,
             gradient: LinearGradient(
               colors: [
-                // ignore: deprecated_member_use
                 AppColors.blueColor.withValues(alpha: 0.8),
-                // ignore: deprecated_member_use
                 AppColors.blueColor.withValues(alpha: 0.4),
               ],
               begin: Alignment.topLeft,
@@ -148,7 +146,6 @@ class _ProfileHeaderIntro extends StatelessWidget {
             ),
             boxShadow: [
               BoxShadow(
-                // ignore: deprecated_member_use
                 color: AppColors.blueColor.withValues(alpha: 0.3),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
@@ -168,6 +165,7 @@ class _ProfileHeaderIntro extends StatelessWidget {
         const SizedBox(height: 6),
         SubtitleText(
           text: 'update_name_email',
+          subtractedSize: 6,
           color: AppColors.greyColor,
           textAlign: TextAlign.center,
         ),

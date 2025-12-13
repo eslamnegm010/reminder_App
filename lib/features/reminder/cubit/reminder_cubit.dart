@@ -137,10 +137,6 @@ class ReminderCubit extends Cubit<ReminderState> {
     emit(state.copyWith(filter: f));
   }
 
-  void setSearch(String q) {
-    if (state.search == q) return;
-    emit(state.copyWith(search: q));
-  }
   // reminder_cubit.dart
 
   void toggleNotifications(bool value) async {

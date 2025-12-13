@@ -11,9 +11,7 @@ class AppAboutDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       contentPadding: const EdgeInsets.all(20),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -21,9 +19,7 @@ class AppAboutDialog extends StatelessWidget {
           Container(
             height: 70,
             width: 70,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-            ),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
             padding: const EdgeInsets.all(12),
             child: Image.asset(AppAssets.appLauncher),
           ),
@@ -57,9 +53,7 @@ class AppAboutDialog extends StatelessWidget {
           InkWell(
             borderRadius: BorderRadius.circular(12),
             onTap: () async {
-              await launchEmail(
-                email: AppConstants.myEmail,
-              );
+              await launchEmail(email: AppConstants.myEmail);
               Navigator.pop(context);
             },
             child: Row(
@@ -68,17 +62,22 @@ class AppAboutDialog extends StatelessWidget {
                 Icon(Icons.attach_email_outlined, size: 20, color: AppColors.blueColor),
                 const SizedBox(width: 6),
                 TitleText(
-                    subtractedSize: 11,
-                    text: '${AppConstants.myEmail}',
-                    color: AppColors.blueColor,
-                    fontWeight: FontWeight.w500),
+                  subtractedSize: 11,
+                  text: '${AppConstants.myEmail}',
+                  color: AppColors.blueColor,
+                  fontWeight: FontWeight.w500,
+                ),
               ],
             ),
           ),
           const SizedBox(height: 10),
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const TitleText(text: 'close', subtractedSize: 10, color: AppColors.greyColor),
+            child: const TitleText(
+              text: 'close',
+              subtractedSize: 10,
+              color: AppColors.greyColor,
+            ),
           ),
         ],
       ),
