@@ -68,8 +68,7 @@ lib/
 1.  **Clone the repository:**
 
     ```bash
-    git clone https://github.com/your-username/eslam_s_application.git
-    cd eslam_s_application
+    git clone https://github.com/eslamnegm010/reminder_App.git
     ```
 
 2.  **Install dependencies:**
