@@ -105,10 +105,12 @@ The app uses `ThemeCubit` to handle theme switching.
 - **Light Theme**: Default bright color palette.
 - **Dark Theme**: Optimized for low-light environments.
 
-## 📱 Screenshots
-
-_(Add screenshots here to showcase the app)_
-
 ---
 
-Developed with ❤️ using Flutter.
+# Developed by Eslam Negm
+
+# github - https://github.com/eslamnegm010/
+
+# linkedin - https://www.linkedin.com/in/eslam-negm-mobile-dev/
+
+# with Flutter.
