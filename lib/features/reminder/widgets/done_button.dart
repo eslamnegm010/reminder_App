@@ -1,4 +1,4 @@
-import 'package:eslam_s_application/sheared_widgets/others/particle_painter.dart';
+import 'package:reminder_app/sheared_widgets/others/particle_painter.dart';
 import 'package:flutter/material.dart';
 
 class DoneButton extends StatefulWidget {

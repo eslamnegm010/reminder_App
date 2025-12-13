@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:eslam_s_application/features/reminder/enum/reminder_priority.dart';
+import 'package:reminder_app/features/reminder/enum/reminder_priority.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 

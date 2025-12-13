@@ -1,5 +1,5 @@
 import 'package:easy_localization/easy_localization.dart' hide TextDirection;
-import 'package:eslam_s_application/core/utils/app_export.dart';
+import 'package:reminder_app/core/utils/app_export.dart';
 import 'package:flutter/material.dart';
 import 'package:size_helper/size_helper.dart';
 

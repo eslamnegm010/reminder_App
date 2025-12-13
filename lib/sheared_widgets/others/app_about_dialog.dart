@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:eslam_s_application/core/utils/app_launcher.dart';
+import 'package:reminder_app/core/utils/app_launcher.dart';
 import 'package:flutter/material.dart';
-import 'package:eslam_s_application/core/constans/app_constants.dart';
-import 'package:eslam_s_application/core/utils/app_export.dart';
+import 'package:reminder_app/core/constans/app_constants.dart';
+import 'package:reminder_app/core/utils/app_export.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AppAboutDialog extends StatelessWidget {

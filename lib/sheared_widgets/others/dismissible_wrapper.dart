@@ -1,4 +1,4 @@
-import 'package:eslam_s_application/sheared_widgets/text/title_text.dart';
+import 'package:reminder_app/sheared_widgets/text/title_text.dart';
 import 'package:flutter/material.dart';
 
 class DismissibleWrapper extends StatelessWidget {

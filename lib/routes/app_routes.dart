@@ -1,6 +1,6 @@
 // /home/ubuntu/app/eslam_s_application/lib/routes/app_routes.dart
 
-import 'package:eslam_s_application/features/reminder/page/reminder_page.dart';
+import 'package:reminder_app/features/reminder/page/reminder_page.dart';
 import 'package:flutter/material.dart';
 import '../features/app_home_screen/page/app_home_screen.dart';
 

@@ -1,14 +1,14 @@
-import 'package:eslam_s_application/core/location_services/Extensions/latLng_extensions.dart';
-import 'package:eslam_s_application/core/location_services/models/location_model.dart';
-import 'package:eslam_s_application/features/reminder/widgets/location_widgets/saved_locations.dart';
-import 'package:eslam_s_application/features/reminder/widgets/main_widgets/location_sheet.dart';
+import 'package:reminder_app/core/location_services/Extensions/latLng_extensions.dart';
+import 'package:reminder_app/core/location_services/models/location_model.dart';
+import 'package:reminder_app/features/reminder/widgets/location_widgets/saved_locations.dart';
+import 'package:reminder_app/features/reminder/widgets/main_widgets/location_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:easy_localization/easy_localization.dart';
 import '../../../../core/utils/app_export.dart';
 
-import 'package:eslam_s_application/features/reminder/cubit/location_picker_cubit.dart';
-import 'package:eslam_s_application/features/reminder/cubit/location_picker_state.dart';
+import 'package:reminder_app/features/reminder/cubit/location_picker_cubit.dart';
+import 'package:reminder_app/features/reminder/cubit/location_picker_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LocationPicker extends StatefulWidget {

@@ -1,5 +1,5 @@
-import 'package:eslam_s_application/core/utils/validator.dart';
-import 'package:eslam_s_application/sheared_widgets/text_field/main_text_form_field.dart';
+import 'package:reminder_app/core/utils/validator.dart';
+import 'package:reminder_app/sheared_widgets/text_field/main_text_form_field.dart';
 import 'package:flutter/material.dart';
 
 class DefaultTextFormField extends MainTextFormField {

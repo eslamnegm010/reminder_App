@@ -5,8 +5,8 @@ import 'dart:typed_data';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
-import 'package:eslam_s_application/core/notifications/timezone_util.dart';
+import 'package:reminder_app/features/reminder/model/reminder_model.dart';
+import 'package:reminder_app/core/notifications/timezone_util.dart';
 
 class NotificationService {
   NotificationService._();

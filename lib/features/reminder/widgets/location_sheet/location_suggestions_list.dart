@@ -1,7 +1,7 @@
-import 'package:eslam_s_application/sheared_widgets/text/title_text.dart';
+import 'package:reminder_app/sheared_widgets/text/title_text.dart';
 import 'package:flutter/material.dart';
-import 'package:eslam_s_application/res/theme/app_colors.dart';
-import 'package:eslam_s_application/core/location_services/models/location_model.dart';
+import 'package:reminder_app/res/theme/app_colors.dart';
+import 'package:reminder_app/core/location_services/models/location_model.dart';
 
 class LocationSuggestionsList extends StatelessWidget {
   final List<LocationSearchResult> suggestions;

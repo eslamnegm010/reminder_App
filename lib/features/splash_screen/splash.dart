@@ -1,6 +1,6 @@
-// import 'package:eslam_s_application/core/constans/app_assets.dart';
-// import 'package:eslam_s_application/core/utils/app_export.dart';
-// import 'package:eslam_s_application/presentation/app_home_screen/page/app_home_screen.dart';
+// import 'package:reminder_app/core/constans/app_assets.dart';
+// import 'package:reminder_app/core/utils/app_export.dart';
+// import 'package:reminder_app/presentation/app_home_screen/page/app_home_screen.dart';
 // import 'package:flutter/material.dart';
 
 // class SplashScreen extends StatefulWidget {

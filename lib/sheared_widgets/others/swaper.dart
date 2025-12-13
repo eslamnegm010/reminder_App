@@ -1,4 +1,4 @@
-import 'package:eslam_s_application/res/theme/app_colors.dart';
+import 'package:reminder_app/res/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 Container swaper() {

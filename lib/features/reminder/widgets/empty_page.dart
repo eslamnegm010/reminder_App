@@ -1,4 +1,4 @@
-import 'package:eslam_s_application/core/utils/app_export.dart';
+import 'package:reminder_app/core/utils/app_export.dart';
 import 'package:flutter/material.dart';
 
 ListView buildEmptyList() => ListView(

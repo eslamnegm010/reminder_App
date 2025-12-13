@@ -1,6 +1,6 @@
-import 'package:eslam_s_application/features/reminder/enum/filter_type.dart';
+import 'package:reminder_app/features/reminder/enum/filter_type.dart';
 import 'package:flutter/foundation.dart';
-import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
+import 'package:reminder_app/features/reminder/model/reminder_model.dart';
 
 enum ReminderStateStatus { initial, loading, loaded }
 

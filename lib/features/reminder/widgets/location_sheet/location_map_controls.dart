@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:eslam_s_application/res/theme/app_colors.dart';
-import 'package:eslam_s_application/sheared_widgets/text/title_text.dart';
+import 'package:reminder_app/res/theme/app_colors.dart';
+import 'package:reminder_app/sheared_widgets/text/title_text.dart';
 
 enum MapType { standard, satellite }
 

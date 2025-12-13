@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:eslam_s_application/features/user/user_cubit/user_state.dart';
-import 'package:eslam_s_application/features/user/model/user.dart';
+import 'package:reminder_app/features/user/user_cubit/user_state.dart';
+import 'package:reminder_app/features/user/model/user.dart';
 import 'package:hive/hive.dart';
 
 class UserCubit extends Cubit<UserState> {

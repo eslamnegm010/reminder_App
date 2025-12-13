@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:eslam_s_application/core/utils/validator.dart';
-import 'package:eslam_s_application/sheared_widgets/default_button.dart';
-import 'package:eslam_s_application/sheared_widgets/text_field/default_text_form_field.dart';
+import 'package:reminder_app/core/utils/validator.dart';
+import 'package:reminder_app/sheared_widgets/default_button.dart';
+import 'package:reminder_app/sheared_widgets/text_field/default_text_form_field.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/app_export.dart';

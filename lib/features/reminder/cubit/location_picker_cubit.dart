@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:eslam_s_application/core/location_services/location_manger.dart';
-import 'package:eslam_s_application/core/location_services/location_search_service.dart';
-import 'package:eslam_s_application/core/location_services/models/location_model.dart';
-import 'package:eslam_s_application/features/reminder/widgets/location_sheet/location_map_controls.dart';
+import 'package:reminder_app/core/location_services/location_manger.dart';
+import 'package:reminder_app/core/location_services/location_search_service.dart';
+import 'package:reminder_app/core/location_services/models/location_model.dart';
+import 'package:reminder_app/features/reminder/widgets/location_sheet/location_map_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'location_picker_state.dart';

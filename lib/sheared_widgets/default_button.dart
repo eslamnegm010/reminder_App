@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:eslam_s_application/core/utils/type_defs.dart';
-import 'package:eslam_s_application/res/theme/app_colors.dart';
-import 'package:eslam_s_application/sheared_widgets/text/title_text.dart';
+import 'package:reminder_app/core/utils/type_defs.dart';
+import 'package:reminder_app/res/theme/app_colors.dart';
+import 'package:reminder_app/sheared_widgets/text/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';

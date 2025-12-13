@@ -1,10 +1,10 @@
-import 'package:eslam_s_application/core/location_services/location_service.dart';
-import 'package:eslam_s_application/core/location_services/models/location_model.dart';
-import 'package:eslam_s_application/features/reminder/cubit/location_picker_cubit.dart';
-import 'package:eslam_s_application/features/reminder/cubit/location_picker_state.dart';
-import 'package:eslam_s_application/features/reminder/widgets/location_sheet/save_location_dialog.dart';
-import 'package:eslam_s_application/sheared_widgets/default_button.dart';
-import 'package:eslam_s_application/sheared_widgets/others/snack_bar.dart';
+import 'package:reminder_app/core/location_services/location_service.dart';
+import 'package:reminder_app/core/location_services/models/location_model.dart';
+import 'package:reminder_app/features/reminder/cubit/location_picker_cubit.dart';
+import 'package:reminder_app/features/reminder/cubit/location_picker_state.dart';
+import 'package:reminder_app/features/reminder/widgets/location_sheet/save_location_dialog.dart';
+import 'package:reminder_app/sheared_widgets/default_button.dart';
+import 'package:reminder_app/sheared_widgets/others/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_map/flutter_map.dart';

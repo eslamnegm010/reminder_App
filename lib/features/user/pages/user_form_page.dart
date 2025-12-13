@@ -1,9 +1,9 @@
-import 'package:eslam_s_application/core/utils/app_export.dart';
-import 'package:eslam_s_application/core/utils/validator.dart';
-import 'package:eslam_s_application/features/user/user_cubit/user_cubit.dart';
-import 'package:eslam_s_application/features/user/widgets/profile_header.dart';
-import 'package:eslam_s_application/features/user/widgets/profile_form_card.dart';
-import 'package:eslam_s_application/sheared_widgets/others/snack_bar.dart';
+import 'package:reminder_app/core/utils/app_export.dart';
+import 'package:reminder_app/core/utils/validator.dart';
+import 'package:reminder_app/features/user/user_cubit/user_cubit.dart';
+import 'package:reminder_app/features/user/widgets/profile_header.dart';
+import 'package:reminder_app/features/user/widgets/profile_form_card.dart';
+import 'package:reminder_app/sheared_widgets/others/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,14 +1,14 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:eslam_s_application/core/local_storage/hive.dart';
-import 'package:eslam_s_application/core/notifications/notification_service.dart';
-import 'package:eslam_s_application/features/reminder/enum/filter_type.dart';
-import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
+import 'package:reminder_app/core/local_storage/hive.dart';
+import 'package:reminder_app/core/notifications/notification_service.dart';
+import 'package:reminder_app/features/reminder/enum/filter_type.dart';
+import 'package:reminder_app/features/reminder/model/reminder_model.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:async';
-import 'package:eslam_s_application/core/location_services/location_service.dart';
+import 'package:reminder_app/core/location_services/location_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'reminder_state.dart';
 

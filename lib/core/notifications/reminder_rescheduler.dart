@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
-import 'package:eslam_s_application/core/notifications/notification_service.dart';
+import 'package:reminder_app/features/reminder/model/reminder_model.dart';
+import 'package:reminder_app/core/notifications/notification_service.dart';
 import 'dart:developer';
 
 class ReminderRescheduler {

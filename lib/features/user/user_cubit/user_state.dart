@@ -1,4 +1,4 @@
-import 'package:eslam_s_application/features/user/model/user.dart';
+import 'package:reminder_app/features/user/model/user.dart';
 import 'package:flutter/foundation.dart';
 
 enum UserStatus { initial, loaded }

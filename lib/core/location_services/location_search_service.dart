@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:eslam_s_application/core/location_services/models/location_model.dart';
+import 'package:reminder_app/core/location_services/models/location_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:latlong2/latlong.dart';
 

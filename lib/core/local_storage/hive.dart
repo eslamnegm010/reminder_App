@@ -1,7 +1,7 @@
 // lib/core/local_storage/hive_service.dart
-import 'package:eslam_s_application/features/user/model/user.dart';
+import 'package:reminder_app/features/user/model/user.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
+import 'package:reminder_app/features/reminder/model/reminder_model.dart';
 
 class HiveService {
   static const String _reminderBoxName = 'remindersBox';

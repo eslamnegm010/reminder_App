@@ -1,4 +1,4 @@
-import 'package:eslam_s_application/core/location_services/Extensions/latLng_extensions.dart';
+import 'package:reminder_app/core/location_services/Extensions/latLng_extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 

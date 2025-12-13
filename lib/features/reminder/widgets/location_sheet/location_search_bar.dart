@@ -1,7 +1,7 @@
-import 'package:eslam_s_application/sheared_widgets/text_field/default_text_form_field.dart';
+import 'package:reminder_app/sheared_widgets/text_field/default_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:eslam_s_application/res/theme/app_colors.dart';
+import 'package:reminder_app/res/theme/app_colors.dart';
 
 class LocationSearchBar extends StatelessWidget {
   final TextEditingController controller;

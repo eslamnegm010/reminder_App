@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:eslam_s_application/core/utils/app_export.dart';
-import 'package:eslam_s_application/core/location_services/models/location_model.dart';
-import 'package:eslam_s_application/features/reminder/enum/reminder_priority.dart';
-import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
-import 'package:eslam_s_application/core/utils/validator.dart';
+import 'package:reminder_app/core/utils/app_export.dart';
+import 'package:reminder_app/core/location_services/models/location_model.dart';
+import 'package:reminder_app/features/reminder/enum/reminder_priority.dart';
+import 'package:reminder_app/features/reminder/model/reminder_model.dart';
+import 'package:reminder_app/core/utils/validator.dart';
 
 import '../location_widgets/location_picker.dart';
 import '../add_reminder_sheet/date_time_picker_button.dart';

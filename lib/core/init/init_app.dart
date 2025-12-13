@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:eslam_s_application/core/local_storage/hive.dart';
-import 'package:eslam_s_application/core/notifications/boot_channel.dart';
-import 'package:eslam_s_application/core/notifications/notification_service.dart';
-import 'package:eslam_s_application/core/notifications/reminder_rescheduler.dart';
-import 'package:eslam_s_application/core/notifications/timezone_util.dart';
+import 'package:reminder_app/core/local_storage/hive.dart';
+import 'package:reminder_app/core/notifications/boot_channel.dart';
+import 'package:reminder_app/core/notifications/notification_service.dart';
+import 'package:reminder_app/core/notifications/reminder_rescheduler.dart';
+import 'package:reminder_app/core/notifications/timezone_util.dart';
 import 'package:flutter/widgets.dart';
 
 class AppInitializer {

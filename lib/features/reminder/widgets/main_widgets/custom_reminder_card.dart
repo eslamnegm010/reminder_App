@@ -1,7 +1,7 @@
 import 'dart:ui' as ui;
 import 'package:easy_localization/easy_localization.dart';
-import 'package:eslam_s_application/core/utils/app_export.dart';
-import 'package:eslam_s_application/features/reminder/model/reminder_model.dart';
+import 'package:reminder_app/core/utils/app_export.dart';
+import 'package:reminder_app/features/reminder/model/reminder_model.dart';
 import 'package:flutter/material.dart';
 import '../done_button.dart';
 
