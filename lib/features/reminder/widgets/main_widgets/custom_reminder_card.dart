@@ -79,6 +79,7 @@ class ReminderCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 TitleText(
+                                  padding: const EdgeInsetsDirectional.only(end: 5),
                                   subtractedSize: 9,
                                   text: reminder.title,
                                   color: reminder.isCompleted
@@ -95,6 +96,7 @@ class ReminderCard extends StatelessWidget {
                                 if (reminder.description.isNotEmpty) ...[
                                   const SizedBox(height: 4),
                                   TitleText(
+                                    padding: const EdgeInsetsDirectional.only(end: 5),
                                     text: reminder.description,
                                     maxLines: 3,
                                     subtractedSize: 11,
