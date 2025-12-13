@@ -1,4 +1,4 @@
-# Sela Reminder Application
+# Reminder Application
 
 A feature-rich Flutter application designed for efficient task management and location-based reminders. This application demonstrates a robust architecture using BLoC for state management, Hive for local persistence, and comprehensive localization support.
 
