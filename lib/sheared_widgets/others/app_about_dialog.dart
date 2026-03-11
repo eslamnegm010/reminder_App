@@ -54,7 +54,9 @@ class AppAboutDialog extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             onTap: () async {
               await launchEmail(email: AppConstants.myEmail);
-              Navigator.pop(context);
+              if (context.mounted) {
+                Navigator.pop(context);
+              }
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -68,6 +70,22 @@ class AppAboutDialog extends StatelessWidget {
                   fontWeight: FontWeight.w500,
                 ),
               ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          TextButton(
+            onPressed: () async {
+              // TODO: Update with your real Privacy Policy URL
+              await launchURL(
+                url:
+                    'https://gist.githubusercontent.com/eslamnegm010/eb6441ad736a8bd7a8ec8e376547d76a/raw/fa045baa8b5dde5108fb98eef8e647c4ab114c8f/privacy_policy.md',
+              );
+            },
+            child: const TitleText(
+              text: 'privacy_policy',
+              subtractedSize: 11,
+              color: AppColors.blueColor,
+              fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: 10),

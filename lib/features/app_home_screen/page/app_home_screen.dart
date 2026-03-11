@@ -5,12 +5,37 @@ import 'package:reminder_app/features/user/pages/user_form_page.dart';
 import 'package:reminder_app/features/user/user_cubit/user_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:reminder_app/core/local_storage/hive.dart';
+import 'package:reminder_app/core/notifications/notification_service.dart';
 import 'dart:ui' as ui;
 
 import 'package:page_transition/page_transition.dart';
 
-class AppNavigationScreen extends StatelessWidget {
-  const AppNavigationScreen({Key? key}) : super(key: key);
+class AppNavigationScreen extends StatefulWidget {
+  const AppNavigationScreen({super.key});
+
+  @override
+  State<AppNavigationScreen> createState() => _AppNavigationScreenState();
+}
+
+class _AppNavigationScreenState extends State<AppNavigationScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _checkAndShowWelcomeNotification();
+  }
+
+  void _checkAndShowWelcomeNotification() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // final bool hasSeenWelcome = HiveService.settingsBox.get(
+      //   'has_seen_welcome',
+      //   defaultValue: false,
+      // );
+
+      await NotificationService.instance.welcomeImmediateShow();
+      await HiveService.settingsBox.put('has_seen_welcome', true);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,9 +105,9 @@ class AppNavigationScreen extends StatelessWidget {
                         Container(
                           width: 20,
                           height: double.infinity,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             color: AppColors.blueColor,
-                            borderRadius: const BorderRadiusDirectional.only(
+                            borderRadius: BorderRadiusDirectional.only(
                               topStart: Radius.circular(20),
                               bottomStart: Radius.circular(20),
                             ),
@@ -117,7 +142,10 @@ class AppNavigationScreen extends StatelessWidget {
                             color: AppColors.blueColor.withValues(alpha: 0.12),
                             shape: BoxShape.circle,
                           ),
-                          child: Icon(Icons.arrow_forward, color: AppColors.blueColor),
+                          child: const Icon(
+                            Icons.arrow_forward,
+                            color: AppColors.blueColor,
+                          ),
                         ),
                         const SizedBox(width: 10),
                       ],
@@ -159,7 +187,7 @@ class AppNavigationScreen extends StatelessWidget {
             color: AppColors.getTextColor(context),
           ),
           const SizedBox(width: 8),
-          Icon(Icons.language, size: 18, color: AppColors.greyColor),
+          const Icon(Icons.language, size: 18, color: AppColors.greyColor),
         ],
       ),
     );
@@ -167,8 +195,7 @@ class AppNavigationScreen extends StatelessWidget {
 
   void onTapScreenTitle(BuildContext context) {
     final user = context.read<UserCubit>().state.user;
-    final hasUser =
-        user != null && user.name.trim().isNotEmpty && user.email.trim().isNotEmpty;
+    final hasUser = user != null && user.name.trim().isNotEmpty;
     if (hasUser) {
       Navigator.pushReplacementNamed(context, AppRoutes.remainderPage);
     } else {

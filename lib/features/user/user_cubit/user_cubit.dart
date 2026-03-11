@@ -20,8 +20,8 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  void saveUser({required String name, required String email}) {
-    final user = UserModel(name: name.trim(), email: email.trim());
+  void saveUser({required String name}) {
+    final user = UserModel(name: name.trim());
     _box.put(_key, user);
 
     emit(state.copyWith(status: UserStatus.loaded, user: user));

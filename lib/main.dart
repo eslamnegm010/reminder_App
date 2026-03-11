@@ -10,18 +10,17 @@ void main() async {
   await AppInitializer.init();
   runApp(
     EasyLocalization(
-      supportedLocales: [Locale('en'), Locale('ar')],
+      supportedLocales: const [Locale('en'), Locale('ar')],
       path: 'assets/translations',
-      fallbackLocale: Locale('en'),
-      child: MultiBlocProvider(
-        providers: AppProviders.providers,
-        child: MyApp(),
-      ),
+      fallbackLocale: const Locale('en'),
+      child: MultiBlocProvider(providers: AppProviders.providers, child: MyApp()),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Sizer(
@@ -43,7 +42,7 @@ class MyApp extends StatelessWidget {
                 return MediaQuery(
                   data: MediaQuery.of(
                     context,
-                  ).copyWith(textScaler: TextScaler.linear(1.0)),
+                  ).copyWith(textScaler: const TextScaler.linear(1.0)),
                   child: child!,
                 );
               },

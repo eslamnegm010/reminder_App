@@ -44,14 +44,16 @@
   "full_name": "Full Name",
   "email": "Email",
   "save": "Save",
-  "profile_edit_hint": "You can edit your name and email anytime here.",
+    "profile_edit_hint": "You can edit your name and email anytime here.",
+    "profile_edit_hint_name": "You can edit your name anytime here.",
   "profile_saved_successfully": "Profile saved successfully",
   "edit_profile": "Edit Profile",
   "edit_your_profile": "Edit your profile",
   "you_have_been_signed_out": "You have been signed out",
-  "about_app_description": "This app was developed by Eslam Negm — a passionate Flutter developer focused on crafting clean, elegant, and user-friendly mobile applications.",
+  "about_app_description": "Reminder is a simple and efficient tool designed to help you stay organized with time-based notifications. Your privacy is our priority—all data is stored locally on your device.",
   "personalize_your_profile": "Let’s personalize your profile!",
   "update_name_email": "Update your name and email to make the app feel more like yours.",
+  "update_name": "Update your name to make the app feel more like yours.",
   "notify_for_this_reminder": "Notify for this reminder",
   "notifications": "Notifications",
   "tap_to_disable_notifications": "Tap to disable notifications",
@@ -64,7 +66,7 @@
   "search_location": "Search location",
   "selected_coordinates": "Selected coordinates",
   "save_for_later": "Save for later",
-  "name_this_location": "Name this location"
+  "name_this_location": "Name this location",
 
   
 
@@ -81,4 +83,8 @@
 
 
  
+  "privacy_policy": "Privacy Policy",
+  "open_privacy_policy": "Open Privacy Policy",
+  "welcome_notification_title": "We're glad you're here! 🔔",
+  "welcome_notification_body": "Ready to stay organized? Set a quick reminder so you never miss what matters most."
 }

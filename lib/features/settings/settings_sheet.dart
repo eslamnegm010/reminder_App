@@ -70,10 +70,8 @@ Widget _buildHeader(BuildContext ctx) {
           builder: (context, uState) {
             final user = uState.user;
             final displayName = user?.name ?? 'guest_user';
-            final displayEmail = user?.email ?? 'guest@example.com';
             return ProfileHeader(
               nameCtrl: displayName,
-              emailCtrl: displayEmail,
               isDark: Theme.of(ctx).brightness == Brightness.dark,
               mq: MediaQuery.of(ctx),
             );
@@ -146,7 +144,9 @@ Widget _buildLanguageItem(
       await context.setLocale(
         currentLocale.languageCode == 'ar' ? const Locale('en') : const Locale('ar'),
       );
-      Navigator.pop(sheetContext);
+      if (sheetContext.mounted) {
+        Navigator.pop(sheetContext);
+      }
     },
   );
 }
@@ -221,7 +221,7 @@ Widget _buildAboutItem(BuildContext context, BuildContext sheetContext) {
   return FutureBuilder<PackageInfo>(
     future: PackageInfo.fromPlatform(),
     builder: (context, snapshot) {
-      final versionText = snapshot.hasData ? '${snapshot.data!.version}' : '...';
+      final versionText = snapshot.hasData ? snapshot.data!.version : '...';
 
       return SettingItem(
         icon: Icons.info_outline,

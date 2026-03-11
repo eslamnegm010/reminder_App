@@ -17,9 +17,7 @@ class UserProfilePage extends StatefulWidget {
 class _UserProfilePageState extends State<UserProfilePage> {
   final _formKey = GlobalKey<FormState>();
   late final TextEditingController _nameCtrl;
-  late final TextEditingController _emailCtrl;
   late final FocusNode _nameFocusNode;
-  late final FocusNode _emailFocusNode;
   bool _valid = false;
 
   @override
@@ -27,18 +25,13 @@ class _UserProfilePageState extends State<UserProfilePage> {
     super.initState();
     final user = context.read<UserCubit>().state.user;
     _nameCtrl = TextEditingController(text: user?.name ?? '');
-    _emailCtrl = TextEditingController(text: user?.email ?? '');
     _nameFocusNode = FocusNode();
-    _emailFocusNode = FocusNode();
     _nameCtrl.addListener(_onFieldChanged);
-    _emailCtrl.addListener(_onFieldChanged);
   }
 
   void _onFieldChanged() {
     final user = context.read<UserCubit>().state.user;
-    final changed =
-        (user?.name ?? '') != _nameCtrl.text.trim() ||
-        (user?.email ?? '') != _emailCtrl.text.trim();
+    final changed = (user?.name ?? '') != _nameCtrl.text.trim();
     if (changed != _valid) {
       setState(() => _valid = changed);
     }
@@ -47,25 +40,20 @@ class _UserProfilePageState extends State<UserProfilePage> {
   @override
   void dispose() {
     _nameCtrl.removeListener(_onFieldChanged);
-    _emailCtrl.removeListener(_onFieldChanged);
     _nameCtrl.dispose();
-    _emailCtrl.dispose();
     _nameFocusNode.dispose();
-    _emailFocusNode.dispose();
     super.dispose();
   }
 
   bool get _formValid {
     final nameValid = Validator().validateUserName(_nameCtrl.text) == null;
-    final emailValid = !Validator().isInvalidEmail(_emailCtrl.text);
-    return nameValid && emailValid;
+    return nameValid;
   }
 
   void _save() {
     if (!_formKey.currentState!.validate()) return;
     final name = _nameCtrl.text.trim();
-    final email = _emailCtrl.text.trim();
-    context.read<UserCubit>().saveUser(name: name, email: email);
+    context.read<UserCubit>().saveUser(name: name);
     showSnackbar(context, message: 'profile_saved_successfully');
     if (!mounted) return;
     Navigator.pushReplacementNamed(context, AppRoutes.remainderPage);
@@ -95,19 +83,12 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   const SizedBox(height: 20),
                   const _ProfileHeaderIntro(),
                   const SizedBox(height: 30),
-                  ProfileHeader(
-                    nameCtrl: _nameCtrl.text,
-                    emailCtrl: _emailCtrl.text,
-                    isDark: isDark,
-                    mq: mq,
-                  ),
+                  ProfileHeader(nameCtrl: _nameCtrl.text, isDark: isDark, mq: mq),
                   const SizedBox(height: 30),
                   ProfileFormCard(
                     formKey: _formKey,
                     nameCtrl: _nameCtrl,
-                    emailCtrl: _emailCtrl,
                     nameFocusNode: _nameFocusNode,
-                    emailFocusNode: _emailFocusNode,
                     valid: _valid,
                     formValid: _formValid,
                     onSave: _save,
@@ -155,7 +136,7 @@ class _ProfileHeaderIntro extends StatelessWidget {
           child: const Icon(Icons.person, color: Colors.white, size: 45),
         ),
         const SizedBox(height: 12),
-        TitleText(
+        const TitleText(
           text: 'personalize_your_profile',
           color: AppColors.blueColor,
           subtractedSize: 3,
@@ -163,8 +144,8 @@ class _ProfileHeaderIntro extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 6),
-        SubtitleText(
-          text: 'update_name_email',
+        const SubtitleText(
+          text: 'update_name',
           subtractedSize: 6,
           color: AppColors.greyColor,
           textAlign: TextAlign.center,
@@ -182,7 +163,7 @@ class _ProfileHintText extends StatelessWidget {
     return Opacity(
       opacity: 0.8,
       child: TitleText(
-        text: 'profile_edit_hint',
+        text: 'profile_edit_hint_name',
         textAlign: TextAlign.center,
         subtractedSize: 13,
         color: AppColors.greyColor,

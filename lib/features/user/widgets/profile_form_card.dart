@@ -9,9 +9,7 @@ import '../../../core/utils/app_export.dart';
 class ProfileFormCard extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController nameCtrl;
-  final TextEditingController emailCtrl;
   final FocusNode nameFocusNode;
-  final FocusNode emailFocusNode;
   final bool valid;
   final bool formValid;
   final VoidCallback onSave;
@@ -19,9 +17,7 @@ class ProfileFormCard extends StatelessWidget {
   const ProfileFormCard({
     required this.formKey,
     required this.nameCtrl,
-    required this.emailCtrl,
     required this.nameFocusNode,
-    required this.emailFocusNode,
     required this.valid,
     required this.formValid,
     required this.onSave,
@@ -47,22 +43,6 @@ class ProfileFormCard extends StatelessWidget {
                 hint: 'full_name',
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: Validator().validateUserName,
-                borderRadius: 12,
-                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
-                textColor: textColor,
-                hintColor: AppColors.grayDarkText,
-                fillColor: Colors.transparent,
-                // ignore: deprecated_member_use
-                borderColor: AppColors.blueColor.withValues(alpha: 0.25),
-              ),
-              const SizedBox(height: 12),
-              DefaultTextFormField(
-                currentController: emailCtrl,
-                currentFocusNode: emailFocusNode,
-                hint: 'email',
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (v) =>
-                    Validator().isInvalidEmail(v ?? '') ? 'invalid email' : null,
                 borderRadius: 12,
                 contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
                 textColor: textColor,

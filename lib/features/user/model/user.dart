@@ -5,26 +5,20 @@ class UserModel {
   @HiveField(0)
   final String name;
 
-  @HiveField(1)
-  final String email;
-
   const UserModel({
     required this.name,
-    required this.email,
   });
 
   UserModel copyWith({
     String? name,
-    String? email,
   }) {
     return UserModel(
       name: name ?? this.name,
-      email: email ?? this.email,
     );
   }
 
   @override
-  String toString() => 'UserModel(name: $name, email: $email)';
+  String toString() => 'UserModel(name: $name)';
 }
 
 /// =================
@@ -47,17 +41,14 @@ class UserModelAdapter extends TypeAdapter<UserModel> {
 
     return UserModel(
       name: fields[0] as String,
-      email: fields[1] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserModel obj) {
-    writer.writeByte(2);
+    writer.writeByte(1);
     writer.writeByte(0);
     writer.write(obj.name);
-    writer.writeByte(1);
-    writer.write(obj.email);
   }
 
   @override

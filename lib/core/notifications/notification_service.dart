@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:easy_localization/easy_localization.dart';
 import 'dart:developer';
 import 'dart:io' show Platform;
 import 'dart:typed_data';
@@ -41,7 +42,7 @@ class NotificationService {
 
     const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    final iosInit = DarwinInitializationSettings(
+    const iosInit = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
       requestSoundPermission: true,
@@ -82,7 +83,9 @@ class NotificationService {
       final status = await Permission.notification.status;
       if (!status.isGranted) {
         final result = await Permission.notification.request();
-        log('NotificationService._requestAndroidNotificationPermission: request result=$result');
+        log(
+          'NotificationService._requestAndroidNotificationPermission: request result=$result',
+        );
       }
     } catch (e) {
       log('NotificationService._requestAndroidNotificationPermission failed: $e');
@@ -92,9 +95,13 @@ class NotificationService {
   Future<void> _checkAndRequestExactAlarmPermission() async {
     if (!Platform.isAndroid) return;
     try {
-      final androidPlugin = _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+      final androidPlugin = _plugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
       if (androidPlugin != null) {
-        final canScheduleExactAlarms = await androidPlugin.canScheduleExactNotifications();
+        final canScheduleExactAlarms = await androidPlugin
+            .canScheduleExactNotifications();
         if (canScheduleExactAlarms == false) {
           await androidPlugin.requestExactAlarmsPermission();
         }
@@ -170,7 +177,9 @@ class NotificationService {
           payload: jsonEncode({'id': rem.id}),
         );
       } catch (exactError) {
-        log('NotificationService.scheduleReminder:-- Exact scheduling failed: $exactError');
+        log(
+          'NotificationService.scheduleReminder:-- Exact scheduling failed: $exactError',
+        );
         await _plugin.zonedSchedule(
           id,
           (rem.title.isNotEmpty) ? rem.title : 'Reminder',
@@ -186,7 +195,9 @@ class NotificationService {
       final scheduledIds = pending.map((p) => p.id).toList();
 
       if (!scheduledIds.contains(id)) {
-        log('NotificationService.scheduleReminder:  WARNING - Notification ID $id NOT found in pending list!');
+        log(
+          'NotificationService.scheduleReminder:  WARNING - Notification ID $id NOT found in pending list!',
+        );
       }
     } catch (e, stack) {
       log('NotificationService.scheduleReminder:  CRITICAL ERROR - $e');
@@ -208,7 +219,9 @@ class NotificationService {
     if (remaining.isEmpty) {
       log('NotificationService.cancelAll: ✅ All notifications cleared successfully');
     } else {
-      log('NotificationService.cancelAll: ⚠️ WARNING - ${remaining.length} notifications still pending');
+      log(
+        'NotificationService.cancelAll: ⚠️ WARNING - ${remaining.length} notifications still pending',
+      );
     }
   }
 
@@ -219,11 +232,10 @@ class NotificationService {
   }
 
   Future<void> welcomeImmediateShow() async {
-    log('[Test] Showing immediate welcome notification');
     await _plugin.show(
       _stableId('welcome_show'),
-      'Welcome!',
-      'Welcome to the app',
+      'welcome_notification_title'.tr(),
+      'welcome_notification_body'.tr(),
       _platformDetails(),
       payload: 'welcome_show',
     );
@@ -232,7 +244,10 @@ class NotificationService {
   Future<void> debugNotificationStatus() async {
     await init();
     if (Platform.isAndroid) {
-      final androidPlugin = _plugin.resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+      final androidPlugin = _plugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >();
       if (androidPlugin != null) {
         final canScheduleExact = await androidPlugin.canScheduleExactNotifications();
         log('Can schedule exact alarms: $canScheduleExact');
@@ -279,5 +294,7 @@ class NotificationService {
 
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse response) {
-  log('[NOTIFICATION TAPPED] Background notification tapped. payload=${response.payload}');
+  log(
+    '[NOTIFICATION TAPPED] Background notification tapped. payload=${response.payload}',
+  );
 }

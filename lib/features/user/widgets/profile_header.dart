@@ -4,13 +4,11 @@ import '../../../core/utils/app_export.dart';
 
 class ProfileHeader extends StatelessWidget {
   final String nameCtrl;
-  final String emailCtrl;
   final bool isDark;
   final MediaQueryData mq;
 
   const ProfileHeader({
     required this.nameCtrl,
-    required this.emailCtrl,
     required this.isDark,
     required this.mq,
   });
@@ -120,15 +118,6 @@ class ProfileHeader extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 6),
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 300),
-                        child: SubtitleText(
-                          key: ValueKey(emailCtrl),
-                          text: emailCtrl.isEmpty ? '—' : emailCtrl,
-                          subtractedSize: 1,
-                          color: isDark ? Colors.white54 : Colors.black54,
-                        ),
-                      ),
                     ],
                   ),
                 ),

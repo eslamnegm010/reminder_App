@@ -32,7 +32,7 @@ class AppInitializer {
     await ReminderRescheduler.rescheduleAll();
 
     // 6) Show welcome notification (after rescheduling to avoid overlap)
-    await NotificationService.instance.welcomeImmediateShow();
+    // await NotificationService.instance.welcomeImmediateShow();
 
     // 7) Boot handler - reschedule reminders after device boot
 

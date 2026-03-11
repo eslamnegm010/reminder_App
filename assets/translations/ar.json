@@ -44,14 +44,16 @@
   "full_name": "الاسم الكامل",
   "email": "البريد الإلكتروني",
   "save": "حفظ",
-  "profile_edit_hint": "يمكنك تعديل الاسم والبريد الإلكتروني في أي وقت من هنا.",
+    "profile_edit_hint": "يمكنك تعديل الاسم والبريد الإلكتروني في أي وقت من هنا.",
+    "profile_edit_hint_name": "يمكنك تعديل الاسم في أي وقت من هنا.",
   "profile_saved_successfully": "تم حفظ الملف الشخصي بنجاح",
   "edit_profile": "تعديل الملف الشخصي",
   "edit_your_profile": "قم بتعديل ملفك الشخصي",
   "you_have_been_signed_out": "تم تسجيل خروجك",
-  "about_app_description": "تم تطوير هذا التطبيق بواسطة إسلام نجم — مطور Flutter شغوف يركز على إنشاء تطبيقات جوّال نظيفة وأنيقة وسهلة الاستخدام.",
+  "about_app_description": "Reminder هو أداة بسيطة وفعالة مصممة لمساعدتك على البقاء منظماً من خلال تنبيهات زمنية. خصوصيتك هي أولويتنا — يتم تخزين جميع البيانات محلياً على جهازك.",
   "personalize_your_profile": "دعنا نُخصص ملفك الشخصي!",
   "update_name_email": "حدّث اسمك وبريدك الإلكتروني لجعل التطبيق أكثر خصوصية لك.",
+  "update_name": "حدّث اسمك لجعل التطبيق أكثر خصوصية لك.",
   "notify_for_this_reminder": "تنبيه لهذا التذكير",
   "notifications": "الإشعارات",
   "tap_to_disable_notifications": "اضغط لتعطيل الإشعارات",
@@ -64,7 +66,7 @@
   "search_location": "بحث عن المكان" ,
   "selected_coordinates": "الموقع المحدد",
   "save_for_later": "حفظ لوقت لاحق",
-  "name_this_location": "قم بتسمية هذا الموقع" 
+  "name_this_location": "قم بتسمية هذا الموقع",
 
 
 
@@ -84,4 +86,8 @@
 
 
 
+  "privacy_policy": "سياسة الخصوصية",
+  "open_privacy_policy": "فتح سياسة الخصوصية",
+  "welcome_notification_title": "نحن سعداء بانضمامك إلينا! 🔔",
+  "welcome_notification_body": "هل أنت مستعد للتنظيم؟ أضف تنبيهاً سريعاً لكي لا تفوتك المهام الهامة أبداً."
 }
