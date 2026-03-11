@@ -1,3 +1,4 @@
+/*
 import 'package:latlong2/latlong.dart';
 
 class LocationSearchResult {
@@ -83,3 +84,4 @@ class FamousLocation {
 
   const FamousLocation(this.name, this.location, this.emoji);
 }
+*/

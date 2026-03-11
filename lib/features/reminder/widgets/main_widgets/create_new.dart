@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:reminder_app/core/utils/app_export.dart';
-import 'package:reminder_app/core/location_services/models/location_model.dart';
 import 'package:reminder_app/features/reminder/enum/reminder_priority.dart';
 import 'package:reminder_app/features/reminder/model/reminder_model.dart';
 import 'package:reminder_app/core/utils/validator.dart';
-
-import '../location_widgets/location_picker.dart';
 import '../add_reminder_sheet/date_time_picker_button.dart';
 import '../add_reminder_sheet/notification_toggle.dart';
 import '../add_reminder_sheet/priority_selector_card.dart';
@@ -32,7 +28,6 @@ Future<void> showAddReminderBottomSheet(
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
   bool notificationsEnabled = reminder?.notificationsEnabled ?? true;
-  LocationSearchResult? selectedLocation;
 
   // Initialize Type
   ReminderType reminderType = ReminderType.time; // Default
@@ -53,38 +48,7 @@ Future<void> showAddReminderBottomSheet(
         ? TimeOfDay.fromDateTime(reminder.dateTime!)
         : null;
 
-    if (reminder.location != null &&
-        reminder.latitude != null &&
-        reminder.longitude != null) {
-      selectedLocation = LocationSearchResult(
-        displayName: reminder.location!,
-        type: 'saved', // or 'unknown'
-        location: LatLng(reminder.latitude!, reminder.longitude!),
-        address: {},
-      );
-    } else if (reminder.location != null && reminder.location!.isNotEmpty) {
-      // Fallback for legacy data if any
-      final parts = reminder.location!.split(',');
-      if (parts.length == 2) {
-        final lat = double.tryParse(parts[0].trim());
-        final lng = double.tryParse(parts[1].trim());
-        if (lat != null && lng != null) {
-          selectedLocation = LocationSearchResult(
-            displayName: reminder.location!,
-            type: 'legacy',
-            location: LatLng(lat, lng),
-            address: {},
-          );
-        }
-      }
-    }
-
-    // Determine type based on existing data
-    if ((selectedLocation != null) && (selectedDate == null)) {
-      reminderType = ReminderType.location;
-    } else {
-      reminderType = ReminderType.time;
-    }
+    reminderType = ReminderType.time;
   }
 
   final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -141,71 +105,6 @@ Future<void> showAddReminderBottomSheet(
                             ),
                             const SizedBox(height: 14),
 
-                            // Reminder Type Selector
-                            Container(
-                              padding: const EdgeInsets.all(4),
-                              decoration: BoxDecoration(
-                                color: isDark
-                                    ? Colors.grey.withValues(alpha: 0.1)
-                                    : Colors.grey.shade200,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: GestureDetector(
-                                      onTap: () => setState(
-                                        () => reminderType = ReminderType.time,
-                                      ),
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(vertical: 10),
-                                        decoration: BoxDecoration(
-                                          color: reminderType == ReminderType.time
-                                              ? AppColors.blueColor
-                                              : Colors.transparent,
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: TitleText(
-                                          subtractedSize: 10,
-                                          text: "date_and_time".tr().toUpperCase(),
-                                          color: reminderType == ReminderType.time
-                                              ? Colors.white
-                                              : AppColors.getTextColor(ctx),
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: GestureDetector(
-                                      onTap: () => setState(
-                                        () => reminderType = ReminderType.location,
-                                      ),
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(vertical: 10),
-                                        decoration: BoxDecoration(
-                                          color: reminderType == ReminderType.location
-                                              ? AppColors.blueColor
-                                              : Colors.transparent,
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: TitleText(
-                                          subtractedSize: 10,
-                                          text: "Location".tr().toUpperCase(),
-                                          color: reminderType == ReminderType.location
-                                              ? Colors.white
-                                              : AppColors.getTextColor(ctx),
-
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
                             const SizedBox(height: 20),
 
                             ReminderTextField(
@@ -328,20 +227,6 @@ Future<void> showAddReminderBottomSheet(
                             ),
                             const SizedBox(height: 20),
 
-                            // Location Section
-                            if (reminderType == ReminderType.location) ...[
-                              const SectionTitleText(text: "location"),
-                              const SizedBox(height: 10),
-                              LocationPicker(
-                                location: selectedLocation?.location,
-                                hint: 'select_location',
-                                helper: 'location_helper_text',
-                                onLocationSelected: (loc) =>
-                                    setState(() => selectedLocation = loc),
-                                onClear: () => setState(() => selectedLocation = null),
-                              ),
-                              const SizedBox(height: 20),
-                            ],
 
                             NotificationToggle(
                               value: notificationsEnabled,
@@ -384,10 +269,6 @@ Future<void> showAddReminderBottomSheet(
                                         : null,
                                     notificationsEnabled: notificationsEnabled,
                                     reminderId: reminder?.id,
-                                    selectedLocation:
-                                        reminderType == ReminderType.location
-                                        ? selectedLocation
-                                        : null,
                                   );
                                 },
                               ),

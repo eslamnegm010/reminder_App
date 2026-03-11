@@ -1,3 +1,4 @@
+/*
 import 'package:reminder_app/sheared_widgets/text_field/default_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -71,3 +72,4 @@ class LocationSearchBar extends StatelessWidget {
     );
   }
 }
+*/

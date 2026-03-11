@@ -1,3 +1,4 @@
+/*
 import 'package:reminder_app/sheared_widgets/text/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:reminder_app/res/theme/app_colors.dart';
@@ -72,3 +73,4 @@ class LocationSuggestionsList extends StatelessWidget {
     );
   }
 }
+*/

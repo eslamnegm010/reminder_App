@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
-import '../../../../core/location_services/models/location_model.dart';
 
 import '../../../../sheared_widgets/others/snack_bar.dart';
 import '../../cubit/reminder_cubit.dart';
@@ -18,7 +17,6 @@ void handleAddReminder({
   required TimeOfDay? selectedTime,
   required bool notificationsEnabled,
   required String? reminderId,
-  required LocationSearchResult? selectedLocation,
 }) {
   if (formKey.currentState!.validate()) {
     final reminderCubit = context.read<ReminderCubit>();
@@ -43,9 +41,6 @@ void handleAddReminder({
       dateTime: finalDateTime,
       id: reminderId,
       notificationsEnabled: notificationsEnabled,
-      location: selectedLocation?.displayName,
-      latitude: selectedLocation?.location.latitude ?? 0,
-      longitude: selectedLocation?.location.longitude ?? 0,
     );
 
     if (finalDateTime != null && notificationsEnabled) {

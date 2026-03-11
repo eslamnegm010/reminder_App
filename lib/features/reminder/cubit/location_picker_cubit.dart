@@ -1,3 +1,4 @@
+/*
 import 'package:bloc/bloc.dart';
 import 'package:reminder_app/core/location_services/location_manger.dart';
 import 'package:reminder_app/core/location_services/location_search_service.dart';
@@ -167,3 +168,4 @@ class LocationPickerCubit extends Cubit<LocationPickerState> {
     emit(state.copyWith(showLocationOptions: false));
   }
 }
+*/

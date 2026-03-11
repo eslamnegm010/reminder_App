@@ -1,3 +1,4 @@
+/*
 import 'dart:convert';
 import 'package:reminder_app/core/location_services/models/location_model.dart';
 import 'package:http/http.dart' as http;
@@ -100,3 +101,4 @@ class LocationSearchService {
     }
   }
 }
+*/

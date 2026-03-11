@@ -120,13 +120,6 @@ class ReminderCard extends StatelessWidget {
                                         ).format(reminder.dateTime!),
                                         isDark,
                                       ),
-                                    if (reminder.location?.isNotEmpty ?? false)
-                                      _metaInfo(
-                                        context,
-                                        Icons.location_on_outlined,
-                                        reminder.location!,
-                                        isDark,
-                                      ),
                                   ],
                                 ),
                                 const SizedBox(height: 8),

@@ -1,3 +1,4 @@
+/*
 import 'dart:convert';
 import 'package:reminder_app/core/location_services/models/location_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,3 +53,4 @@ class LocationManager {
     return false;
   }
 }
+*/

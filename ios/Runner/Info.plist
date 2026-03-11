@@ -4,10 +4,6 @@
 	<dict>
 	    <key>UNUserNotificationCenterUsageDescription</key>
         <string>We use notifications to remind you about your important tasks.</string>
-	    <key>NSLocationWhenInUseUsageDescription</key>
-	    <string>We need your location to send you reminders when you arrive at your destination.</string>
-	    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	    <string>We need your location to send you reminders when you arrive at your destination, even when the app is in the background.</string>
 	    <key>NSUserTrackingUsageDescription</key>
         <string>This identifier will be used to deliver relevant notifications.</string>
 		<key>CFBundleDevelopmentRegion</key>

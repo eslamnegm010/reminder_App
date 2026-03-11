@@ -1,3 +1,4 @@
+/*
 import 'package:latlong2/latlong.dart';
 import 'dart:math' as math;
 
@@ -105,3 +106,4 @@ class CompassHelper {
     return directions[index];
   }
 }
+*/
