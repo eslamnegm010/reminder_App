@@ -1,14 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
+
 enum ReminderPriority { low, medium, high }
 
 extension ReminderPriorityText on ReminderPriority {
   String get toText {
     switch (this) {
       case ReminderPriority.low:
-        return "Low";
+        return "low".tr();
       case ReminderPriority.medium:
-        return "Medium";
+        return "medium".tr();
       case ReminderPriority.high:
-        return "High";
+        return "high".tr();
     }
   }
 

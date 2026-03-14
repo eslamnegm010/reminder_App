@@ -37,7 +37,7 @@ void handleAddReminder({
     reminderCubit.addReminder(
       title: titleController.text,
       description: descController.text,
-      priority: selectedPriority?.toText ?? ReminderPriority.medium.toText,
+      priority: selectedPriority?.name ?? ReminderPriority.medium.name,
       dateTime: finalDateTime,
       id: reminderId,
       notificationsEnabled: notificationsEnabled,

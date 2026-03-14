@@ -35,14 +35,7 @@ Future<void> showAddReminderBottomSheet(
   if (reminder != null) {
     titleController.text = reminder.title;
     descController.text = reminder.description;
-    final priorityString = reminder.priority;
-    selectedPriority = ReminderPriority.values.firstWhere(
-      (e) => e.name == priorityString,
-      orElse: () => ReminderPriority.values.firstWhere(
-        (e) => e.toText == priorityString,
-        orElse: () => ReminderPriority.medium,
-      ),
-    );
+    selectedPriority = ReminderPriorityText.fromText(reminder.priority);
     selectedDate = reminder.dateTime;
     selectedTime = reminder.dateTime != null
         ? TimeOfDay.fromDateTime(reminder.dateTime!)
@@ -191,7 +184,7 @@ Future<void> showAddReminderBottomSheet(
                               children: [
                                 Expanded(
                                   child: PrioritySelectorCard(
-                                    title: "Low",
+                                    title: "low",
                                     color: Colors.greenAccent,
                                     icon: Icons.arrow_downward_rounded,
                                     isSelected: selectedPriority == ReminderPriority.low,
@@ -203,7 +196,7 @@ Future<void> showAddReminderBottomSheet(
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: PrioritySelectorCard(
-                                    title: "Medium",
+                                    title: "medium",
                                     color: Colors.orangeAccent,
                                     icon: Icons.horizontal_rule_rounded,
                                     isSelected:
@@ -216,7 +209,7 @@ Future<void> showAddReminderBottomSheet(
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: PrioritySelectorCard(
-                                    title: "High",
+                                    title: "high",
                                     color: Colors.redAccent,
                                     icon: Icons.arrow_upward_rounded,
                                     isSelected: selectedPriority == ReminderPriority.high,

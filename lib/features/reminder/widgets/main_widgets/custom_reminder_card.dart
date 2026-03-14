@@ -175,7 +175,7 @@ class ReminderCard extends StatelessWidget {
           ),
           const SizedBox(width: 4),
           TitleText(
-            text: priority,
+            text: priority.toLowerCase(),
             subtractedSize: 13,
             fontWeight: FontWeight.w600,
             color: color,
