@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:reminder_app/core/utils/app_export.dart';
 import 'package:reminder_app/features/reminder/cubit/reminder_cubit.dart';
 import 'package:reminder_app/features/reminder/cubit/reminder_state.dart';
@@ -98,26 +99,62 @@ class ReminderPageBody extends StatelessWidget {
     );
   }
 
-  AppBar _buildAppBar(BuildContext context) => AppBar(
-    title: const TitleText.small(
-      text: 'reminder',
-      color: AppColors.white,
-      fontWeight: FontWeight.w500,
-    ),
-    centerTitle: true,
-    elevation: 0,
-    actions: [
-      IconButton(
-        icon: SvgPicture.asset(
-          AppAssets.userCircleIcon,
-          height: 24,
-          width: 24,
-          colorFilter: ColorFilter.mode(AppColors.getTextColor(context), BlendMode.srcIn),
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
+    return PreferredSize(
+      preferredSize: const Size.fromHeight(70),
+      child: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        flexibleSpace: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TitleText.small(
+                        text: 'reminder',
+                        color: AppColors.getTextColor(context),
+                        fontWeight: FontWeight.bold,
+                      ),
+                      SubtitleText(
+                        text: 'manage_tasks_efficiently',
+                        subtractedSize: 2,
+                        color: AppColors.getGrayTextColor(context),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.getCardBackgroundColor(context),
+                    shape: BoxShape.circle,
+                    border: Border.all(color: AppColors.blueColor.withValues(alpha: 0.1)),
+                  ),
+                  child: IconButton(
+                    padding: const EdgeInsets.all(12),
+                    icon: SvgPicture.asset(
+                      AppAssets.userCircleIcon,
+                      height: 24,
+                      width: 24,
+                      colorFilter: ColorFilter.mode(AppColors.blueColor, BlendMode.srcIn),
+                    ),
+                    onPressed: () => showSettings(context),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
-        onPressed: () => showSettings(context),
       ),
-    ],
-  );
+    );
+  }
 
   Widget _buildFilterButton(BuildContext context, String label, FilterType type) {
     final cubit = context.read<ReminderCubit>();
