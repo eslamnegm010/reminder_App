@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:reminder_app/core/constans/app_constants.dart';
+import 'package:reminder_app/features/reminder/cubit/reminder_cubit.dart';
 import 'package:reminder_app/features/reminder/cubit/reminder_state.dart';
 import 'package:reminder_app/features/reminder/widgets/setting_item.dart';
 import 'package:reminder_app/features/user/pages/user_form_page.dart';
@@ -10,8 +12,6 @@ import 'package:reminder_app/sheared_widgets/others/snack_bar.dart';
 import 'package:reminder_app/sheared_widgets/others/swaper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reminder_app/core/utils/app_export.dart';
-import 'package:reminder_app/features/reminder/cubit/reminder_cubit.dart';
-import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:reminder_app/features/app_home_screen/cubit/cubit/theme_cubit.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -39,7 +39,8 @@ void showSettings(BuildContext context) {
             padding: const EdgeInsets.symmetric(horizontal: 18),
             child: Column(
               children: [
-                swaper(),
+                //swaper(),
+                const SizedBox(height: UIConstants.marginLarge),
                 _buildHeader(ctx),
                 const SizedBox(height: UIConstants.marginLarge),
                 Expanded(
@@ -68,12 +69,31 @@ Widget _buildHeader(BuildContext ctx) {
       Expanded(
         child: BlocBuilder<UserCubit, UserState>(
           builder: (context, uState) {
-            final user = uState.user;
-            final displayName = user?.name ?? 'guest_user';
-            return ProfileHeader(
-              nameCtrl: displayName,
-              isDark: Theme.of(ctx).brightness == Brightness.dark,
-              mq: MediaQuery.of(ctx),
+            return BlocBuilder<ReminderCubit, ReminderState>(
+              builder: (context, rState) {
+                final user = uState.user;
+                final displayName = user?.name ?? 'guest_user';
+                final reminders = rState.reminder;
+                final activeCount = reminders.where((r) => !r.isCompleted).length;
+                final completedCount = reminders.where((r) => r.isCompleted).length;
+                final highCount = reminders
+                    .where((r) => r.priority.toLowerCase() == 'high')
+                    .length;
+                final productivity = reminders.isEmpty
+                    ? '0%'
+                    : '${((completedCount / reminders.length) * 100).toStringAsFixed(0)}%';
+
+                return ProfileHeader(
+                  nameCtrl: displayName,
+                  isDark: Theme.of(ctx).brightness == Brightness.dark,
+                  mq: MediaQuery.of(ctx),
+                  totalActive: activeCount,
+                  totalCompleted: completedCount,
+                  totalAll: reminders.length,
+                  totalHigh: highCount,
+                  productivity: productivity,
+                );
+              },
             );
           },
         ),
@@ -211,9 +231,11 @@ Widget _buildClearRemindersItem(BuildContext context, BuildContext sheetContext)
         ),
       );
       if (confirmed == true) {
-        final reminderCubit = context.read<ReminderCubit>();
-        reminderCubit.clearAll();
-        showSnackbar(context, message: 'all_reminders_removed');
+        if (context.mounted) {
+          final reminderCubit = context.read<ReminderCubit>();
+          reminderCubit.clearAll();
+          showSnackbar(context, message: 'all_reminders_removed');
+        }
       }
     },
   );

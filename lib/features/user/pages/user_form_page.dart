@@ -4,6 +4,8 @@ import 'package:reminder_app/features/user/user_cubit/user_cubit.dart';
 import 'package:reminder_app/features/user/widgets/profile_header.dart';
 import 'package:reminder_app/features/user/widgets/profile_form_card.dart';
 import 'package:reminder_app/sheared_widgets/others/snack_bar.dart';
+import 'package:reminder_app/features/reminder/cubit/reminder_cubit.dart';
+import 'package:reminder_app/features/reminder/cubit/reminder_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -83,7 +85,29 @@ class _UserProfilePageState extends State<UserProfilePage> {
                   const SizedBox(height: 20),
                   const _ProfileHeaderIntro(),
                   const SizedBox(height: 30),
-                  ProfileHeader(nameCtrl: _nameCtrl.text, isDark: isDark, mq: mq),
+                  BlocBuilder<ReminderCubit, ReminderState>(
+                    builder: (context, rState) {
+                      final reminders = rState.reminder;
+                      final activeCount = reminders.where((r) => !r.isCompleted).length;
+                      final completedCount = reminders.where((r) => r.isCompleted).length;
+                      final highCount = reminders
+                          .where((r) => r.priority.toLowerCase() == 'high')
+                          .length;
+                      final productivity = reminders.isEmpty
+                          ? '0%'
+                          : '${((completedCount / reminders.length) * 100).toStringAsFixed(0)}%';
+                      return ProfileHeader(
+                        nameCtrl: _nameCtrl.text,
+                        isDark: isDark,
+                        mq: mq,
+                        totalActive: activeCount,
+                        totalCompleted: completedCount,
+                        totalAll: reminders.length,
+                        totalHigh: highCount,
+                        productivity: productivity,
+                      );
+                    },
+                  ),
                   const SizedBox(height: 30),
                   ProfileFormCard(
                     formKey: _formKey,

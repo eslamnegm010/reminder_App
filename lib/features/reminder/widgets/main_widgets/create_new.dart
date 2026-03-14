@@ -62,6 +62,7 @@ Future<void> showAddReminderBottomSheet(
             padding: EdgeInsets.only(
               left: 20,
               right: 20,
+              top: 20,
               bottom: MediaQuery.of(ctx).viewInsets.bottom,
             ),
             child: StatefulBuilder(
@@ -100,6 +101,13 @@ Future<void> showAddReminderBottomSheet(
 
                             const SizedBox(height: 20),
 
+                            TitleText(
+                              text: "title",
+                              subtractedSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.blueTextColor(context),
+                            ),
+                            const SizedBox(height: 8),
                             ReminderTextField(
                               controller: titleController,
                               focusNode: titleFocus,
@@ -107,7 +115,14 @@ Future<void> showAddReminderBottomSheet(
                               isRequired: true,
                               isDarkMode: isDark,
                             ),
-                            const SizedBox(height: 10),
+                            const SizedBox(height: 16),
+                            TitleText(
+                              text: "description",
+                              subtractedSize: 11,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.blueTextColor(context),
+                            ),
+                            const SizedBox(height: 8),
                             ReminderTextField(
                               controller: descController,
                               focusNode: descFocus,
@@ -221,7 +236,6 @@ Future<void> showAddReminderBottomSheet(
                               ],
                             ),
                             const SizedBox(height: 20),
-
 
                             NotificationToggle(
                               value: notificationsEnabled,

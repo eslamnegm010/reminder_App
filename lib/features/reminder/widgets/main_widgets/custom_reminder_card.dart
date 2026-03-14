@@ -78,6 +78,7 @@ class ReminderCard extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                _label(context, "title"),
                                 TitleText(
                                   padding: const EdgeInsetsDirectional.only(end: 5),
                                   subtractedSize: 9,
@@ -94,7 +95,8 @@ class ReminderCard extends StatelessWidget {
                                   textAlign: TextAlign.left,
                                 ),
                                 if (reminder.description.isNotEmpty) ...[
-                                  const SizedBox(height: 4),
+                                  const SizedBox(height: 8),
+                                  _label(context, "description"),
                                   TitleText(
                                     padding: const EdgeInsetsDirectional.only(end: 5),
                                     text: reminder.description,
@@ -156,6 +158,18 @@ class ReminderCard extends StatelessWidget {
     );
   }
 
+  Widget _label(BuildContext context, String key) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 2),
+      child: TitleText(
+        text: "${key.tr()}:",
+        subtractedSize: 14,
+        fontWeight: FontWeight.w600,
+        color: AppColors.getTextColor(context).withValues(alpha: 0.4),
+      ),
+    );
+  }
+
   Widget _priorityBadge(String priority, Color color, bool isDark) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -168,7 +182,9 @@ class ReminderCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           TitleText(
-            text: "priority" ":",
+            text:
+                "priority"
+                ":",
             subtractedSize: 13,
             fontWeight: FontWeight.w600,
             color: color,
