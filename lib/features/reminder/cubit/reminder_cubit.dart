@@ -56,6 +56,7 @@ class ReminderCubit extends Cubit<ReminderState> {
     bool? notificationsEnabled,
     double? latitude,
     double? longitude,
+    String category = "Others",
   }) async {
     if (title.trim().isEmpty) return;
 
@@ -70,6 +71,7 @@ class ReminderCubit extends Cubit<ReminderState> {
       isCompleted: false,
       latitude: latitude,
       longitude: longitude,
+      category: category,
     );
     log(
       ' added reminder id=${reminder.id} title=${reminder.title} description=${reminder.description}  dateTime=${reminder.dateTime}',

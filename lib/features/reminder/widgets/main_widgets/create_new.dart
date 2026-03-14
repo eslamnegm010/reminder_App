@@ -11,6 +11,8 @@ import '../add_reminder_sheet/reminder_action_button.dart';
 import '../add_reminder_sheet/reminder_text_field.dart';
 import '../add_reminder_sheet/section_title_text.dart';
 import '../add_reminder_sheet/add_reminder_logic.dart';
+import '../add_reminder_sheet/category_selector_card.dart';
+import '../../enum/reminder_category.dart';
 
 enum ReminderType { time, location }
 
@@ -28,6 +30,9 @@ Future<void> showAddReminderBottomSheet(
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
   bool notificationsEnabled = reminder?.notificationsEnabled ?? true;
+  ReminderCategory selectedCategory = reminder != null
+      ? ReminderCategoryExtension.fromText(reminder.category)
+      : ReminderCategory.others;
 
   // Initialize Type
   ReminderType reminderType = ReminderType.time; // Default
@@ -193,6 +198,30 @@ Future<void> showAddReminderBottomSheet(
                               const SizedBox(height: 20),
                             ],
 
+                            // Categories Section
+                            const SectionTitleText(text: "categories"),
+                            const SizedBox(height: 10),
+                            SizedBox(
+                              height: 45,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: ReminderCategory.values.length,
+                                padding: EdgeInsets.zero,
+                                itemBuilder: (ctx, index) {
+                                  final category = ReminderCategory.values[index];
+                                  return CategorySelectorCard(
+                                    category: category,
+                                    isSelected: selectedCategory == category,
+                                    isDarkMode: isDark,
+                                    onTap: () {
+                                      setState(() => selectedCategory = category);
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+
                             const SectionTitleText(text: "priority"),
                             const SizedBox(height: 10),
                             Row(
@@ -279,6 +308,7 @@ Future<void> showAddReminderBottomSheet(
                                         : null,
                                     notificationsEnabled: notificationsEnabled,
                                     reminderId: reminder?.id,
+                                    category: selectedCategory.toText,
                                   );
                                 },
                               ),

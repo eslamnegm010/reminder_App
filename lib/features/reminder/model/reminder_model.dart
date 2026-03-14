@@ -40,6 +40,9 @@ class ReminderModel extends Equatable {
   @HiveField(9)
   final double? longitude;
 
+  @HiveField(10)
+  final String category;
+
   const ReminderModel({
     required this.id,
     required this.title,
@@ -51,6 +54,7 @@ class ReminderModel extends Equatable {
     this.notificationsEnabled = true,
     this.latitude,
     this.longitude,
+    this.category = "Others",
   });
 
   ReminderPriority get priorityEnum => ReminderPriorityText.fromText(priority);
@@ -67,6 +71,7 @@ class ReminderModel extends Equatable {
     notificationsEnabled,
     latitude,
     longitude,
+    category,
   ];
 
   ReminderModel copyWith({
@@ -80,6 +85,7 @@ class ReminderModel extends Equatable {
     bool? notificationsEnabled,
     double? latitude,
     double? longitude,
+    String? category,
   }) {
     return ReminderModel(
       id: id ?? this.id,
@@ -92,6 +98,7 @@ class ReminderModel extends Equatable {
       notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
+      category: category ?? this.category,
     );
   }
 }

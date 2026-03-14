@@ -2,6 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:reminder_app/core/utils/app_export.dart';
 import 'package:reminder_app/features/reminder/model/reminder_model.dart';
 import 'package:flutter/material.dart';
+import '../../../../sheared_widgets/text/title_text.dart';
+import '../../enum/reminder_category.dart';
 import '../done_button.dart';
 
 class ReminderCard extends StatelessWidget {
@@ -19,6 +21,31 @@ class ReminderCard extends StatelessWidget {
     required this.onToggleCompletion,
     required this.onNotifiTapped,
   });
+
+  Widget _categoryBadge(String categoryText, bool isDark) {
+    final category = ReminderCategoryExtension.fromText(categoryText);
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      decoration: BoxDecoration(
+        color: category.color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: category.color.withValues(alpha: 0.3)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(category.icon, size: 14, color: category.color),
+          const SizedBox(width: 4),
+          TitleText(
+            text: category.label,
+            subtractedSize: 13,
+            fontWeight: FontWeight.w600,
+            color: category.color,
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,10 +150,21 @@ class ReminderCard extends StatelessWidget {
                                         ).format(reminder.dateTime!),
                                         isDark,
                                       ),
+                                    // _categoryBadge(reminder.category, isDark),
                                   ],
                                 ),
                                 const SizedBox(height: 8),
-                                _priorityBadge(reminder.priority, priorityColor, isDark),
+                                Row(
+                                  children: [
+                                    _priorityBadge(
+                                      reminder.priority,
+                                      priorityColor,
+                                      isDark,
+                                    ),
+                                    const SizedBox(width: 12),
+                                    _categoryBadge(reminder.category, isDark),
+                                  ],
+                                ),
                               ],
                             ),
                           ),
