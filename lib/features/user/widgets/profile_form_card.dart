@@ -26,57 +26,99 @@ class ProfileFormCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textColor = AppColors.getTextColor(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Card(
-      color: AppColors.getCardBackgroundColor(context),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 3,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
-        child: Form(
-          key: formKey,
-          child: Column(
-            children: [
-              DefaultTextFormField(
-                currentController: nameCtrl,
-                currentFocusNode: nameFocusNode,
-                hint: 'full_name',
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: Validator().validateUserName,
-                borderRadius: 12,
-                contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
-                textColor: textColor,
-                hintColor: AppColors.grayDarkText,
-                fillColor: Colors.transparent,
-                // ignore: deprecated_member_use
-                borderColor: AppColors.blueColor.withValues(alpha: 0.25),
-              ),
-              const SizedBox(height: 18),
-              Row(
-                children: [
-                  Expanded(
-                    child: DefaultButton.verySmall(
-                      label: 'cancel'.tr().toUpperCase(),
-                      backgroundColor: AppColors.redColor,
-                      labelColor: Colors.white,
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                  ),
-                  const SizedBox(width: UIConstants.marginLarge),
-                  Expanded(
-                    child: DefaultButton.verySmall(
-                      backgroundColor: valid && formValid
-                          ? AppColors.blueColor
-                          : AppColors.Bordergrey,
-                      label: 'save'.tr().toUpperCase(),
-                      labelColor: Colors.white,
-                      onPressed: valid && formValid ? onSave : null,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: AppColors.blueColor.withValues(alpha: 0.12),
+          width: 1.2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: isDark
+                ? Colors.black.withValues(alpha: 0.2)
+                : AppColors.blueColor.withValues(alpha: 0.06),
+            blurRadius: 20,
+            offset: const Offset(0, 6),
           ),
+        ],
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Column(
+          children: [
+            Container(height: 3, color: AppColors.blueColor),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 18, 16, 18),
+              child: Form(
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Row(
+                        children: [
+                          Icon(Icons.person_outline_rounded,
+                              size: 16, color: AppColors.blueColor),
+                          const SizedBox(width: 6),
+                          TitleText(
+                            text: 'full_name',
+                            subtractedSize: 10,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.blueColor,
+                          ),
+                        ],
+                      ),
+                    ),
+                    DefaultTextFormField(
+                      currentController: nameCtrl,
+                      currentFocusNode: nameFocusNode,
+                      hint: 'full_name',
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: Validator().validateUserName,
+                      borderRadius: 14,
+                      contentPadding: const EdgeInsets.symmetric(
+                          vertical: 14, horizontal: 14),
+                      textColor: textColor,
+                      hintColor: AppColors.grayDarkText,
+                      fillColor: Colors.transparent,
+                      borderColor: AppColors.blueColor.withValues(alpha: 0.25),
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: DefaultButton.verySmall(
+                            label: 'cancel'.tr().toUpperCase(),
+                            backgroundColor: isDark
+                                ? Colors.white12
+                                : Colors.grey.shade200,
+                            labelColor: textColor,
+                            onPressed: () => Navigator.pop(context),
+                          ),
+                        ),
+                        const SizedBox(width: UIConstants.marginLarge),
+                        Expanded(
+                          child: DefaultButton.verySmall(
+                            backgroundColor: valid && formValid
+                                ? AppColors.blueColor
+                                : AppColors.blueColor.withValues(alpha: 0.3),
+                            label: 'save'.tr().toUpperCase(),
+                            labelColor: Colors.white,
+                            onPressed: valid && formValid ? onSave : null,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
