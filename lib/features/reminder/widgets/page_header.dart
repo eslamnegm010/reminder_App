@@ -54,7 +54,7 @@ class PageHeader extends StatelessWidget {
                     ),
                     const SizedBox(width: 12),
                     Padding(
-                      padding: const EdgeInsets.only(right: 14.0),
+                      padding: const EdgeInsets.only(right: 14.0, left: 10),
                       child: Icon(
                         Icons.add_circle_rounded,
                         color: isDarkMode ? Colors.white : AppColors.blueColor,
@@ -67,13 +67,54 @@ class PageHeader extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          const TitleText(
-            padding: EdgeInsetsDirectional.only(start: 5),
-            subtractedSize: 12,
-            text: "reminder_info_options",
-            color: AppColors.blueColor,
-            textAlign: TextAlign.start,
-            alignment: AlignmentDirectional.centerStart,
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+            decoration: BoxDecoration(
+              color: isDarkMode
+                  ? Colors.white.withValues(alpha: 0.05)
+                  : AppColors.blueColor.withValues(alpha: 0.05),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: isDarkMode
+                    ? Colors.white.withValues(alpha: 0.1)
+                    : AppColors.blueColor.withValues(alpha: 0.1),
+              ),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.info_outline_rounded,
+                  size: 20,
+                  color: isDarkMode
+                      ? Colors.white70
+                      : AppColors.blueColor.withValues(alpha: 0.7),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // TitleText(
+                      //   text: "reminder_info_options_title",
+                      //   subtractedSize: 12,
+                      //   fontWeight: FontWeight.w700,
+                      //   color: isDarkMode ? Colors.white : AppColors.blueColor,
+                      // ),
+                      const SizedBox(height: 4),
+                      TitleText(
+                        text: "reminder_info_options_body",
+                        subtractedSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: isDarkMode
+                            ? Colors.white70
+                            : AppColors.blueColor.withValues(alpha: 0.8),
+                        height: 1.4,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
           const SizedBox(height: 10),
         ],
