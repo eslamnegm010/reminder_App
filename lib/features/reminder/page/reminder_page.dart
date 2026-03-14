@@ -47,18 +47,16 @@ class ReminderPageBody extends StatelessWidget {
                 const PageHeader(),
                 SizedBox(height: 10.h),
                 AppBarDivider.getAppBarDivider(context),
-                const SizedBox(height: 10),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: FilterType.values.map((type) {
-                      final label = type.name;
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: _buildFilterButton(context, label, type),
-                      );
-                    }).toList(),
-                  ),
+                const SizedBox(height: 12),
+                Row(
+                  children: FilterType.values.map((type) {
+                    return Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 6.0),
+                        child: _buildFilterButton(context, type.name, type),
+                      ),
+                    );
+                  }).toList(),
                 ),
                 const SizedBox(height: 10),
                 Expanded(
@@ -123,9 +121,11 @@ class ReminderPageBody extends StatelessWidget {
                         color: AppColors.getTextColor(context),
                         fontWeight: FontWeight.bold,
                       ),
-                      SubtitleText(
-                        text: 'manage_tasks_efficiently',
-                        subtractedSize: 2,
+                      TitleText(
+                        text: 'manage_tasks_efficiently'.tr(),
+                        subtractedSize: 12,
+                        fontWeight: FontWeight.w300,
+                        fontFamily: 'Din',
                         color: AppColors.getGrayTextColor(context),
                       ),
                     ],
@@ -143,7 +143,10 @@ class ReminderPageBody extends StatelessWidget {
                       AppAssets.userCircleIcon,
                       height: 24,
                       width: 24,
-                      colorFilter: ColorFilter.mode(AppColors.blueColor, BlendMode.srcIn),
+                      colorFilter: const ColorFilter.mode(
+                        AppColors.blueColor,
+                        BlendMode.srcIn,
+                      ),
                     ),
                     onPressed: () => showSettings(context),
                   ),
@@ -160,52 +163,137 @@ class ReminderPageBody extends StatelessWidget {
     final cubit = context.read<ReminderCubit>();
     final active = cubit.filter == type;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor = active
-        ? AppColors.blueColor
-        : AppColors.getCardBackgroundColor(context);
-    final textColor = active
-        ? Colors.white
-        : (isDark ? Colors.white70 : AppColors.Dark.withValues(alpha: 0.8));
+    final allReminders = cubit.state.reminder;
+
+    final int count = switch (type) {
+      FilterType.active => allReminders.where((r) => !r.isCompleted).length,
+      FilterType.completed => allReminders.where((r) => r.isCompleted).length,
+      _ => allReminders.length,
+    };
+
+    final (IconData icon, Color accentColor) = switch (type) {
+      FilterType.active => (Icons.pending_actions_rounded, AppColors.blueColor),
+      FilterType.completed => (Icons.task_alt_rounded, AppColors.blueColor),
+      _ => (Icons.apps_rounded, AppColors.blueColor),
+    };
 
     return GestureDetector(
       onTap: () => cubit.setFilter(type),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+        duration: const Duration(milliseconds: 220),
+        curve: Curves.easeInOut,
+        height: 72,
         decoration: BoxDecoration(
-          color: bgColor,
-          borderRadius: BorderRadius.circular(25),
+          color: isDark
+              ? (active
+                    ? accentColor.withValues(alpha: 0.18)
+                    : Colors.white.withValues(alpha: 0.05))
+              : (active ? accentColor.withValues(alpha: 0.1) : Colors.white),
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: active
-                ? AppColors.blueColor.withValues(alpha: 0.9)
-                : Colors.transparent,
-            width: 1.2,
+                ? accentColor.withValues(alpha: 0.6)
+                : (isDark
+                      ? Colors.white.withValues(alpha: 0.08)
+                      : Colors.black.withValues(alpha: 0.06)),
+            width: active ? 1.5 : 1.0,
           ),
           boxShadow: active
               ? [
                   BoxShadow(
-                    color: AppColors.blueColor.withValues(alpha: 0.4),
-                    blurRadius: 10,
+                    color: accentColor.withValues(alpha: 0.25),
+                    blurRadius: 14,
+                    spreadRadius: 0,
                     offset: const Offset(0, 4),
                   ),
                 ]
               : [
                   BoxShadow(
-                    color: isDark ? Colors.black26 : Colors.grey.withValues(alpha: 0.12),
-                    blurRadius: 6,
-                    offset: const Offset(0, 3),
+                    color: isDark
+                        ? Colors.black.withValues(alpha: 0.2)
+                        : Colors.black.withValues(alpha: 0.04),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
                   ),
                 ],
         ),
-        child: Row(
-          children: [
-            if (active)
-              const Padding(
-                padding: EdgeInsets.only(right: 6),
-                child: Icon(Icons.check_circle, color: Colors.white, size: 18),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Stack(
+            children: [
+              // Top accent bar
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 220),
+                height: 3,
+                color: active ? accentColor : Colors.transparent,
               ),
-            TitleText(subtractedSize: 12, text: label, color: textColor),
-          ],
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(
+                          icon,
+                          size: 18,
+                          color: active
+                              ? accentColor
+                              : (isDark
+                                    ? Colors.white30
+                                    : Colors.black.withValues(alpha: 0.25)),
+                        ),
+                        // Count badge
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: active
+                                ? accentColor
+                                : (isDark
+                                      ? Colors.white.withValues(alpha: 0.1)
+                                      : Colors.black.withValues(alpha: 0.06)),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: TitleText(
+                            subtractedSize: 12,
+                            text: '$count',
+                            color: active
+                                ? Colors.white
+                                : (isDark ? Colors.white54 : Colors.black54),
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 6),
+                    AnimatedDefaultTextStyle(
+                      duration: const Duration(milliseconds: 200),
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        fontWeight: active ? FontWeight.w700 : FontWeight.w500,
+                        color: active
+                            ? accentColor
+                            : (isDark
+                                  ? Colors.white38
+                                  : Colors.black.withValues(alpha: 0.4)),
+                      ),
+                      child: TitleText(
+                        text: label,
+                        subtractedSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: active
+                            ? accentColor
+                            : (isDark ? Colors.white : Colors.black),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
