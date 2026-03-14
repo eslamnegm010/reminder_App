@@ -27,13 +27,11 @@ class CategorySelectorCard extends StatelessWidget {
           color: isSelected
               ? category.color.withValues(alpha: 0.2)
               : isDarkMode
-                  ? Colors.white.withValues(alpha: 0.05)
-                  : Colors.black.withValues(alpha: 0.05),
+              ? Colors.white.withValues(alpha: 0.05)
+              : Colors.black.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected
-                ? category.color
-                : Colors.transparent,
+            color: isSelected ? category.color : Colors.transparent,
             width: 1.5,
           ),
         ),
@@ -43,18 +41,22 @@ class CategorySelectorCard extends StatelessWidget {
             Icon(
               category.icon,
               size: 18,
-              color: isSelected 
-                  ? category.color 
-                  : isDarkMode ? Colors.white70 : Colors.black87,
+              color: isSelected
+                  ? category.color
+                  : isDarkMode
+                  ? Colors.white70
+                  : Colors.black87,
             ),
             const SizedBox(width: 8),
             TitleText(
               text: category.label,
               subtractedSize: 14,
               fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
-              color: isSelected 
-                  ? category.color 
-                  : isDarkMode ? Colors.white70 : Colors.black87,
+              color: isSelected
+                  ? category.color
+                  : isDarkMode
+                  ? Colors.white70
+                  : Colors.black87,
             ),
           ],
         ),

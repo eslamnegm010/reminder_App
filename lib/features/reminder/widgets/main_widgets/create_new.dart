@@ -57,49 +57,90 @@ Future<void> showAddReminderBottomSheet(
     context: context,
     isScrollControlled: true,
     shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
     ),
+    backgroundColor: isDark ? const Color(0xFF1A1A1A) : Colors.white,
+    barrierColor: Colors.black.withValues(alpha: 0.5),
     builder: (ctx) {
-      return DraggableScrollableSheet(
-        initialChildSize: 0.96,
-        minChildSize: 0.8,
-        maxChildSize: 0.96,
-        builder: (_, scrollController) {
-          return Padding(
-            padding: EdgeInsets.only(
-              left: 20,
-              right: 20,
-              top: 20,
-              bottom: MediaQuery.of(ctx).viewInsets.bottom,
+      return Stack(
+        children: [
+          // Background Gradient Wash to match ReminderPage
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 180,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    AppColors.blueColor.withValues(alpha: isDark ? 0.12 : 0.08),
+                    Colors.transparent,
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
             ),
-            child: StatefulBuilder(
-              builder: (ctx, setState) {
-                return Form(
-                  key: formKey,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: ListView(
-                          controller: scrollController,
-                          padding: EdgeInsets.zero,
-                          children: [
-                            Row(
+          ),
+          DraggableScrollableSheet(
+            initialChildSize: 0.96,
+            minChildSize: 0.8,
+            maxChildSize: 0.96,
+            builder: (_, scrollController) {
+              return Padding(
+                padding: EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  top: 10, // Adjusted for handle
+                  bottom: MediaQuery.of(ctx).viewInsets.bottom,
+                ),
+                child: StatefulBuilder(
+                  builder: (ctx, setState) {
+                    return Form(
+                      key: formKey,
+                      child: Column(
+                        children: [
+                          // Custom Drag Handle
+                          Center(
+                            child: Container(
+                              width: 36,
+                              height: 4.5,
+                              margin: const EdgeInsets.only(bottom: 20),
+                              decoration: BoxDecoration(
+                                color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.08),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: ListView(
+                              controller: scrollController,
+                              padding: EdgeInsets.zero,
                               children: [
-                                TitleText.small(
+                                Row(
+                                  children: [
+                                TitleText(
                                   padding: EdgeInsets.zero,
                                   text: reminder != null
                                       ? "update_your_reminder"
                                       : "create_new_reminder",
+                                  fontWeight: FontWeight.w900,
+                                  subtractedSize: 2,
                                   color: AppColors.blueTextColor(context),
                                 ),
                                 const Spacer(),
-                                SizedBox(
-                                  height: 30,
-                                  child: ClipOval(
-                                    child: Image.asset(
-                                      AppAssets.appLauncher,
-                                      fit: BoxFit.cover,
-                                    ),
+                                Container(
+                                  height: 36,
+                                  width: 36,
+                                  padding: const EdgeInsets.all(6),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.blueColor.withValues(alpha: 0.1),
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Image.asset(
+                                    AppAssets.appLauncher,
+                                    fit: BoxFit.contain,
                                   ),
                                 ),
                               ],
@@ -108,11 +149,23 @@ Future<void> showAddReminderBottomSheet(
 
                             const SizedBox(height: 20),
 
-                            TitleText(
-                              text: "title",
-                              subtractedSize: 11,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.blueTextColor(context),
+                            Row(
+                              children: [
+                                TitleText(
+                                  text: "title",
+                                  subtractedSize: 11,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.blueTextColor(context),
+                                ),
+                                const SizedBox(width: 4),
+                                const Text(
+                                  "*",
+                                  style: TextStyle(
+                                    color: AppColors.redColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 8),
                             ReminderTextField(
@@ -126,7 +179,7 @@ Future<void> showAddReminderBottomSheet(
                             TitleText(
                               text: "description",
                               subtractedSize: 11,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w700,
                               color: AppColors.blueTextColor(context),
                             ),
                             const SizedBox(height: 8),
@@ -231,7 +284,8 @@ Future<void> showAddReminderBottomSheet(
                               RepeatSelectorCard(
                                 selectedRepeatType: selectedRepeatType,
                                 isDarkMode: isDark,
-                                onChanged: (val) => setState(() => selectedRepeatType = val),
+                                onChanged: (val) =>
+                                    setState(() => selectedRepeatType = val),
                               ),
                               const SizedBox(height: 20),
                             ],
@@ -292,54 +346,61 @@ Future<void> showAddReminderBottomSheet(
                       SafeArea(
                         right: false,
                         left: false,
-                        child: Row(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Expanded(
-                              child: ReminderActionButton(
-                                label: "cancel",
-                                backgroundColor: Colors.grey.withValues(alpha: .3),
-                                labelColor: AppColors.getTextColor(ctx),
-                                onPressed: () => Navigator.pop(ctx),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: ReminderActionButton(
+                                    label: "cancel",
+                                    backgroundColor: Colors.grey.withValues(alpha: .3),
+                                    labelColor: AppColors.getTextColor(ctx),
+                                    onPressed: () => Navigator.pop(ctx),
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: ReminderActionButton(
+                                    label: reminder == null ? "create" : "save",
+                                    onPressed: () {
+                                      handleAddReminder(
+                                        context: context,
+                                        ctx: ctx,
+                                        formKey: formKey,
+                                        titleController: titleController,
+                                        descController: descController,
+                                        selectedPriority: selectedPriority,
+                                        selectedDate: reminderType == ReminderType.time
+                                            ? selectedDate
+                                            : null,
+                                        selectedTime: reminderType == ReminderType.time
+                                            ? selectedTime
+                                            : null,
+                                        notificationsEnabled: notificationsEnabled,
+                                        reminderId: reminder?.id,
+                                        category: selectedCategory.toText,
+                                        repeatType: selectedRepeatType,
+                                      );
+                                    },
+                                  ),
+                                ),
+                                ],
                               ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: ReminderActionButton(
-                                label: reminder == null ? "create" : "save",
-                                onPressed: () {
-                                  handleAddReminder(
-                                    context: context,
-                                    ctx: ctx,
-                                    formKey: formKey,
-                                    titleController: titleController,
-                                    descController: descController,
-                                    selectedPriority: selectedPriority,
-                                    selectedDate: reminderType == ReminderType.time
-                                        ? selectedDate
-                                        : null,
-                                    selectedTime: reminderType == ReminderType.time
-                                        ? selectedTime
-                                        : null,
-                                    notificationsEnabled: notificationsEnabled,
-                                    reminderId: reminder?.id,
-                                    category: selectedCategory.toText,
-                                    repeatType: selectedRepeatType,
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                    ],
-                  ),
-                );
-              },
-            ),
-          );
-        },
-      );
-    },
-  );
+                      ],
+                    ),
+                  );
+                },
+              ),
+            );
+          },
+        ),
+      ],
+    );
+  },
+);
 }

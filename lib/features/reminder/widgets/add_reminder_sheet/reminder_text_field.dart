@@ -30,12 +30,16 @@ class ReminderTextField extends StatelessWidget {
       isRequired: isRequired,
       maxLines: maxLines,
       validator: validator,
-      borderRadius: 14,
-      hintColor: AppColors.grayDarkText,
-      contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 14),
+      borderRadius: 16,
+      hintColor: isDarkMode
+          ? Colors.white38
+          : AppColors.grayDarkText.withValues(alpha: 0.5),
+      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       textColor: AppColors.getTextColor(context),
-      borderColor: AppColors.blueColor.withValues(alpha: 0.16),
-      fillColor: Colors.transparent,
+      borderColor: isDarkMode
+          ? Colors.white.withValues(alpha: 0.08)
+          : AppColors.blueColor.withValues(alpha: 0.1),
+      fillColor: isDarkMode ? Colors.white.withValues(alpha: 0.03) : Colors.transparent,
     );
   }
 }
