@@ -198,7 +198,6 @@ Widget _buildClearRemindersItem(BuildContext context, BuildContext sheetContext)
     subtitle: 'remove_all_saved_reminders',
     color: AppColors.redColor,
     onTap: () async {
-      Navigator.pop(sheetContext);
       final confirmed = await showDialog<bool>(
         context: context,
         builder: (dCtx) => AlertDialog(
@@ -224,7 +223,11 @@ Widget _buildClearRemindersItem(BuildContext context, BuildContext sheetContext)
             ),
             TextButton(
               onPressed: () => Navigator.pop(dCtx, true),
-              child: const TitleText(subtractedSize: 13, text: 'yes'),
+              child: const TitleText(
+                subtractedSize: 13,
+                text: 'yes',
+                color: AppColors.blueColor,
+              ),
             ),
           ],
         ),

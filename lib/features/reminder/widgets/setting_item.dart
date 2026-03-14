@@ -49,7 +49,7 @@ class SettingItem extends StatelessWidget {
             ? null
             : SubtitleText(
                 text: subtitle!,
-                subtractedSize: 7,
+                subtractedSize: 6,
                 color: AppColors.greyColor,
               ),
         trailing: trailing,
