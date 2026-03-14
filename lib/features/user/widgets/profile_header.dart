@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/app_export.dart';
+import '../../reminder/pages/productivity_dashboard.dart';
 
 class ProfileHeader extends StatelessWidget {
   final String nameCtrl;
@@ -26,7 +27,6 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final headerHeight = mq.size.height * 0.23;
     const textColor = Colors.white;
     final gradientColors = isDark
         ? [const Color(0xFF1a2a6c), const Color(0xFF2193b0), const Color(0xFF6dd5ed)]
@@ -36,7 +36,6 @@ class ProfileHeader extends StatelessWidget {
       duration: const Duration(milliseconds: 200),
       curve: Curves.easeInOut,
       width: double.infinity,
-      height: headerHeight,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: gradientColors,
@@ -61,7 +60,7 @@ class ProfileHeader extends StatelessWidget {
               top: -20.h,
               right: -20.h,
               child: Directionality(
-                textDirection: TextDirection.ltr,
+                textDirection: Directionality.of(context),
                 child: Icon(
                   Icons.circle_outlined,
                   color: Colors.white.withValues(alpha: 0.1),
@@ -69,18 +68,11 @@ class ProfileHeader extends StatelessWidget {
                 ),
               ),
             ),
-            Positioned(
-              bottom: -20,
-              left: -20,
-              child: Icon(
-                Icons.waves,
-                color: Colors.white.withValues(alpha: 0.05),
-                size: 120,
-              ),
-            ),
+
             Padding(
               padding: const EdgeInsets.all(20),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Row(
@@ -103,7 +95,7 @@ class ProfileHeader extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(width: 8),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -111,11 +103,12 @@ class ProfileHeader extends StatelessWidget {
                           children: [
                             TitleText(
                               text: nameCtrl.isEmpty ? 'guest_user' : nameCtrl,
-                              subtractedSize: 4,
+                              subtractedSize: 6,
                               fontWeight: FontWeight.w800,
                               color: textColor,
+                              maxLines: null,
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4.h),
                             Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 8,
@@ -136,22 +129,55 @@ class ProfileHeader extends StatelessWidget {
                             TitleText(
                               text: 'profile_motto',
                               subtractedSize: 12,
+                              maxLines: 1,
                               fontWeight: FontWeight.w400,
                               color: Colors.white.withValues(alpha: 0.7),
                             ),
                           ],
                         ),
                       ),
+                      const SizedBox(width: 8),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ProductivityDashboard(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.15),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.white24),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.insights_rounded, color: Colors.white, size: 14),
+                              SizedBox(width: 4),
+                              TitleText(
+                                text: "view_insights",
+                                subtractedSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                  const Spacer(),
+                  const SizedBox(height: 16),
                   const Divider(color: Colors.white24, height: 24),
                   TitleText(
                     text: 'stats_overview',
                     subtractedSize: 14,
                     fontWeight: FontWeight.w600,
                     color: Colors.white.withValues(alpha: 0.9),
-                    padding: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.only(bottom: 8),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

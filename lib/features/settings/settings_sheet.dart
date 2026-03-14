@@ -9,7 +9,6 @@ import 'package:reminder_app/features/user/user_cubit/user_state.dart';
 import 'package:reminder_app/features/user/widgets/profile_header.dart';
 import 'package:reminder_app/sheared_widgets/others/app_about_dialog.dart';
 import 'package:reminder_app/sheared_widgets/others/snack_bar.dart';
-import 'package:reminder_app/sheared_widgets/others/swaper.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reminder_app/core/utils/app_export.dart';
 import 'package:easy_localization/easy_localization.dart';
