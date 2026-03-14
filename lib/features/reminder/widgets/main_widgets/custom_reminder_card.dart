@@ -150,6 +150,15 @@ class ReminderCard extends StatelessWidget {
                                         ).format(reminder.dateTime!),
                                         isDark,
                                       ),
+                                    if (reminder.repeatType != 'None')
+                                      _metaInfo(
+                                        context,
+                                        reminder.repeatType == 'Daily' ? Icons.calendar_today :
+                                        reminder.repeatType == 'Weekly' ? Icons.calendar_view_week :
+                                        Icons.calendar_month,
+                                        reminder.repeatType.tr(),
+                                        isDark,
+                                      ),
                                     // _categoryBadge(reminder.category, isDark),
                                   ],
                                 ),

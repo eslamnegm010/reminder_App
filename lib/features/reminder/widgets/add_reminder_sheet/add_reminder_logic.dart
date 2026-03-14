@@ -18,6 +18,7 @@ void handleAddReminder({
   required bool notificationsEnabled,
   required String? reminderId,
   required String category,
+  required String repeatType,
 }) {
   if (formKey.currentState!.validate()) {
     final reminderCubit = context.read<ReminderCubit>();
@@ -43,6 +44,7 @@ void handleAddReminder({
       id: reminderId,
       notificationsEnabled: notificationsEnabled,
       category: category,
+      repeatType: repeatType,
     );
 
     if (finalDateTime != null && notificationsEnabled) {

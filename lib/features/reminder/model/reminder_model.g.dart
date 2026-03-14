@@ -28,13 +28,14 @@ class ReminderModelAdapter extends TypeAdapter<ReminderModel> {
       latitude: fields[8] as double?,
       longitude: fields[9] as double?,
       category: fields[10] == null ? 'Others' : fields[10] as String,
+      repeatType: fields[11] == null ? 'None' : fields[11] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, ReminderModel obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -56,7 +57,9 @@ class ReminderModelAdapter extends TypeAdapter<ReminderModel> {
       ..writeByte(9)
       ..write(obj.longitude)
       ..writeByte(10)
-      ..write(obj.category);
+      ..write(obj.category)
+      ..writeByte(11)
+      ..write(obj.repeatType);
   }
 
   @override

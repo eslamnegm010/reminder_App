@@ -129,6 +129,11 @@
   "privacy_policy_changes_body": "We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy within the App or on our hosting platform. You are advised to review this Privacy Policy periodically for any changes.",
   "privacy_policy_contact_title": "5. Contact Us",
   "privacy_policy_contact_body": "If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us at:",
+  "Repeat": "Repeat",
+  "None": "None",
+  "Daily": "Daily",
+  "Weekly": "Weekly",
+  "Monthly": "Monthly",
   "welcome_notification_title": "We're glad you're here! 🔔",
   "welcome_notification_body": "Ready to stay organized? Set a quick reminder so you never miss what matters most."
 }

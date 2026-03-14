@@ -43,6 +43,9 @@ class ReminderModel extends Equatable {
   @HiveField(10, defaultValue: 'Others')
   final String category;
 
+  @HiveField(11, defaultValue: 'None')
+  final String repeatType;
+
   const ReminderModel({
     required this.id,
     required this.title,
@@ -55,6 +58,7 @@ class ReminderModel extends Equatable {
     this.latitude,
     this.longitude,
     this.category = "Others",
+    this.repeatType = "None",
   });
 
   ReminderPriority get priorityEnum => ReminderPriorityText.fromText(priority);
@@ -72,6 +76,7 @@ class ReminderModel extends Equatable {
     latitude,
     longitude,
     category,
+    repeatType,
   ];
 
   ReminderModel copyWith({
@@ -86,6 +91,7 @@ class ReminderModel extends Equatable {
     double? latitude,
     double? longitude,
     String? category,
+    String? repeatType,
   }) {
     return ReminderModel(
       id: id ?? this.id,
@@ -99,6 +105,7 @@ class ReminderModel extends Equatable {
       latitude: latitude ?? this.latitude,
       longitude: longitude ?? this.longitude,
       category: category ?? this.category,
+      repeatType: repeatType ?? this.repeatType,
     );
   }
 }

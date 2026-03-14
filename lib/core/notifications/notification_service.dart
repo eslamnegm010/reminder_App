@@ -166,6 +166,15 @@ class NotificationService {
       }
       final id = _stableId(rem.id);
 
+      DateTimeComponents? matchDateTimeComponents;
+      if (rem.repeatType == 'Daily') {
+        matchDateTimeComponents = DateTimeComponents.time;
+      } else if (rem.repeatType == 'Weekly') {
+        matchDateTimeComponents = DateTimeComponents.dayOfWeekAndTime;
+      } else if (rem.repeatType == 'Monthly') {
+        matchDateTimeComponents = DateTimeComponents.dayOfMonthAndTime;
+      }
+
       try {
         await _plugin.zonedSchedule(
           id,
@@ -174,6 +183,7 @@ class NotificationService {
           scheduled,
           _platformDetails(),
           androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+          matchDateTimeComponents: matchDateTimeComponents,
           payload: jsonEncode({'id': rem.id}),
         );
       } catch (exactError) {
@@ -187,6 +197,7 @@ class NotificationService {
           scheduled,
           _platformDetails(),
           androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+          matchDateTimeComponents: matchDateTimeComponents,
           payload: jsonEncode({'id': rem.id}),
         );
       }

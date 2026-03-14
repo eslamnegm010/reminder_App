@@ -12,6 +12,7 @@ import '../add_reminder_sheet/reminder_text_field.dart';
 import '../add_reminder_sheet/section_title_text.dart';
 import '../add_reminder_sheet/add_reminder_logic.dart';
 import '../add_reminder_sheet/category_selector_card.dart';
+import '../add_reminder_sheet/repeat_selector_card.dart';
 import '../../enum/reminder_category.dart';
 
 enum ReminderType { time, location }
@@ -33,6 +34,7 @@ Future<void> showAddReminderBottomSheet(
   ReminderCategory selectedCategory = reminder != null
       ? ReminderCategoryExtension.fromText(reminder.category)
       : ReminderCategory.others;
+  String selectedRepeatType = reminder?.repeatType ?? 'None';
 
   // Initialize Type
   ReminderType reminderType = ReminderType.time; // Default
@@ -222,6 +224,18 @@ Future<void> showAddReminderBottomSheet(
                             ),
                             const SizedBox(height: 20),
 
+                            // Repeat Section
+                            if (reminderType == ReminderType.time) ...[
+                              const SectionTitleText(text: "Repeat"),
+                              const SizedBox(height: 10),
+                              RepeatSelectorCard(
+                                selectedRepeatType: selectedRepeatType,
+                                isDarkMode: isDark,
+                                onChanged: (val) => setState(() => selectedRepeatType = val),
+                              ),
+                              const SizedBox(height: 20),
+                            ],
+
                             const SectionTitleText(text: "priority"),
                             const SizedBox(height: 10),
                             Row(
@@ -309,6 +323,7 @@ Future<void> showAddReminderBottomSheet(
                                     notificationsEnabled: notificationsEnabled,
                                     reminderId: reminder?.id,
                                     category: selectedCategory.toText,
+                                    repeatType: selectedRepeatType,
                                   );
                                 },
                               ),
