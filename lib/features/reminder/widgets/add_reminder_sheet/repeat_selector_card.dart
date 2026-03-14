@@ -18,7 +18,7 @@ class RepeatSelectorCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final repeatTypes = ['None', 'Daily', 'Weekly', 'Monthly'];
     final selectedIndex = repeatTypes.indexOf(selectedRepeatType);
-    
+
     return LayoutBuilder(
       builder: (context, constraints) {
         final totalWidth = constraints.maxWidth;
@@ -27,13 +27,9 @@ class RepeatSelectorCard extends StatelessWidget {
         return Container(
           height: 45,
           decoration: BoxDecoration(
-            color: isDarkMode 
-                ? AppColors.getCardBackgroundColor(context).withValues(alpha: 0.5) 
-                : AppColors.Dark.withValues(alpha: 0.05),
+            color: AppColors.getCardBackgroundColor(context),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: isDarkMode ? Colors.white12 : Colors.black12,
-            ),
+            border: Border.all(color: isDarkMode ? Colors.white12 : Colors.black12),
           ),
           child: Stack(
             children: [
@@ -65,12 +61,17 @@ class RepeatSelectorCard extends StatelessWidget {
                 children: List.generate(repeatTypes.length, (index) {
                   final type = repeatTypes[index];
                   final isSelected = type == selectedRepeatType;
-                  
+
                   IconData icon;
-                  if (type == 'None') icon = Icons.block;
-                  else if (type == 'Daily') icon = Icons.calendar_today;
-                  else if (type == 'Weekly') icon = Icons.calendar_view_week;
-                  else icon = Icons.calendar_month;
+                  if (type == 'None') {
+                    icon = Icons.block;
+                  } else if (type == 'Daily') {
+                    icon = Icons.calendar_today;
+                  } else if (type == 'Weekly') {
+                    icon = Icons.calendar_view_week;
+                  } else {
+                    icon = Icons.calendar_month;
+                  }
 
                   return Expanded(
                     child: GestureDetector(
@@ -83,9 +84,11 @@ class RepeatSelectorCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 13,
                             fontFamily: 'Outfit',
-                            color: isSelected 
+                            color: isSelected
                                 ? Colors.white
-                                : isDarkMode ? Colors.white70 : Colors.black87,
+                                : isDarkMode
+                                ? Colors.white70
+                                : Colors.black87,
                             fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
                           ),
                           child: Row(
@@ -94,9 +97,11 @@ class RepeatSelectorCard extends StatelessWidget {
                               Icon(
                                 icon,
                                 size: 14,
-                                color: isSelected 
+                                color: isSelected
                                     ? Colors.white
-                                    : isDarkMode ? Colors.white70 : Colors.black87,
+                                    : isDarkMode
+                                    ? Colors.white70
+                                    : Colors.black87,
                               ),
                               const SizedBox(width: 4),
                               Text(type.tr()),
@@ -111,7 +116,7 @@ class RepeatSelectorCard extends StatelessWidget {
             ],
           ),
         );
-      }
+      },
     );
   }
 }

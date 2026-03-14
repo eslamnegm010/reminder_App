@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_declarations
+
 import 'package:easy_localization/easy_localization.dart';
+import 'package:upgrader/upgrader.dart';
 import 'package:reminder_app/core/utils/app_export.dart';
 import 'package:reminder_app/features/app_home_screen/cubit/cubit/theme_cubit.dart';
 import 'package:reminder_app/features/user/pages/user_form_page.dart';
@@ -39,10 +42,24 @@ class _AppNavigationScreenState extends State<AppNavigationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final bool forceUpdate = false;
     return SafeArea(
       bottom: false,
       top: false,
-      child: Scaffold(appBar: _buildAppBar(context), body: _buildPageBody(context)),
+      child: UpgradeAlert(
+        showIgnore: !forceUpdate,
+        showLater: true,
+        dialogStyle: UpgradeDialogStyle.cupertino,
+        cupertinoButtonTextStyle: const TextStyle(
+          color: AppColors.blueColor,
+          fontWeight: FontWeight.bold,
+        ),
+        upgrader: Upgrader(
+          messages: UpgraderMessages(code: context.locale.languageCode),
+          durationUntilAlertAgain: const Duration(seconds: 1),
+        ),
+        child: Scaffold(appBar: _buildAppBar(context), body: _buildPageBody(context)),
+      ),
     );
   }
 
