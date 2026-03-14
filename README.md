@@ -6,7 +6,6 @@ A feature-rich Flutter application designed for efficient task management and lo
 
 - **Smart Reminders**: Create and manage reminders seamlessly.
   - **Time-Based**: Schedule reminders for specific dates and times.
-  - **Location-Based**: (In Development) Set reminders that trigger when you arrive at specific locations.
 - **User Profiles**: Personalized user experience with profile management.
 - **Localization Application**:
   - Full support for **English** and **Arabic**.
@@ -24,10 +23,6 @@ A feature-rich Flutter application designed for efficient task management and lo
 - **State Management**: [Flutter Bloc (Cubit)](https://pub.dev/packages/flutter_bloc)
 - **Local Storage**: [Hive](https://pub.dev/packages/hive) & [Shared Preferences](https://pub.dev/packages/shared_preferences)
 - **Localization**: [Easy Localization](https://pub.dev/packages/easy_localization)
-- **Maps & Location**:
-  - [Flutter Map](https://pub.dev/packages/flutter_map)
-  - [Geolocator](https://pub.dev/packages/geolocator)
-  - [LatLong2](https://pub.dev/packages/latlong2)
 - **Notifications**: [Flutter Local Notifications](https://pub.dev/packages/flutter_local_notifications)
 - **Navigation**: Standard Flutter Navigation with [Page Transition](https://pub.dev/packages/page_transition)
 - **Assets**: SVG support via `flutter_svg`, cached images via `cached_network_image`.
