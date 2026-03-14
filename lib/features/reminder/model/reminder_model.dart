@@ -40,7 +40,7 @@ class ReminderModel extends Equatable {
   @HiveField(9)
   final double? longitude;
 
-  @HiveField(10)
+  @HiveField(10, defaultValue: 'Others')
   final String category;
 
   const ReminderModel({

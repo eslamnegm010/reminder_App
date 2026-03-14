@@ -27,13 +27,14 @@ class ReminderModelAdapter extends TypeAdapter<ReminderModel> {
       notificationsEnabled: fields[7] as bool,
       latitude: fields[8] as double?,
       longitude: fields[9] as double?,
+      category: fields[10] == null ? 'Others' : fields[10] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, ReminderModel obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -53,7 +54,9 @@ class ReminderModelAdapter extends TypeAdapter<ReminderModel> {
       ..writeByte(8)
       ..write(obj.latitude)
       ..writeByte(9)
-      ..write(obj.longitude);
+      ..write(obj.longitude)
+      ..writeByte(10)
+      ..write(obj.category);
   }
 
   @override

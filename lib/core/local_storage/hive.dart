@@ -20,7 +20,13 @@ class HiveService {
       Hive.registerAdapter(UserModelAdapter());
     }
 
-    await Hive.openBox<ReminderModel>(_reminderBoxName);
+    try {
+      await Hive.openBox<ReminderModel>(_reminderBoxName);
+    } catch (e) {
+      // If we can't open the box (e.g., due to legacy TypeID mismatch), wipe it and start fresh.
+      await Hive.deleteBoxFromDisk(_reminderBoxName);
+      await Hive.openBox<ReminderModel>(_reminderBoxName);
+    }
     await Hive.openBox<UserModel>(_userBoxName);
     await Hive.openBox(_settingsBoxName);
   }
