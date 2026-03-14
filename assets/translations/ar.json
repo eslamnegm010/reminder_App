@@ -149,5 +149,13 @@
   "None": "بدون",
   "Daily": "يوميًا",
   "Weekly": "أسبوعيًا",
-  "Monthly": "شهريًا"
+  "Monthly": "شهريًا",
+  "empty_field_not_valid": "هذا الحقل مطلوب",
+  "must_be_at_least_2": "يجب أن يتكون من مقطعين على الأقل",
+  "invalid_email_address": "بريد إلكتروني غير صالح",
+  "invalid_password_less_than_characters": "يجب أن تتكون كلمة المرور من 6 أحرف على الأقل",
+  "does_not_match_with_password": "كلمات المرور غير متطابقة",
+  "invalid_phone_number": "رقم هاتف غير صالح",
+  "not_allowed_for_users_under_years_old": "غير مسموح للمستخدمين دون سن 18 عامًا",
+  "invalid_data": "بيانات غير صالحة"
 }

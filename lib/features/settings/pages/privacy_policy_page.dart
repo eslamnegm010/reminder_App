@@ -41,10 +41,7 @@ class PrivacyPolicyPage extends StatelessWidget {
               isHeader: true,
             ),
             const SizedBox(height: 20),
-            _buildText(
-              context,
-              'privacy_policy_intro'.tr(),
-            ),
+            _buildText(context, 'privacy_policy_intro'.tr()),
             const SizedBox(height: 24),
             _buildSection(
               context,
@@ -82,18 +79,9 @@ class PrivacyPolicyPage extends StatelessWidget {
               'privacy_policy_data_safety_intro'.tr(),
             ),
             const SizedBox(height: 12),
-            _buildBulletPoint(
-              context,
-              'privacy_policy_data_encrypted'.tr(),
-            ),
-            _buildBulletPoint(
-              context,
-              'privacy_policy_data_deletion'.tr(),
-            ),
-            _buildBulletPoint(
-              context,
-              'privacy_policy_data_sharing'.tr(),
-            ),
+            _buildBulletPoint(context, 'privacy_policy_data_encrypted'.tr()),
+            _buildBulletPoint(context, 'privacy_policy_data_deletion'.tr()),
+            _buildBulletPoint(context, 'privacy_policy_data_sharing'.tr()),
             const SizedBox(height: 24),
             _buildSection(
               context,
@@ -126,17 +114,14 @@ class PrivacyPolicyPage extends StatelessWidget {
                 ),
                 child: const Row(
                   children: [
-                    Icon(
-                      Icons.email_outlined,
-                      color: AppColors.blueColor,
-                      size: 20,
-                    ),
+                    Icon(Icons.email_outlined, color: AppColors.blueColor, size: 20),
                     SizedBox(width: 12),
                     Expanded(
-                      child: SubtitleText(
+                      child: TitleText(
                         text: 'eslamnegm010@gmail.com',
                         color: AppColors.blueColor,
-                        isBold: true,
+                        fontWeight: FontWeight.w700,
+                        subtractedSize: 10,
                       ),
                     ),
                   ],
@@ -177,7 +162,7 @@ class PrivacyPolicyPage extends StatelessWidget {
       children: [
         TitleText(
           text: title,
-          subtractedSize: 13,
+          subtractedSize: 10,
           color: AppColors.getTextColor(context),
           fontWeight: FontWeight.w600,
         ),
@@ -212,10 +197,11 @@ class PrivacyPolicyPage extends StatelessWidget {
   }
 
   Widget _buildText(BuildContext context, String text) {
-    return SubtitleText(
+    return TitleText(
       text: text,
       color: AppColors.getTextColor(context).withValues(alpha: 0.8),
-      subtractedSize: 4,
+      subtractedSize: 13,
+      fontWeight: FontWeight.w400,
       height: 1.5,
     );
   }

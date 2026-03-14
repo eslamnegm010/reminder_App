@@ -17,7 +17,7 @@ class AppAboutPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
 
         title: TitleText(
-          text: 'about',
+          text: 'about'.tr().toUpperCase(),
           subtractedSize: 10,
           color: AppColors.getTextColor(context),
           fontWeight: FontWeight.w700,
@@ -142,7 +142,7 @@ class AppAboutPage extends StatelessWidget {
                             text: AppConstants.myEmail,
                             color: AppColors.blueColor,
                             isBold: true,
-                            subtractedSize: 4,
+                            subtractedSize: 5,
                           ),
                         ],
                       ),
@@ -175,7 +175,6 @@ class AppAboutPage extends StatelessWidget {
           color: AppColors.getTextColor(context).withValues(alpha: 0.8),
           subtractedSize: 4,
           height: 1.6,
-          textAlign: TextAlign.justify,
         ),
       ],
     );

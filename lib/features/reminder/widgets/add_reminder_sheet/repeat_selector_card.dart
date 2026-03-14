@@ -82,7 +82,7 @@ class RepeatSelectorCard extends StatelessWidget {
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.fastOutSlowIn,
                           style: TextStyle(
-                            fontSize: 13,
+                            fontSize: 11,
                             fontFamily: 'Outfit',
                             color: isSelected
                                 ? Colors.white

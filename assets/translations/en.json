@@ -146,5 +146,13 @@
   "about_feature_privacy_body": "Your data never leaves your device. No accounts, no cloud, no tracking—just complete control.",
   "about_feature_notifications_title": "Smart Notifications",
   "about_feature_notifications_body": "Timely alerts with customizable priorities to keep you on track, wherever you are.",
-  "contact_us": "Contact Us"
+  "contact_us": "Contact Us",
+  "empty_field_not_valid": "This field is required",
+  "must_be_at_least_2": "Must be at least 2 characters",
+  "invalid_email_address": "Invalid email address",
+  "invalid_password_less_than_characters": "Password must be at least 6 characters",
+  "does_not_match_with_password": "Passwords do not match",
+  "invalid_phone_number": "Invalid phone number",
+  "not_allowed_for_users_under_years_old": "Not allowed for users under 18 years old",
+  "invalid_data": "Invalid data"
 }

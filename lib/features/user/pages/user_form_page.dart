@@ -72,20 +72,12 @@ class _UserProfilePageState extends State<UserProfilePage> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
-        title: TitleText.small(
+        title: const TitleText.small(
           text: 'profile',
           color: AppColors.blueColor,
           fontWeight: FontWeight.w700,
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new_rounded,
-            color: AppColors.blueColor,
-            size: 20,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
       ),
       body: Stack(
         children: [
@@ -123,7 +115,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
                       builder: (context, rState) {
                         final reminders = rState.reminder;
                         final activeCount = reminders.where((r) => !r.isCompleted).length;
-                        final completedCount = reminders.where((r) => r.isCompleted).length;
+                        final completedCount = reminders
+                            .where((r) => r.isCompleted)
+                            .length;
                         final highCount = reminders
                             .where((r) => r.priority.toLowerCase() == 'high')
                             .length;
@@ -234,11 +228,8 @@ class _ProfileHeaderIntro extends StatelessWidget {
               height: 84,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [
-                    AppColors.blueColor,
-                    AppColors.bluedark,
-                  ],
+                gradient: const LinearGradient(
+                  colors: [AppColors.blueColor, AppColors.bluedark],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -255,7 +246,7 @@ class _ProfileHeaderIntro extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-        TitleText(
+        const TitleText(
           text: 'personalize_your_profile',
           color: AppColors.blueColor,
           subtractedSize: 2,
@@ -263,7 +254,7 @@ class _ProfileHeaderIntro extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 6),
-        SubtitleText(
+        const SubtitleText(
           text: 'update_name',
           subtractedSize: 5,
           color: AppColors.greyColor,
