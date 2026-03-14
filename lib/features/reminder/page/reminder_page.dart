@@ -31,66 +31,113 @@ class ReminderPageBody extends StatelessWidget {
       builder: (context, state) {
         final cubit = context.read<ReminderCubit>();
         final reminders = cubit.visibleReminders();
+        final isDark = Theme.of(context).brightness == Brightness.dark;
 
         return Scaffold(
+          extendBodyBehindAppBar: true,
           appBar: _buildAppBar(context),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => showAddReminderBottomSheet(context),
-            backgroundColor: AppColors.blueColor,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
-            child: const Icon(Icons.add),
-          ),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Column(
-              children: [
-                const PageHeader(),
-                SizedBox(height: 10.h),
-                AppBarDivider.getAppBarDivider(context),
-                const SizedBox(height: 12),
-                Row(
-                  children: FilterType.values.map((type) {
-                    return Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 6.0),
-                        child: _buildFilterButton(context, type.name, type),
-                      ),
-                    );
-                  }).toList(),
-                ),
-                const SizedBox(height: 10),
-                Expanded(
-                  child: reminders.isEmpty
-                      ? buildEmptyList()
-                      : ListView.separated(
-                          itemCount: reminders.length,
-                          separatorBuilder: (_, __) => const SizedBox(height: 0),
-                          itemBuilder: (context, index) {
-                            final item = reminders[index];
-                            return DismissibleWrapper(
-                              id: item.id,
-                              isCompleted: item.isCompleted,
-                              onDelete: () => cubit.removeReminder(item.id),
-                              onComplete: () => cubit.toggleReminder(item.id),
-                              child: ReminderCard(
-                                reminder: item,
-                                onDelete: () => cubit.removeReminder(item.id),
-                                onToggleCompletion: (_) => cubit.toggleReminder(item.id),
-                                onNotifiTapped: () {
-                                  final updated = item.copyWith(
-                                    notificationsEnabled: !item.notificationsEnabled,
-                                  );
-                                  cubit.editReminder(updated);
-                                },
-                                onEdit: () =>
-                                    showAddReminderBottomSheet(context, reminder: item),
-                              ),
-                            );
-                          },
-                        ),
+          floatingActionButton: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.blueColor.withValues(alpha: 0.35),
+                  blurRadius: 18,
+                  spreadRadius: 2,
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),
+            child: FloatingActionButton(
+              onPressed: () => showAddReminderBottomSheet(context),
+              backgroundColor: AppColors.blueColor,
+              elevation: 0,
+              highlightElevation: 0,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+              child: const Icon(Icons.add, color: Colors.white, size: 28),
+            ),
+          ),
+          body: Stack(
+            children: [
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 220,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.blueColor.withValues(alpha: isDark ? 0.12 : 0.08),
+                        Colors.transparent,
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                ),
+              ),
+              SafeArea(
+                bottom: false,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15.h),
+                  child: Column(
+                    children: [
+                      const PageHeader(),
+                      SizedBox(height: 12.h),
+                      AppBarDivider.getAppBarDivider(context),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: FilterType.values.map((type) {
+                          return Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 4.0.h),
+                              child: _buildFilterButton(context, type.name, type),
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                      const SizedBox(height: 16),
+                      Expanded(
+                        child: reminders.isEmpty
+                            ? buildEmptyList(context)
+                            : ListView.separated(
+                                itemCount: reminders.length,
+                                padding: const EdgeInsets.only(bottom: 100),
+                                separatorBuilder: (_, __) => const SizedBox(height: 0),
+                                itemBuilder: (context, index) {
+                                  final item = reminders[index];
+                                  return DismissibleWrapper(
+                                    id: item.id,
+                                    isCompleted: item.isCompleted,
+                                    onDelete: () => cubit.removeReminder(item.id),
+                                    onComplete: () => cubit.toggleReminder(item.id),
+                                    child: ReminderCard(
+                                      reminder: item,
+                                      onDelete: () => cubit.removeReminder(item.id),
+                                      onToggleCompletion: (_) =>
+                                          cubit.toggleReminder(item.id),
+                                      onNotifiTapped: () {
+                                        final updated = item.copyWith(
+                                          notificationsEnabled:
+                                              !item.notificationsEnabled,
+                                        );
+                                        cubit.editReminder(updated);
+                                      },
+                                      onEdit: () => showAddReminderBottomSheet(
+                                        context,
+                                        reminder: item,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         );
       },
@@ -98,63 +145,53 @@ class ReminderPageBody extends StatelessWidget {
   }
 
   PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(70),
-      child: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: false,
-        flexibleSpace: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
+    return AppBar(
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      surfaceTintColor: Colors.transparent,
+      automaticallyImplyLeading: false,
+      toolbarHeight: 80,
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TitleText.small(
-                        text: 'reminder',
-                        color: AppColors.getTextColor(context),
-                        fontWeight: FontWeight.bold,
-                      ),
-                      TitleText(
-                        text: 'manage_tasks_efficiently'.tr(),
-                        subtractedSize: 12,
-                        fontWeight: FontWeight.w300,
-                        fontFamily: 'Din',
-                        color: AppColors.getGrayTextColor(context),
-                      ),
-                    ],
-                  ),
+                TitleText(
+                  text: 'reminder',
+                  color: AppColors.getTextColor(context),
+                  fontWeight: FontWeight.w800,
+                  subtractedSize: 2,
                 ),
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.getCardBackgroundColor(context),
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.blueColor.withValues(alpha: 0.1)),
-                  ),
-                  child: IconButton(
-                    padding: const EdgeInsets.all(12),
-                    icon: SvgPicture.asset(
-                      AppAssets.userCircleIcon,
-                      height: 24,
-                      width: 24,
-                      colorFilter: const ColorFilter.mode(
-                        AppColors.blueColor,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                    onPressed: () => showSettings(context),
-                  ),
+                TitleText(
+                  text: 'manage_tasks_efficiently'.tr(),
+                  subtractedSize: 13,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.getTextColor(context).withValues(alpha: 0.6),
                 ),
               ],
             ),
           ),
-        ),
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.getCardBackgroundColor(context),
+              shape: BoxShape.circle,
+              border: Border.all(color: AppColors.blueColor.withValues(alpha: 0.15)),
+            ),
+            child: IconButton(
+              padding: const EdgeInsets.all(12),
+              icon: SvgPicture.asset(
+                AppAssets.userCircleIcon,
+                height: 24,
+                width: 24,
+                colorFilter: const ColorFilter.mode(AppColors.blueColor, BlendMode.srcIn),
+              ),
+              onPressed: () => showSettings(context),
+            ),
+          ),
+        ],
       ),
     );
   }
