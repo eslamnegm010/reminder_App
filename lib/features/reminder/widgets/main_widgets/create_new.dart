@@ -146,6 +146,7 @@ Future<void> showAddReminderBottomSheet(
                                           ? "select_date".tr()
                                           : DateFormat(
                                               'yyyy-MM-dd',
+                                              context.locale.toString(),
                                             ).format(selectedDate!),
                                       onTap: () async {
                                         final picked = await showDatePicker(

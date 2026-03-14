@@ -119,6 +119,7 @@ class ReminderCard extends StatelessWidget {
                                         Icons.access_time_rounded,
                                         DateFormat(
                                           'MMM d, hh:mm a',
+                                          context.locale.toString(),
                                         ).format(reminder.dateTime!),
                                         isDark,
                                       ),
@@ -182,9 +183,7 @@ class ReminderCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           TitleText(
-            text:
-                "priority"
-                ":",
+            text: "${"priority".tr()}:",
             subtractedSize: 13,
             fontWeight: FontWeight.w600,
             color: color,
