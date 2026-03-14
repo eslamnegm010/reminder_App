@@ -136,5 +136,15 @@
   "Weekly": "Weekly",
   "Monthly": "Monthly",
   "welcome_notification_title": "We're glad you're here! 🔔",
-  "welcome_notification_body": "Ready to stay organized? Set a quick reminder so you never miss what matters most."
+  "welcome_notification_body": "Ready to stay organized? Set a quick reminder so you never miss what matters most.",
+  "about_mission_title": "Our Mission",
+  "about_mission_body": "Our mission is to empower individuals to reclaim their time and focus. We believe that professional organization shouldn't be complex, and productivity shouldn't come at the cost of your privacy.",
+  "about_features_title": "Key Features",
+  "about_feature_simple_title": "Elegant Simplicity",
+  "about_feature_simple_body": "A clean, intuitive interface designed for maximum efficiency without the clutter.",
+  "about_feature_privacy_title": "Privacy First",
+  "about_feature_privacy_body": "Your data never leaves your device. No accounts, no cloud, no tracking—just complete control.",
+  "about_feature_notifications_title": "Smart Notifications",
+  "about_feature_notifications_body": "Timely alerts with customizable priorities to keep you on track, wherever you are.",
+  "contact_us": "Contact Us"
 }

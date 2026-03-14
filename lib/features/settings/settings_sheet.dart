@@ -7,7 +7,6 @@ import 'package:reminder_app/features/user/pages/user_form_page.dart';
 import 'package:reminder_app/features/user/user_cubit/user_cubit.dart';
 import 'package:reminder_app/features/user/user_cubit/user_state.dart';
 import 'package:reminder_app/features/user/widgets/profile_header.dart';
-import 'package:reminder_app/sheared_widgets/others/app_about_dialog.dart';
 import 'package:reminder_app/sheared_widgets/others/snack_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reminder_app/core/utils/app_export.dart';
@@ -254,7 +253,8 @@ Widget _buildAboutItem(BuildContext context, BuildContext sheetContext) {
         title: 'about',
         subtitle: 'version'.tr(args: [versionText]),
         onTap: () {
-          showDialog(context: context, builder: (ctx) => const AppAboutDialog());
+          Navigator.pop(sheetContext);
+          Navigator.pushNamed(context, AppRoutes.appAboutPage);
         },
       );
     },
