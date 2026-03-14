@@ -169,7 +169,7 @@ class _AppNavigationScreenState extends State<AppNavigationScreen> {
 
     return TextButton(
       style: TextButton.styleFrom(
-        padding: EdgeInsets.symmetric(horizontal: 18, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 8),
         backgroundColor: AppColors.getCardBackgroundColor(context),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),

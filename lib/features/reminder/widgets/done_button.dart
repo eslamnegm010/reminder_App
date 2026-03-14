@@ -7,11 +7,11 @@ class DoneButton extends StatefulWidget {
   final ValueChanged<bool> onToggle;
 
   const DoneButton({
-    Key? key,
+    super.key,
     required this.isCompleted,
     required this.color,
     required this.onToggle,
-  }) : super(key: key);
+  });
 
   @override
   State<DoneButton> createState() => _DoneButtonState();

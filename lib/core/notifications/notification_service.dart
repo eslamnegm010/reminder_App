@@ -48,7 +48,7 @@ class NotificationService {
       requestSoundPermission: true,
     );
 
-    final settings = InitializationSettings(android: androidInit, iOS: iosInit);
+    const settings = InitializationSettings(android: androidInit, iOS: iosInit);
 
     await _plugin.initialize(
       settings,

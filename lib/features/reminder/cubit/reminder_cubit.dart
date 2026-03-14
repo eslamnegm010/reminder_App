@@ -18,10 +18,6 @@ class ReminderCubit extends Cubit<ReminderState> {
     _loadSettings();
   }
 
-  @override
-  Future<void> close() {
-    return super.close();
-  }
 
   final notificationService = NotificationService.instance;
 

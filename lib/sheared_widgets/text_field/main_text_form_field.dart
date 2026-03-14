@@ -259,9 +259,9 @@ class MainTextFormFieldState extends State<MainTextFormField> {
       validator: widget.validator,
       onEditingComplete: widget.onEditingComplete,
       onChanged: (text) {
-        if (text.isEmpty)
+        if (text.isEmpty) {
           setState(() => _currentDir = null);
-        else {
+        } else {
           final dir = _getDirection(text);
           if (dir != _currentDir) setState(() => _currentDir = dir);
         }

@@ -7,7 +7,7 @@ class ProfileHeader extends StatelessWidget {
   final bool isDark;
   final MediaQueryData mq;
 
-  const ProfileHeader({
+  const ProfileHeader({super.key, 
     required this.nameCtrl,
     required this.isDark,
     required this.mq,

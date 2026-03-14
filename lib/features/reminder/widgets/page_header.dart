@@ -67,8 +67,8 @@ class PageHeader extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          TitleText(
-            padding: const EdgeInsetsDirectional.only(start: 5),
+          const TitleText(
+            padding: EdgeInsetsDirectional.only(start: 5),
             subtractedSize: 12,
             text: "reminder_info_options",
             color: AppColors.blueColor,

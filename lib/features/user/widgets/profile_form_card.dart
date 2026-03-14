@@ -14,7 +14,7 @@ class ProfileFormCard extends StatelessWidget {
   final bool formValid;
   final VoidCallback onSave;
 
-  const ProfileFormCard({
+  const ProfileFormCard({super.key, 
     required this.formKey,
     required this.nameCtrl,
     required this.nameFocusNode,

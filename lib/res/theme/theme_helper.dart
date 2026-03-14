@@ -21,10 +21,10 @@ ThemeData getDefaultThemeLight(BuildContext context) {
     ),
     appBarTheme: AppBarTheme(
       backgroundColor: Theme.of(context).bottomSheetTheme.backgroundColor,
-      iconTheme: IconThemeData(color: AppColors.Dark),
+      iconTheme: const IconThemeData(color: AppColors.Dark),
     ),
-    textSelectionTheme: TextSelectionThemeData(cursorColor: AppColors.white),
-    colorScheme: ColorScheme.light(),
+    textSelectionTheme: const TextSelectionThemeData(cursorColor: AppColors.white),
+    colorScheme: const ColorScheme.light(),
     cardColor: AppColors.white,
   );
 }
@@ -35,11 +35,11 @@ ThemeData getThemeDark(BuildContext context) {
     scaffoldBackgroundColor: Theme.of(context).bottomSheetTheme.backgroundColor,
     appBarTheme: AppBarTheme(
       backgroundColor: Theme.of(context).bottomSheetTheme.backgroundColor,
-      iconTheme: IconThemeData(color: AppColors.white),
+      iconTheme: const IconThemeData(color: AppColors.white),
     ),
-    colorScheme: ColorScheme.dark(),
+    colorScheme: const ColorScheme.dark(),
     cardColor: AppColors.white,
-    textSelectionTheme: TextSelectionThemeData(cursorColor: AppColors.white),
+    textSelectionTheme: const TextSelectionThemeData(cursorColor: AppColors.white),
     textTheme: TextTheme(
       bodySmall: _normalText(context, bodySmall),
       bodyMedium: _normalText(context, bodyMedium),

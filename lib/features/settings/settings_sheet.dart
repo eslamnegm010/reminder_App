@@ -64,7 +64,7 @@ void showSettings(BuildContext context) {
 Widget _buildHeader(BuildContext ctx) {
   return Row(
     children: [
-      SizedBox(width: UIConstants.marginSmall),
+      const SizedBox(width: UIConstants.marginSmall),
       Expanded(
         child: BlocBuilder<UserCubit, UserState>(
           builder: (context, uState) {
@@ -98,6 +98,8 @@ Widget _buildSettingsList(
       _buildLanguageItem(context, sheetContext, currentLocale),
       const SizedBox(height: 8),
       _buildAboutItem(context, sheetContext),
+      const SizedBox(height: 8),
+      _buildPrivacyPolicyItem(context, sheetContext),
       const SizedBox(height: 8),
       _buildClearRemindersItem(context, sheetContext),
       const SizedBox(height: 8),
@@ -181,13 +183,13 @@ Widget _buildClearRemindersItem(BuildContext context, BuildContext sheetContext)
       final confirmed = await showDialog<bool>(
         context: context,
         builder: (dCtx) => AlertDialog(
-          title: TitleText(
+          title: const TitleText(
             text: 'confirm',
             subtractedSize: 10,
             color: AppColors.redColor,
             textAlign: TextAlign.start,
           ),
-          content: TitleText(
+          content: const TitleText(
             text: 'are_you_sure_remove_all_reminders',
             subtractedSize: 12,
             textAlign: TextAlign.start,
@@ -195,7 +197,7 @@ Widget _buildClearRemindersItem(BuildContext context, BuildContext sheetContext)
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dCtx, false),
-              child: TitleText(
+              child: const TitleText(
                 subtractedSize: 13,
                 text: 'cancel',
                 color: AppColors.redColor,
@@ -203,7 +205,7 @@ Widget _buildClearRemindersItem(BuildContext context, BuildContext sheetContext)
             ),
             TextButton(
               onPressed: () => Navigator.pop(dCtx, true),
-              child: TitleText(subtractedSize: 13, text: 'yes'),
+              child: const TitleText(subtractedSize: 13, text: 'yes'),
             ),
           ],
         ),
@@ -239,10 +241,22 @@ Widget _buildSignOutItem(BuildContext context, BuildContext sheetContext) {
   return SettingItem(
     icon: Icons.logout,
     title: 'sign_out',
-    onTap: () async {
+    onTap: () {
       Navigator.pop(sheetContext);
-      await context.read<UserCubit>().clearUser();
+      context.read<UserCubit>().clearUser();
       showSnackbar(context, message: 'you_have_been_signed_out');
+    },
+  );
+}
+
+Widget _buildPrivacyPolicyItem(BuildContext context, BuildContext sheetContext) {
+  return SettingItem(
+    icon: Icons.privacy_tip_outlined,
+    title: 'privacy_policy',
+    subtitle: 'view_our_privacy_policy',
+    onTap: () {
+      Navigator.pop(sheetContext);
+      Navigator.pushNamed(context, AppRoutes.privacyPolicyPage);
     },
   );
 }
@@ -253,7 +267,7 @@ Widget _buildFooter() {
     children: [
       Text(
         '© ${DateTime.now().year} ${AppConstants.appName}',
-        style: TextStyle(color: AppColors.greyColor, fontSize: 12),
+        style: const TextStyle(color: AppColors.greyColor, fontSize: 12),
       ),
     ],
   );

@@ -23,7 +23,7 @@ class AppAboutDialog extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             child: Image.asset(AppAssets.appLauncher),
           ),
-          TitleText(
+          const TitleText(
             text: AppConstants.appName,
             subtractedSize: 5,
             fontWeight: FontWeight.w600,
@@ -43,7 +43,7 @@ class AppAboutDialog extends StatelessWidget {
             },
           ),
           const SizedBox(height: 16),
-          TitleText(
+          const TitleText(
             text: 'about_app_description',
             textAlign: TextAlign.center,
             subtractedSize: 13,
@@ -58,14 +58,14 @@ class AppAboutDialog extends StatelessWidget {
                 Navigator.pop(context);
               }
             },
-            child: Row(
+            child: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.attach_email_outlined, size: 20, color: AppColors.blueColor),
-                const SizedBox(width: 6),
+                SizedBox(width: 6),
                 TitleText(
                   subtractedSize: 11,
-                  text: '${AppConstants.myEmail}',
+                  text: AppConstants.myEmail,
                   color: AppColors.blueColor,
                   fontWeight: FontWeight.w500,
                 ),
@@ -73,22 +73,22 @@ class AppAboutDialog extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          TextButton(
-            onPressed: () async {
-              // TODO: Update with your real Privacy Policy URL
-              await launchURL(
-                url:
-                    'https://gist.githubusercontent.com/eslamnegm010/eb6441ad736a8bd7a8ec8e376547d76a/raw/fa045baa8b5dde5108fb98eef8e647c4ab114c8f/privacy_policy.md',
-              );
-            },
-            child: const TitleText(
-              text: 'privacy_policy',
-              subtractedSize: 11,
-              color: AppColors.blueColor,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          const SizedBox(height: 10),
+          // TextButton(
+          //   onPressed: () async {
+          //     // TODO: Update with your real Privacy Policy URL
+          //     await launchURL(
+          //       url:
+          //           'https://gist.githubusercontent.com/eslamnegm010/eb6441ad736a8bd7a8ec8e376547d76a/raw/fa045baa8b5dde5108fb98eef8e647c4ab114c8f/privacy_policy.md',
+          //     );
+          //   },
+          //   child: const TitleText(
+          //     text: 'privacy_policy',
+          //     subtractedSize: 11,
+          //     color: AppColors.blueColor,
+          //     fontWeight: FontWeight.w500,
+          //   ),
+          // ),
+          // const SizedBox(height: 10),
           TextButton(
             onPressed: () => Navigator.pop(context),
             child: const TitleText(

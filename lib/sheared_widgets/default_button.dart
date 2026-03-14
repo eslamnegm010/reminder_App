@@ -318,6 +318,16 @@ class DefaultButtonState extends State<DefaultButton> with TickerProviderStateMi
           child: _isBusy
               ? _buildLoading(widget.keepButtonSizeOnLoading)
               : GestureDetector(
+                  onTap: widget.enabled && widget.onPressed != null
+                      ? () {
+                          FocusScope.of(context).unfocus();
+                          final futureOr = widget.onPressed!();
+                          if (futureOr is Future) {
+                            _setButtonToBusy();
+                            futureOr.whenComplete(_setButtonToReady);
+                          }
+                        }
+                      : null,
                   child: AbsorbPointer(
                     child: Padding(
                       padding: widget.padding,
@@ -332,27 +342,18 @@ class DefaultButtonState extends State<DefaultButton> with TickerProviderStateMi
                       ),
                     ),
                   ),
-                  onTap: widget.enabled && widget.onPressed != null
-                      ? () {
-                          FocusScope.of(context).unfocus();
-                          final futureOr = widget.onPressed!();
-                          if (futureOr is Future) {
-                            _setButtonToBusy();
-                            futureOr.whenComplete(_setButtonToReady);
-                          }
-                        }
-                      : null,
                 ),
         ),
       ),
     );
 
-    if (widget.alignment != null)
+    if (widget.alignment != null) {
       child = Align(alignment: widget.alignment!, child: child);
+    }
 
     if (widget.margin != null) child = Padding(padding: widget.margin!, child: child);
 
-    if (widget.elevation != null)
+    if (widget.elevation != null) {
       child = PhysicalModel(
         elevation: widget.elevation!,
         color: Colors.transparent,
@@ -361,6 +362,7 @@ class DefaultButtonState extends State<DefaultButton> with TickerProviderStateMi
         borderRadius: widget.borderRadius as BorderRadius?,
         child: child,
       );
+    }
     return child;
   }
 
@@ -389,10 +391,11 @@ class DefaultButtonState extends State<DefaultButton> with TickerProviderStateMi
   void _setButtonToReady() {
     _isBusy = false;
     _isFirstBuild = false;
-    if (mounted)
+    if (mounted) {
       setState(() {
         HapticFeedback.mediumImpact();
       });
+    }
   }
 
   void _setButtonToBusy() {

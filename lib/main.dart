@@ -13,7 +13,7 @@ void main() async {
       supportedLocales: const [Locale('en'), Locale('ar')],
       path: 'assets/translations',
       fallbackLocale: const Locale('en'),
-      child: MultiBlocProvider(providers: AppProviders.providers, child: MyApp()),
+      child: MultiBlocProvider(providers: AppProviders.providers, child: const MyApp()),
     ),
   );
 }

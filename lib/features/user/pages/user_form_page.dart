@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserProfilePage extends StatefulWidget {
-  const UserProfilePage({Key? key}) : super(key: key);
+  const UserProfilePage({super.key});
 
   @override
   State<UserProfilePage> createState() => _UserProfilePageState();
@@ -68,7 +68,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        title: TitleText.small(text: 'profile', color: AppColors.blueColor),
+        title: const TitleText.small(text: 'profile', color: AppColors.blueColor),
         centerTitle: true,
       ),
       body: Container(
@@ -160,7 +160,7 @@ class _ProfileHintText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Opacity(
+    return const Opacity(
       opacity: 0.8,
       child: TitleText(
         text: 'profile_edit_hint_name',

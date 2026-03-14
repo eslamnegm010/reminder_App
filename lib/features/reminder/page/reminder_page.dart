@@ -22,7 +22,7 @@ class ReminderPage extends StatelessWidget {
 }
 
 class ReminderPageBody extends StatelessWidget {
-  const ReminderPageBody({Key? key}) : super(key: key);
+  const ReminderPageBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,15 +35,15 @@ class ReminderPageBody extends StatelessWidget {
           appBar: _buildAppBar(context),
           floatingActionButton: FloatingActionButton(
             onPressed: () => showAddReminderBottomSheet(context),
-            child: const Icon(Icons.add),
             backgroundColor: AppColors.blueColor,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+            child: const Icon(Icons.add),
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: Column(
               children: [
-                PageHeader(),
+                const PageHeader(),
                 SizedBox(height: 10.h),
                 AppBarDivider.getAppBarDivider(context),
                 const SizedBox(height: 10),
@@ -99,7 +99,7 @@ class ReminderPageBody extends StatelessWidget {
   }
 
   AppBar _buildAppBar(BuildContext context) => AppBar(
-    title: TitleText.small(
+    title: const TitleText.small(
       text: 'reminder',
       color: AppColors.white,
       fontWeight: FontWeight.w500,
@@ -163,8 +163,8 @@ class ReminderPageBody extends StatelessWidget {
         child: Row(
           children: [
             if (active)
-              Padding(
-                padding: const EdgeInsets.only(right: 6),
+              const Padding(
+                padding: EdgeInsets.only(right: 6),
                 child: Icon(Icons.check_circle, color: Colors.white, size: 18),
               ),
             TitleText(subtractedSize: 12, text: label, color: textColor),

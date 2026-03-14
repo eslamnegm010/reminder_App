@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 
 class Validator {
   String? validateEmail(String? email) {
-    if (email == null || email.isEmpty)
+    if (email == null || email.isEmpty) {
       return tr("empty_field_not_valid");
-    else if (isInvalidEmail(email))
+    } else if (isInvalidEmail(email))
       return tr("invalid_email_address");
     else
       return null;
@@ -18,24 +18,26 @@ class Validator {
   }
 
   String? validatePassword(String? password) {
-    if (password == null || password.isEmpty)
+    if (password == null || password.isEmpty) {
       return tr("empty_field_not_valid");
-    else if (password.length < 6)
+    } else if (password.length < 6)
       return tr("invalid_password_less_than_characters");
     else
       return null;
   }
 
   String? validateConfPassword(String? password, String? confPassword) {
-    if (password == null || password.isEmpty || password != confPassword)
+    if (password == null || password.isEmpty || password != confPassword) {
       return tr("does_not_match_with_password");
-    else
+    } else {
       return null;
+    }
   }
 
   String? validatePhoneNumber(String? phoneNumber) {
-    if (phoneNumber == null || phoneNumber.isEmpty)
+    if (phoneNumber == null || phoneNumber.isEmpty) {
       return tr("empty_field_not_valid");
+    }
     if (isValidPhoneNumber(phoneNumber)) return null;
 
     return tr("invalid_phone_number");
@@ -55,27 +57,27 @@ class Validator {
   }
 
   String? validateLandLineNumber(String? landLineNumber) {
-    if (landLineNumber == null || landLineNumber.isEmpty)
+    if (landLineNumber == null || landLineNumber.isEmpty) {
       return null;
-    else if (!RegExp(r"[0-9]{7,13}$").hasMatch(landLineNumber))
+    } else if (!RegExp(r"[0-9]{7,13}$").hasMatch(landLineNumber))
       return tr("invalid_phone_number");
     else
       return null;
   }
 
   String? validateUserName(String? userName) {
-    if (userName == null || userName.isEmpty)
+    if (userName == null || userName.isEmpty) {
       return tr("empty_field_not_valid");
-    else if (userName.length < 2)
+    } else if (userName.length < 2)
       return tr('must_be_at_least_2');
     else
       return null;
   }
 
   String? validateBirthDate(String? birthdate) {
-    if (birthdate == null || birthdate.isEmpty)
+    if (birthdate == null || birthdate.isEmpty) {
       return tr("empty_field_not_valid");
-    else if (_isNotAllowedAge(birthdate))
+    } else if (_isNotAllowedAge(birthdate))
       return tr("not_allowed_for_users_under_years_old");
     else
       return null;
@@ -97,8 +99,9 @@ class Validator {
       value == null ? tr("empty_field_not_valid") : null;
 
   String? validateAmount(String? value, [bool isOptional = false]) {
-    if (value == null || value.isEmpty)
+    if (value == null || value.isEmpty) {
       return isOptional ? null : tr("empty_field_not_valid");
+    }
     if (double.tryParse(value) == null) return tr("invalid_data");
     return null;
   }
@@ -110,10 +113,12 @@ class Validator {
   }
 
   String? validatePercentage(String? precentage) {
-    if (precentage == null || precentage.isEmpty)
+    if (precentage == null || precentage.isEmpty) {
       return tr("empty_field_not_valid");
-    if (double.tryParse(precentage) == null || double.parse(precentage) > 100)
+    }
+    if (double.tryParse(precentage) == null || double.parse(precentage) > 100) {
       return tr("invalid_data");
+    }
 
     return null;
   }

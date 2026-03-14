@@ -27,7 +27,7 @@ class DateTimePickerButton extends StatelessWidget {
         icon,
         height: 20,
         width: 20,
-        colorFilter: ColorFilter.mode(AppColors.blueColor, BlendMode.srcIn),
+        colorFilter: const ColorFilter.mode(AppColors.blueColor, BlendMode.srcIn),
       ),
       label: TitleText(subtractedSize: 12, text: label, color: AppColors.blueColor),
     );

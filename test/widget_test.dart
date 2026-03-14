@@ -4,7 +4,7 @@ import 'package:reminder_app/main.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    await tester.pumpWidget(MyApp());
+    await tester.pumpWidget(const MyApp());
     expect(find.text('0'), findsOneWidget);
     expect(find.text('1'), findsNothing);
 

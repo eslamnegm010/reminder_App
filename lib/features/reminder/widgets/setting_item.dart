@@ -12,7 +12,7 @@ class SettingItem extends StatelessWidget {
   final Widget? trailing;
 
   const SettingItem({
-    Key? key,
+    super.key,
     required this.icon,
     required this.title,
     this.subtitle,
@@ -20,7 +20,7 @@ class SettingItem extends StatelessWidget {
     this.color,
     this.trailing,
     this.image,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

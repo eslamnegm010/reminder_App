@@ -200,11 +200,12 @@ class SubtitleText extends StatelessWidget {
 
     if (padding != null) child = Padding(padding: padding!, child: child);
 
-    if (backgroundColor != null)
+    if (backgroundColor != null) {
       child = DecoratedBox(
         decoration: BoxDecoration(color: backgroundColor),
         child: child,
       );
+    }
 
     if (margin != null) child = Padding(padding: margin!, child: child);
 

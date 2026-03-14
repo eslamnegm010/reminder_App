@@ -12,13 +12,13 @@ class ReminderCard extends StatelessWidget {
   final VoidCallback onNotifiTapped;
 
   const ReminderCard({
-    Key? key,
+    super.key,
     required this.reminder,
     required this.onDelete,
     required this.onEdit,
     required this.onToggleCompletion,
     required this.onNotifiTapped,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +168,7 @@ class ReminderCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           TitleText(
-            text: "priority" + ":",
+            text: "priority" ":",
             subtractedSize: 13,
             fontWeight: FontWeight.w600,
             color: color,

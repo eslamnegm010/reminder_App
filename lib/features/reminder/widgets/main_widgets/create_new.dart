@@ -150,8 +150,9 @@ Future<void> showAddReminderBottomSheet(
                                             child: child!,
                                           ),
                                         );
-                                        if (picked != null)
+                                        if (picked != null) {
                                           setState(() => selectedDate = picked);
+                                        }
                                       },
                                     ),
                                   ),
@@ -172,8 +173,9 @@ Future<void> showAddReminderBottomSheet(
                                           ),
                                           barrierColor: Colors.transparent,
                                         );
-                                        if (picked != null)
+                                        if (picked != null) {
                                           setState(() => selectedTime = picked);
+                                        }
                                       },
                                     ),
                                   ),

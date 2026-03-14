@@ -39,13 +39,13 @@ class AppColors {
   static const grayDarkText = Color.fromARGB(255, 128, 125, 125);
   static const graylightText = Color.fromARGB(255, 241, 235, 235);
   static final cardGreyColor = Colors.grey[850];
-  static final orange = Colors.orangeAccent;
+  static const orange = Colors.orangeAccent;
   static const redColor = Colors.redAccent;
 
   static ThemeData pickerTheme(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final primaryColor = AppColors.blueColor;
-    final onPrimary = Colors.white;
+    const primaryColor = AppColors.blueColor;
+    const onPrimary = Colors.white;
     final surface = isDarkMode ? const Color(0xFF1E1E1E) : Colors.white;
     final onSurface = isDarkMode ? Colors.white : Colors.black;
 
@@ -69,7 +69,6 @@ class AppColors {
               onPrimaryContainer: AppColors.bluedark,
             ),
       scaffoldBackgroundColor: surface,
-      dialogBackgroundColor: surface,
       datePickerTheme: DatePickerThemeData(
         headerBackgroundColor: primaryColor,
         headerForegroundColor: onPrimary,
@@ -89,7 +88,7 @@ class AppColors {
         backgroundColor: surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         hourMinuteShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-        dayPeriodBorderSide: BorderSide(color: AppColors.blueColor),
+        dayPeriodBorderSide: const BorderSide(color: AppColors.blueColor),
         dayPeriodColor: AppColors.blueColor,
         dayPeriodShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         dialHandColor: AppColors.blueColor,
@@ -101,7 +100,7 @@ class AppColors {
           foregroundColor: primaryColor,
           textStyle: const TextStyle(fontWeight: FontWeight.bold),
         ),
-      ),
+      ), dialogTheme: DialogThemeData(backgroundColor: surface),
     );
   }
 
