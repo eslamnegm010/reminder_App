@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "635396701378",
+    "project_id": "reminder-app-eslam-2026",
+    "storage_bucket": "reminder-app-eslam-2026.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:635396701378:android:9c0363cc94069fc98c4f5b",
+        "android_client_info": {
+          "package_name": "com.reminder.en"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkXcHnWbtElfqO4p33YwvIEzq-d455dWw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

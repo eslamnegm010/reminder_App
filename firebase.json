@@ -1,0 +1,31 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "reminder-app-eslam-2026",
+                    "appId": "1:635396701378:android:9c0363cc94069fc98c4f5b",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "ios": {
+                "default": {
+                    "projectId": "reminder-app-eslam-2026",
+                    "appId": "1:635396701378:ios:760febdd8a0b27298c4f5b",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "ios/Runner/GoogleService-Info.plist"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "reminder-app-eslam-2026",
+                    "configurations": {
+                        "android": "1:635396701378:android:9c0363cc94069fc98c4f5b",
+                        "ios": "1:635396701378:ios:760febdd8a0b27298c4f5b",
+                        "web": "1:635396701378:web:1e78c712f95061458c4f5b"
+                    }
+                }
+            }
+        }
+    }
+}

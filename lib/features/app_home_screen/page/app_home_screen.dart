@@ -11,6 +11,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reminder_app/core/local_storage/hive.dart';
 import 'package:reminder_app/core/notifications/notification_service.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:reminder_app/core/update/cubit/update_cubit.dart';
+import 'package:reminder_app/core/update/cubit/update_state.dart';
+import 'package:reminder_app/core/update/widgets/update_dialog.dart';
 
 class AppNavigationScreen extends StatefulWidget {
   const AppNavigationScreen({super.key});
@@ -24,6 +27,12 @@ class _AppNavigationScreenState extends State<AppNavigationScreen> {
   void initState() {
     super.initState();
     _checkAndShowWelcomeNotification();
+    // Defer the update check until AFTER the BlocListener is mounted.
+    // This prevents the race condition where the cubit emits before
+    // the listener subscribes, causing the dialog to never appear.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<UpdateCubit>().checkForUpdate();
+    });
   }
 
   void _checkAndShowWelcomeNotification() {
@@ -57,35 +66,45 @@ class _AppNavigationScreenState extends State<AppNavigationScreen> {
         messages: UpgraderMessages(code: context.locale.languageCode),
         durationUntilAlertAgain: const Duration(seconds: 1),
       ),
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        appBar: _buildAppBar(context),
-        body: Stack(
-          children: [
-            // Top background gradient wash
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              height: 300,
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      AppColors.blueColor.withValues(alpha: isDark ? 0.12 : 0.08),
-                      Colors.transparent,
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+      child: BlocListener<UpdateCubit, UpdateState>(
+        listenWhen: (previous, current) =>
+            previous.status != current.status &&
+            (current.status == UpdateStatus.available ||
+                current.status == UpdateStatus.ready ||
+                current.status == UpdateStatus.applied),
+        listener: (context, state) {
+          UpdateDialog.show(context);
+        },
+        child: Scaffold(
+          extendBodyBehindAppBar: true,
+          appBar: _buildAppBar(context),
+          body: Stack(
+            children: [
+              // Top background gradient wash
+              Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 300,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.blueColor.withValues(alpha: isDark ? 0.12 : 0.08),
+                        Colors.transparent,
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
                   ),
                 ),
               ),
-            ),
-            _buildPageBody(context),
-          ],
-        ),
-      ),
-    );
+              _buildPageBody(context),
+            ],
+          ),
+        ), // Scaffold
+      ), // BlocListener
+    ); // UpgradeAlert
   }
 
   Widget _buildPageBody(BuildContext context) {

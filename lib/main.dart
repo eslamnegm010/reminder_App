@@ -4,16 +4,24 @@ import 'package:reminder_app/core/init/init_app.dart';
 import 'package:reminder_app/features/app_home_screen/cubit/cubit/theme_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/utils/app_export.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 void main() async {
   await AppInitializer.init();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  final prefs = await SharedPreferences.getInstance();
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('ar')],
       path: 'assets/translations',
       fallbackLocale: const Locale('en'),
-      child: MultiBlocProvider(providers: AppProviders.providers, child: const MyApp()),
+      child: MultiBlocProvider(
+        providers: AppProviders.providers(prefs),
+        child: const MyApp(),
+      ),
     ),
   );
 }
