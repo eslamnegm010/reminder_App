@@ -13,15 +13,18 @@ import 'package:reminder_app/core/utils/app_export.dart';
 class UpdateDialog {
   UpdateDialog._();
 
-  /// Shows the update dialog. Should be called once when an update is detected.
-  static void show(BuildContext context) {
-    showGeneralDialog(
+  /// Shows the update dialog. Returns a [Future] that completes when the
+  /// dialog is dismissed — used by the [_isUpdateDialogOpen] flag.
+  static Future<void> show(BuildContext context) {
+    return showGeneralDialog(
       context: context,
       barrierDismissible: false,
       barrierLabel: 'update_dialog',
       barrierColor: Colors.black54,
       transitionDuration: const Duration(milliseconds: 350),
       transitionBuilder: (context, anim1, anim2, child) {
+        // Instant exit: skip all transitions when the dialog is closing.
+        if (anim1.status == AnimationStatus.reverse) return child;
         final curve = CurvedAnimation(parent: anim1, curve: Curves.easeOutBack);
         return ScaleTransition(
           scale: curve,
@@ -59,7 +62,8 @@ class _UpdateDialogContent extends StatelessWidget {
                 color: isDark ? const Color(0xFF1E1E1E) : Colors.white,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: AppColors.blueColor.withValues(alpha: isDark ? 0.15 : 0.1),
+                  color: AppColors.blueColor
+                      .withValues(alpha: isDark ? 0.15 : 0.1),
                 ),
                 boxShadow: [
                   BoxShadow(
@@ -71,7 +75,8 @@ class _UpdateDialogContent extends StatelessWidget {
                 ],
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 28),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -185,11 +190,13 @@ class _UpdateDialogContent extends StatelessWidget {
   }
 
   Widget _buildProgress(BuildContext context, UpdateState state) {
-    if (state.status != UpdateStatus.downloading && state.status != UpdateStatus.ready) {
+    if (state.status != UpdateStatus.downloading &&
+        state.status != UpdateStatus.ready) {
       return const SizedBox.shrink();
     }
 
-    final progress = state.status == UpdateStatus.ready ? 1.0 : state.downloadProgress;
+    final progress =
+        state.status == UpdateStatus.ready ? 1.0 : state.downloadProgress;
 
     return Column(
       children: [
@@ -199,7 +206,8 @@ class _UpdateDialogContent extends StatelessWidget {
             value: state.status == UpdateStatus.downloading ? null : progress,
             minHeight: 6,
             backgroundColor: AppColors.blueColor.withValues(alpha: 0.1),
-            valueColor: const AlwaysStoppedAnimation<Color>(AppColors.blueColor),
+            valueColor:
+                const AlwaysStoppedAnimation<Color>(AppColors.blueColor),
           ),
         ),
         const SizedBox(height: 8),
@@ -324,7 +332,9 @@ class _ActionButton extends StatelessWidget {
         style: OutlinedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 14),
           shape: RoundedRectangleBorder(borderRadius: borderRadius),
-          side: BorderSide(color: AppColors.blueColor.withValues(alpha: 0.3)),
+          side: BorderSide(
+            color: AppColors.blueColor.withValues(alpha: 0.3),
+          ),
         ),
         child: Text(
           label,
@@ -352,8 +362,17 @@ class _ActionButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (icon != null) ...[Icon(icon, size: 20), const SizedBox(width: 8)],
-          Text(label, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14)),
+          if (icon != null) ...[
+            Icon(icon, size: 20),
+            const SizedBox(width: 8),
+          ],
+          Text(
+            label,
+            style: const TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+            ),
+          ),
         ],
       ),
     );

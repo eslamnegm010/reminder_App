@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_declarations
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:upgrader/upgrader.dart';
 import 'package:reminder_app/core/utils/app_export.dart';
@@ -23,13 +21,12 @@ class AppNavigationScreen extends StatefulWidget {
 }
 
 class _AppNavigationScreenState extends State<AppNavigationScreen> {
+  bool _isUpdateDialogOpen = false;
+
   @override
   void initState() {
     super.initState();
     _checkAndShowWelcomeNotification();
-    // Defer the update check until AFTER the BlocListener is mounted.
-    // This prevents the race condition where the cubit emits before
-    // the listener subscribes, causing the dialog to never appear.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<UpdateCubit>().checkForUpdate();
     });
@@ -73,14 +70,16 @@ class _AppNavigationScreenState extends State<AppNavigationScreen> {
                 current.status == UpdateStatus.ready ||
                 current.status == UpdateStatus.applied),
         listener: (context, state) {
-          UpdateDialog.show(context);
+          if (!_isUpdateDialogOpen) {
+            _isUpdateDialogOpen = true;
+            UpdateDialog.show(context).then((_) => _isUpdateDialogOpen = false);
+          }
         },
         child: Scaffold(
           extendBodyBehindAppBar: true,
           appBar: _buildAppBar(context),
           body: Stack(
             children: [
-              // Top background gradient wash
               Positioned(
                 top: 0,
                 left: 0,
@@ -248,7 +247,7 @@ class _AppNavigationScreenState extends State<AppNavigationScreen> {
                           ),
                           Container(
                             margin: EdgeInsets.only(right: 18.h, left: 12.h),
-                            padding: const EdgeInsets.all(12),
+                            padding: const EdgeInsets.all(13),
                             decoration: BoxDecoration(
                               color: AppColors.blueColor.withValues(alpha: 0.1),
                               shape: BoxShape.circle,
