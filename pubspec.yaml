@@ -65,6 +65,9 @@ dependencies:
   flutter_local_notifications: ^19.5.0
   timezone: ^0.10.1
   flutter_timezone: ^4.1.1
+  smart_draft:
+    git:
+      url: https://github.com/eslamnegm010/smart_draft.git
   # flutter_map: ^7.0.2
   permission_handler: ^12.0.1
   upgrader: ^12.5.0
